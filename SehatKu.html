@@ -3735,7 +3735,7 @@ function rewardsCardHtml(level) {
     <div class="chest-row">
       <div class="chest-icon ${waiting ? 'ready' : ''}">🎁${waiting ? `<span class="chest-count">${waiting}</span>` : ''}</div>
       <div>
-        <b>${waiting ? `${waiting} peti siap dibuka!` : 'Semua peti sudah dibuka'}</b>
+        <b>${waiting ? `${waiting} peti siap dibuka!` : r.opened ? 'Semua peti sudah dibuka' : 'Belum ada peti'}</b>
         <div class="small muted">${waiting ? `Berikutnya: ${CHEST_LABEL[next.type]} dari Level ${next.level}` : `Naik ke Level ${level + 1} untuk peti berikutnya — ${fmt(toNext)} XP lagi`}</div>
       </div>
       ${waiting ? '<button type="button" class="btn primary" data-action="openChest">Buka peti 🎁</button>' : ''}
