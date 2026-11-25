@@ -2,7 +2,7 @@
 
 **SehatKu** is a lightweight, offline calorie & health tracker that runs entirely in the browser — a single HTML file with no install, no account and no server. The interface is in Bahasa Indonesia.
 
-Current version: **1.2.1** (see the [Changelog](#changelog)).
+Current version: **1.3** (see the [Changelog](#changelog)).
 
 **▶️ Try it online: https://sdel0ng.github.io/sehatku/** — works on phones too. Your data stays in your own browser; nothing is ever uploaded.
 
@@ -70,11 +70,24 @@ Everything is calculated from what you already log; there is nothing extra to fi
 
 and set its icon to `SehatKu.ico` — the app then opens in its own window.
 
+## Updates
+
+- **Online version:** SehatKu checks for a new version when it opens (and every few hours while it stays open). When one is published, a banner appears: tap **🔄 Perbarui** to load it. You can also check manually in **Profil → Versi aplikasi**. Updates never touch your data.
+- **Downloaded file:** the app still tells you when a new version is out. Choose **Unduh file terbaru** and replace your old `SehatKu.html` (your data lives in the browser, not in the file), or switch to the online version.
+
+### Publishing a new version (maintainers)
+
+1. Bump `APP_VERSION` in `SehatKu.html`.
+2. Put the same version, the date and 1–3 short notes (in Indonesian, shown to users) in `version.json`.
+3. Commit both files together to `main`. GitHub Pages publishes them within about a minute, and every open copy of the app picks up the new version on its next check.
+
 ## Data & privacy
 
 All data, including XP, badges and settings, is stored locally in the browser's `localStorage`; nothing is sent anywhere. Data belongs to that browser profile only, and clearing browser data deletes it, so use **Export backup** (Profil tab) regularly. Backups include game progress. Older v1.0 backups can still be restored; levels and badges are recalculated from the logs.
 
 The online version and a downloaded copy keep **separate** data (each browser/site has its own storage). To move your history, use **Export backup** in one and **Import backup** in the other.
+
+To look for updates, the app downloads the small public `version.json` from GitHub Pages; nothing about you or your data is sent.
 
 ## How targets are calculated
 
@@ -86,6 +99,7 @@ The online version and a downloaded copy keep **separate** data (each browser/si
 
 ## Changelog
 
+- **1.3** — Update checker: a banner tells you when a new version is published, **Perbarui** loads it in one tap on the online version, and downloaded copies can fetch the newest file. Manual check in Profil → Versi aplikasi; a short "diperbarui ke versi …" message confirms each update.
 - **1.2.1** — Public release on GitHub Pages. New users start with neutral example values (165 cm, 65 kg) instead of personal ones; existing saved data is unchanged.
 - **1.2** — New **Seru** tab: weekly boss battle, Tebak Kalori quiz, Peta Nusantara journey map, joke corner and Statistik Kocak. Tap Bro Koli for a joke, boss HP on the dashboard, food emoji in the food log and 5 new badges (30 total). Existing data is kept; bosses already beaten in earlier weeks and your current city are filled in quietly from your logs, and a one-time popup introduces the new tab.
 - **1.1.1** — Added Nasi katsu ayam, Chicken katsu and Milo (sachet, UHT box, es Milo). Milo values follow the official Indonesian MILO labels; katsu and es Milo are estimates. Katsu now counts as fried food and Milo as a sweet drink for missions and badges.

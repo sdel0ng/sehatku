@@ -516,6 +516,16 @@ button.mascot:focus-visible { outline: 2px solid var(--primary); outline-offset:
   .mascot-emoji.jump, .boss-emoji.hit, .bubble-a, .quiz-opt .q-kcal, .joke-a, .map-city.next { animation: none !important; }
 }
 
+/* ---------- Pembaruan aplikasi ---------- */
+.update-banner {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 12px;
+  padding: 8px 24px; font-size: 14px; border-bottom: 1px solid var(--line);
+  background: linear-gradient(90deg, rgba(47, 128, 237, .13), rgba(25, 196, 147, .13));
+}
+.update-banner .ub-actions { display: flex; align-items: center; gap: 6px; }
+.update-notes { margin: 6px 0 10px; padding-left: 20px; display: grid; gap: 3px; }
+.update-steps { margin: 8px 0 12px; padding-left: 20px; display: grid; gap: 6px; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1080px) {
   .grid.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -538,6 +548,7 @@ button.mascot:focus-visible { outline: 2px solid var(--primary); outline-offset:
   .tab.active { background: var(--primary-soft); color: var(--primary); }
   .grid.two, .grid.three { grid-template-columns: minmax(0, 1fr); }
   .toast { bottom: calc(90px + env(safe-area-inset-bottom)); }
+  .update-banner { padding: 8px 12px; }
   h1 { font-size: 21px; }
   .card { padding: 16px; }
   .mascot-card { grid-template-columns: auto minmax(0, 1fr); }
@@ -587,6 +598,7 @@ button.mascot:focus-visible { outline: 2px solid var(--primary); outline-offset:
   </div>
 </header>
 <div id="sysBanner" class="sys-banner" hidden></div>
+<div id="updateBanner" class="update-banner" role="status" hidden></div>
 <div class="shell">
   <nav class="tabs" id="tabs" aria-label="Menu utama">
     <button type="button" class="tab" data-action="tab" data-tab="beranda"><span class="ico">🏠</span><span>Beranda</span></button>
@@ -612,7 +624,11 @@ button.mascot:focus-visible { outline: 2px solid var(--primary); outline-offset:
 /* =========================================================
    KONSTANTA & DATABASE
    ========================================================= */
-const APP_VERSION = '1.2.1';
+const APP_VERSION = '1.3';
+const UPDATE_BASE = 'https://sdel0ng.github.io/sehatku/';  // versi online resmi + version.json
+const UPDATE_CHECK_MS = 6 * 60 * 60 * 1000;               // cek otomatis tiap 6 jam selama aplikasi terbuka
+const VERSION_KEY = 'sehatku.appVersion';                 // versi terakhir yang dibuka di browser ini
+const UPDATE_SNOOZE_KEY = 'sehatku.updateSnooze';         // "Nanti saja" → banner versi itu disembunyikan 1 hari
 const STORAGE_KEY = 'sehatku.data.v1';
 const KCAL_PER_KG = 7700;   // ±7.700 kkal ≈ 1 kg jaringan lemak
 const GLASS_ML = 250;
@@ -3005,6 +3021,7 @@ function viewProfile() {
         </div>
         <p class="tiny muted">Tersimpan: ${fmt(nDays)} hari tercatat · ${fmt(nFoods)} entri makanan · ${fmt(state.weights.length)} data berat · ${fmt(state.customFoods.length)} makanan custom.</p>
       </div>
+      <div class="card" id="updateCard">${updateCardInner()}</div>
       <div class="card small muted">ℹ️ SehatKu adalah alat bantu pemantauan, bukan alat diagnosis. Nilai gizi makanan &amp; kalori olahraga adalah perkiraan. Konsultasikan dengan dokter atau ahli gizi bila punya kondisi medis (diabetes, hipertensi, kehamilan, dll.).</div>
     </div>
   </div>`;
@@ -3691,6 +3708,166 @@ function importBackup(input) {
 }
 
 /* =========================================================
+   PEMBARUAN APLIKASI (cek version.json di GitHub Pages)
+   ========================================================= */
+const updater = {
+  status: 'idle',      // idle | checking | latest | available | error
+  latest: null,        // { version, date, notes } dari version.json
+  checkedAt: 0,
+  hosted: () => /^https?:$/.test(location.protocol),
+  navigate: url => location.replace(url),
+};
+function compareVersions(a, b) {
+  const pa = String(a).split('.').map(n => parseInt(n, 10) || 0);
+  const pb = String(b).split('.').map(n => parseInt(n, 10) || 0);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const diff = (pa[i] || 0) - (pb[i] || 0);
+    if (diff) return diff > 0 ? 1 : -1;
+  }
+  return 0;
+}
+function parseRelease(data) {
+  if (!data || typeof data !== 'object' || !/^\d+(\.\d+){0,3}$/.test(String(data.version || ''))) return null;
+  return {
+    version: String(data.version),
+    date: isDateKey(data.date) ? data.date : '',
+    notes: (Array.isArray(data.notes) ? data.notes : []).slice(0, 8).map(n => String(n).slice(0, 160)),
+  };
+}
+const updateAvailable = () => Boolean(updater.latest && compareVersions(updater.latest.version, APP_VERSION) > 0);
+
+async function checkForUpdate(manual = false) {
+  if (updater.status === 'checking') return;
+  if (!manual && navigator.onLine === false) return;
+  updater.status = 'checking';
+  refreshUpdateUi();
+  try {
+    // ?t=… + no-store melewati cache GitHub Pages (10 menit) dan cache browser
+    const response = await fetch(`${UPDATE_BASE}version.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const release = parseRelease(await response.json());
+    if (!release) throw new Error('version.json tidak dikenali');
+    updater.latest = release;
+    updater.status = updateAvailable() ? 'available' : 'latest';
+    if (manual) toast(updater.status === 'available' ? `Versi ${release.version} tersedia 🎉` : `Sudah versi terbaru (${APP_VERSION}) ✓`);
+  } catch (err) {
+    updater.status = updateAvailable() ? 'available' : 'error';
+    if (manual) toast('Gagal cek pembaruan — pastikan internet tersambung', 'error');
+  }
+  updater.checkedAt = Date.now();
+  refreshUpdateUi();
+}
+
+function updateSnoozed(version) {
+  try {
+    const snooze = JSON.parse(localStorage.getItem(UPDATE_SNOOZE_KEY) || 'null');
+    return Boolean(snooze && snooze.version === version && Date.now() - snooze.at < 24 * 60 * 60 * 1000);
+  } catch (e) {
+    return false;
+  }
+}
+function updateNotesHtml(release) {
+  return release.notes.length ? `<ul class="small update-notes">${release.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : '';
+}
+function renderUpdateBanner() {
+  const el = $('#updateBanner');
+  if (!el) return;
+  const release = updater.latest;
+  const show = updater.status === 'available' && release && !updateSnoozed(release.version);
+  el.hidden = !show;
+  el.innerHTML = show
+    ? `<span>🆕 <b>SehatKu ${esc(release.version)}</b> sudah tersedia${release.notes[0] ? ` — ${esc(release.notes[0])}` : ''}</span>
+      <span class="ub-actions">
+        <button type="button" class="btn small" data-action="updateInfo">Apa yang baru?</button>
+        <button type="button" class="btn small primary" data-action="applyUpdate">🔄 Perbarui</button>
+        <button type="button" class="x-btn" data-action="snoozeUpdate" title="Nanti saja" aria-label="Nanti saja">×</button>
+      </span>`
+    : '';
+}
+function updateCardInner() {
+  const release = updater.latest;
+  const statusText = {
+    idle: 'Belum dicek.',
+    checking: '⏳ Sedang mengecek…',
+    latest: '✅ Kamu sudah memakai versi terbaru.',
+    available: `🆕 Versi <b>${esc(release ? release.version : '')}</b> sudah tersedia!`,
+    error: '⚠️ Belum bisa cek pembaruan (offline?).',
+  }[updater.status];
+  const checked = updater.checkedAt
+    ? ` · dicek ${new Date(updater.checkedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}`
+    : '';
+  return `
+    <h3>🔄 Versi aplikasi</h3>
+    <p class="small">SehatKu <b>${APP_VERSION}</b> · ${updater.hosted() ? 'versi online' : 'file di perangkat ini'}${checked}</p>
+    <p class="small">${statusText}</p>
+    ${updater.status === 'available' ? updateNotesHtml(release) : ''}
+    <div class="row wrap gap-s">
+      <button type="button" class="btn small" data-action="checkUpdate" ${updater.status === 'checking' ? 'disabled' : ''}>Cek pembaruan</button>
+      ${updater.status === 'available' ? '<button type="button" class="btn small primary" data-action="applyUpdate">🔄 Perbarui sekarang</button>' : ''}
+    </div>
+    <p class="tiny muted">Pembaruan tidak mengubah catatanmu. SehatKu juga mengecek versi baru otomatis saat dibuka (hanya membaca nomor versi, tidak mengirim data apa pun).</p>`;
+}
+function refreshUpdateUi() {
+  renderUpdateBanner();
+  const card = $('#updateCard');
+  if (card) card.innerHTML = updateCardInner();
+}
+function applyUpdate() {
+  const release = updater.latest;
+  if (!release) return;
+  if (updater.hosted()) {
+    // Versi online: muat ulang dari server dengan alamat baru supaya cache terlewati
+    updater.navigate(`${location.pathname}?v=${encodeURIComponent(release.version)}${location.hash}`);
+    return;
+  }
+  // File di perangkat tidak bisa menimpa dirinya sendiri → tawarkan unduh / versi online
+  openModal(`
+    ${modalHead(`SehatKu ${esc(release.version)} tersedia`, 'Kamu membuka SehatKu dari file di perangkat ini.')}
+    ${updateNotesHtml(release)}
+    <p class="small">File di perangkat tidak bisa memperbarui dirinya sendiri. Pilih salah satu:</p>
+    <ol class="small update-steps">
+      <li><b>Unduh file terbaru</b>, lalu timpa file SehatKu.html yang lama. Catatanmu tetap aman karena tersimpan di browser, bukan di dalam file.</li>
+      <li>Atau pakai <b>versi online</b> yang selalu terbaru. Pindahkan catatan lewat Profil → Export backup, lalu Import backup di versi online.</li>
+    </ol>
+    <div class="modal-actions">
+      <button type="button" class="btn" data-action="openOnline">🌐 Buka versi online</button>
+      <button type="button" class="btn primary" data-action="downloadLatest">⬇️ Unduh file terbaru</button>
+    </div>`, { type: 'localUpdate' });
+}
+function openUpdateInfo() {
+  const release = updater.latest;
+  if (!release) return;
+  openModal(`
+    ${modalHead(`Apa yang baru di ${esc(release.version)}`, release.date ? `Rilis ${esc(longDate(release.date))}` : '')}
+    ${updateNotesHtml(release) || '<p class="small muted">Perbaikan &amp; penyempurnaan kecil.</p>'}
+    <p class="tiny muted">Versi kamu sekarang: ${APP_VERSION}. Catatanmu tidak berubah saat diperbarui.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn" data-action="closeModal">Nanti</button>
+      <button type="button" class="btn primary" data-action="applyUpdate">🔄 Perbarui sekarang</button>
+    </div>`, { type: 'updateInfo' });
+}
+// Catat versi yang dibuka; beri tahu kalau baru saja diperbarui
+function noteVersionChange(firstRun) {
+  let previous = null;
+  try {
+    previous = localStorage.getItem(VERSION_KEY);
+    localStorage.setItem(VERSION_KEY, APP_VERSION);
+  } catch (e) {
+    /* penyimpanan tidak tersedia */
+  }
+  if (/[?&]v=/.test(location.search)) {
+    try {
+      history.replaceState(null, '', location.pathname + location.hash);
+    } catch (e) {
+      /* abaikan */
+    }
+  }
+  if (!firstRun && previous && compareVersions(APP_VERSION, previous) > 0) {
+    setTimeout(() => toast(`SehatKu diperbarui ke versi ${APP_VERSION} 🎉`), 700);
+  }
+}
+
+/* =========================================================
    AKSI, FORM & INPUT
    ========================================================= */
 const actions = {
@@ -3885,6 +4062,33 @@ const actions = {
   revealJoke: () => {
     if (ui.joke) ui.joke.revealed = true;
     renderJokeCard();
+  },
+
+  checkUpdate: () => checkForUpdate(true),
+  applyUpdate: () => applyUpdate(),
+  updateInfo: () => openUpdateInfo(),
+  snoozeUpdate: () => {
+    try {
+      localStorage.setItem(UPDATE_SNOOZE_KEY, JSON.stringify({ version: updater.latest ? updater.latest.version : '', at: Date.now() }));
+    } catch (e) {
+      /* abaikan */
+    }
+    renderUpdateBanner();
+    toast('Oke, diingatkan lagi besok. Bisa diperbarui kapan saja dari tab Profil.');
+  },
+  openOnline: () => window.open(UPDATE_BASE, '_blank', 'noopener'),
+  downloadLatest: async el => {
+    el.disabled = true;
+    try {
+      const response = await fetch(`${UPDATE_BASE}SehatKu.html?t=${Date.now()}`, { cache: 'no-store' });
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      download('SehatKu.html', await response.text(), 'text/html');
+      closeModal();
+      toast('File terbaru diunduh ✓ Timpa file SehatKu.html yang lama dengan file ini.');
+    } catch (err) {
+      el.disabled = false;
+      toast('Gagal mengunduh — coba lagi saat online', 'error');
+    }
   },
 
   exportJson: () => {
@@ -4144,10 +4348,13 @@ window.addEventListener('storage', e => {
   }
 });
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && ui.followToday && ui.date !== todayKey()) {
+  if (document.visibilityState !== 'visible') return;
+  if (ui.followToday && ui.date !== todayKey()) {
     ui.date = todayKey();
     render();
   }
+  // Kembali ke aplikasi setelah lama → cek versi baru
+  if (Date.now() - updater.checkedAt > 60 * 60 * 1000) checkForUpdate(false);
 });
 window.addEventListener('error', e => showSysBanner('Terjadi error: ' + (e.message || 'tidak diketahui')));
 
@@ -4192,6 +4399,9 @@ function init() {
   if (firstRun) openWelcome();
   else if (!state.game.introSeen) openGameIntro();
   else if (state.game.news !== NEWS_VERSION) openNews();
+  noteVersionChange(firstRun);
+  setTimeout(() => checkForUpdate(false), 2500);
+  setInterval(() => checkForUpdate(false), UPDATE_CHECK_MS);
 }
 
 window.SehatKu = {
@@ -4203,6 +4413,8 @@ window.SehatKu = {
     return JSON.parse(JSON.stringify(summary));
   },
   missions: k => JSON.parse(JSON.stringify(missionsFor(k || todayKey()))),
+  update: () => ({ current: APP_VERSION, status: updater.status, latest: updater.latest, checkedAt: updater.checkedAt }),
+  checkUpdate: () => checkForUpdate(true),
   game: () => {
     const s = getStats();
     return JSON.parse(JSON.stringify({
