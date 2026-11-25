@@ -690,53 +690,90 @@ button.pet-strip { cursor: pointer; }
 }
 
 .pet-scene {
-  position: relative; height: 270px; border-radius: 18px; overflow: hidden; isolation: isolate;
-  background: linear-gradient(180deg, #cfeefe 0%, #e9f7ff 58%, #f3dcc0 58%, #e9c9a3 100%);
+  position: relative; width: 100%; max-width: 560px; margin: 0 auto; aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden;
+  isolation: isolate; container-type: inline-size; background: #f3e3c9; -webkit-user-select: none; user-select: none;
 }
-.pet-scene.tod-pagi { background: linear-gradient(180deg, #fde9c8 0%, #fff5e3 58%, #f3dcc0 58%, #e9c9a3 100%); }
-.pet-scene.tod-sore { background: linear-gradient(180deg, #ffd1b3 0%, #ffe8d6 58%, #ecd0b0 58%, #ddb98f 100%); }
-.pet-scene.tod-malam { background: linear-gradient(180deg, #27305a 0%, #3a4577 58%, #6b5a4c 58%, #5a4a3e 100%); }
+.pet-scene .sc-wall { position: absolute; left: 0; right: 0; top: 0; height: 58%; }
+.pet-scene .sc-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 42%; box-shadow: inset 0 .8cqw 0 rgba(0, 0, 0, .07); }
+.wall-krem .sc-wall { background: repeating-linear-gradient(90deg, #f8eedd 0 4cqw, #f2e2c7 4cqw 8cqw); }
+.wall-mint .sc-wall { background: repeating-linear-gradient(90deg, #e3f6ec 0 4cqw, #d1eedf 4cqw 8cqw); }
+.wall-senja .sc-wall { background: linear-gradient(180deg, #ffc6a1, #ffe7d4); }
+.wall-batik .sc-wall { background: radial-gradient(circle, #a0612d .55cqw, transparent .75cqw) 0 0 / 5cqw 5cqw, repeating-linear-gradient(45deg, rgba(160, 97, 45, .16) 0 1.4cqw, transparent 1.4cqw 3.2cqw), #f4e1c1; }
+.wall-malam .sc-wall { background: radial-gradient(circle, rgba(255, 255, 255, .9) .25cqw, transparent .45cqw) 0 0 / 7cqw 7cqw, linear-gradient(180deg, #1f2756, #3a4682); }
+.floor-kayu .sc-floor { background: repeating-linear-gradient(90deg, #e7c49b 0 11cqw, #d6ad80 11cqw 11.5cqw); }
+.floor-karpet .sc-floor { background: radial-gradient(circle, rgba(255, 255, 255, .38) .5cqw, transparent .75cqw) 0 0 / 4cqw 4cqw, #94d39c; }
+.floor-marmer .sc-floor { background: conic-gradient(#f4f4f6 25%, #dfe2e8 0 50%, #f4f4f6 0 75%, #dfe2e8 0) 0 0 / 9cqw 9cqw; }
+.floor-emas .sc-floor { background: repeating-linear-gradient(135deg, rgba(255, 255, 255, .28) 0 2cqw, transparent 2cqw 6cqw), linear-gradient(135deg, #f6d36d, #dda73a); }
+.pet-scene .sc-night { position: absolute; inset: 0; background: rgba(18, 22, 58, .28); pointer-events: none; z-index: 150; }
 .pet-scene .sc-window {
-  position: absolute; left: 7%; top: 22px; width: 92px; height: 76px; border-radius: 12px; border: 5px solid #fff;
-  background: linear-gradient(180deg, #8fd3ff, #d8f1ff); box-shadow: 0 2px 0 rgba(0, 0, 0, .06); display: grid; place-items: center; font-size: 30px;
+  position: absolute; left: 6cqw; top: 5cqw; width: 21cqw; height: 16cqw; border-radius: 2.4cqw; border: 1.2cqw solid #fff; z-index: 1;
+  background: linear-gradient(180deg, #8fd3ff, #d8f1ff); display: grid; place-items: center; font-size: 6.5cqw; box-shadow: 0 .5cqw 0 rgba(0, 0, 0, .06);
 }
+.pet-scene.tod-pagi .sc-window { background: linear-gradient(180deg, #ffd9a6, #fff1d6); }
 .pet-scene.tod-sore .sc-window { background: linear-gradient(180deg, #ff9a6b, #ffd29b); }
 .pet-scene.tod-malam .sc-window { background: linear-gradient(180deg, #0d1330, #253067); border-color: #cfd6ff; }
-.pet-scene .sc-window::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; margin-left: -2px; background: #fff; opacity: .9; }
+.pet-scene .sc-window::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: .9cqw; margin-left: -.45cqw; background: #fff; opacity: .9; }
 .pet-scene.tod-malam .sc-window::after { background: #cfd6ff; }
-.pet-scene .sc-frame { position: absolute; right: 9%; top: 26px; padding: 6px 10px; border-radius: 8px; background: rgba(255, 255, 255, .75); font-size: 12px; font-weight: 800; color: #6b4f33; }
-.pet-scene.tod-malam .sc-frame { background: rgba(255, 255, 255, .18); color: #e8e6ff; }
-.pet-scene .sc-rug { position: absolute; left: 50%; bottom: 14px; width: 250px; height: 46px; margin-left: -125px; border-radius: 50%; background: rgba(255, 255, 255, .45); }
-.pet-scene.tod-malam .sc-rug { background: rgba(255, 255, 255, .12); }
+.pet-scene .sc-rug { position: absolute; left: 50%; bottom: 2cqw; width: 46cqw; height: 9cqw; margin-left: -23cqw; border-radius: 50%; background: rgba(255, 255, 255, .42); z-index: 2; }
+.pet-scene .sc-item {
+  position: absolute; z-index: 10; transform: translate(-50%, -100%); font-size: calc(var(--fs, 10) * 1cqw); line-height: 1;
+  filter: drop-shadow(0 .6cqw .5cqw rgba(0, 0, 0, .2));
+}
+.pet-scene .sc-item > span { display: block; }
+.pet-scene .sc-item.flip > span { transform: scaleX(-1); }
+.pet-scene.decor .sc-item { cursor: grab; touch-action: none; }
+.pet-scene.decor .sc-item.sel { outline: .6cqw dashed var(--primary); outline-offset: .6cqw; border-radius: 1.5cqw; }
+.pet-scene.decor .sc-item.dragging { cursor: grabbing; filter: drop-shadow(0 2cqw 1.4cqw rgba(0, 0, 0, .28)); }
 .pet-scene .sc-pet {
-  position: absolute; left: 50%; bottom: 10px; width: 176px; height: 176px; margin-left: -88px; padding: 0; border: 0; background: none;
-  cursor: pointer; z-index: 2;
+  position: absolute; left: 50%; bottom: 1cqw; width: 42cqw; height: 42cqw; margin-left: -21cqw; padding: 0; border: 0; background: none;
+  cursor: pointer; z-index: 106;
 }
-.pet-scene.has-guests .sc-pet { left: 34%; }
-.pet-scene.has-guests .sc-rug { left: 34%; width: 220px; margin-left: -110px; }
+.pet-scene.has-guests .sc-pet, .pet-scene.has-guests .sc-rug { left: 36%; }
 .pet-scene .sc-pet:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 20px; }
-.pet-scene .sc-bowls { position: absolute; left: 3%; bottom: 8px; display: flex; align-items: flex-end; gap: 6px; z-index: 3; }
-.pet-scene .sc-bowl {
-  position: relative; width: 50px; height: 20px; border-radius: 0 0 25px 25px; background: #f06a6a;
-  box-shadow: inset 0 5px 0 rgba(0, 0, 0, .08);
-}
-.pet-scene .sc-bowl span { position: absolute; left: -6px; right: -6px; bottom: 11px; text-align: center; font-size: 16px; letter-spacing: -4px; white-space: nowrap; }
-.pet-scene .sc-water { position: relative; width: 30px; height: 15px; border-radius: 0 0 15px 15px; background: #d7e3ea; overflow: hidden; }
+.pet-scene.decor .sc-pet, .pet-scene.decor .sc-guests, .pet-scene.decor .sc-bowls { opacity: .35; pointer-events: none; }
+.pet-scene .sc-bowls { position: absolute; left: 3cqw; bottom: 2cqw; display: flex; align-items: flex-end; gap: 1.6cqw; z-index: 108; }
+.pet-scene .sc-bowl { position: relative; width: 13cqw; height: 5.2cqw; border-radius: 0 0 6.5cqw 6.5cqw; background: #f06a6a; box-shadow: inset 0 1.3cqw 0 rgba(0, 0, 0, .08); }
+.pet-scene .sc-bowl span { position: absolute; left: -2cqw; right: -2cqw; bottom: 2.8cqw; text-align: center; font-size: 4.4cqw; letter-spacing: -1cqw; white-space: nowrap; }
+.pet-scene .sc-water { position: relative; width: 8cqw; height: 4cqw; border-radius: 0 0 4cqw 4cqw; background: #d7e3ea; overflow: hidden; }
 .pet-scene .sc-water span { position: absolute; left: 0; right: 0; bottom: 0; background: #4fb3f6; }
-.pet-scene .sc-guests { position: absolute; right: 4%; bottom: 10px; display: flex; gap: 4px; z-index: 2; }
-.pet-scene .sc-guest { position: relative; width: 112px; height: 132px; padding: 0; border: 0; background: none; cursor: pointer; }
-.pet-scene .sc-guest .pet-svg { height: 112px; }
+.pet-scene .sc-guests { position: absolute; right: 3cqw; bottom: 1cqw; display: flex; gap: 1cqw; z-index: 106; }
+.pet-scene .sc-guest { position: relative; width: 28cqw; height: 33cqw; padding: 0; border: 0; background: none; cursor: pointer; }
+.pet-scene .sc-guest .pet-svg { height: 28cqw; }
 .pet-scene .sc-tag {
   position: absolute; left: 50%; bottom: -2px; transform: translateX(-50%); max-width: 118px; overflow: hidden; text-overflow: ellipsis;
   padding: 1px 8px; border-radius: 99px; background: rgba(255, 255, 255, .92); color: #3b2c22; font-size: 11px; font-weight: 800; white-space: nowrap;
 }
-.pet-scene .sc-mail { position: absolute; right: 6px; top: 8px; font-size: 20px; animation: bob 2.4s ease-in-out infinite; }
+.pet-scene .sc-mail { position: absolute; right: 1.5cqw; top: 2cqw; font-size: 5cqw; animation: bob 2.4s ease-in-out infinite; }
 .pet-scene .sc-away {
-  position: absolute; left: 50%; bottom: 26px; width: min(300px, 86%); transform: translateX(-50%); padding: 14px; border-radius: 16px;
-  background: rgba(255, 255, 255, .88); color: #3b2c22; text-align: center; font-size: 14px; z-index: 2;
+  position: absolute; left: 50%; bottom: 6cqw; width: min(300px, 84%); transform: translateX(-50%); padding: 14px; border-radius: 16px;
+  background: rgba(255, 255, 255, .9); color: #3b2c22; text-align: center; font-size: 14px; z-index: 160;
 }
-.pet-scene .sc-hearts { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+.pet-scene .sc-hearts { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 200; }
 .pet-scene .sc-heart { position: absolute; font-size: 22px; animation: heartUp 1.1s ease-out forwards; }
+.decor-panel { display: grid; gap: 12px; margin-top: 12px; }
+.decor-sel { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px 10px; border-radius: 12px; background: var(--primary-soft); font-size: 14px; }
+.decor-sel .ds-ico { font-size: 24px; line-height: 1; }
+.decor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 8px; }
+.decor-opt {
+  position: relative; display: grid; justify-items: center; gap: 2px; padding: 8px 4px; border-radius: 12px; border: 1px solid var(--line);
+  background: var(--soft); cursor: pointer; color: inherit; font: inherit; text-align: center;
+}
+.decor-opt:hover:not(.locked) { border-color: var(--primary); }
+.decor-opt .do-ico { font-size: 30px; line-height: 1.1; }
+.decor-opt .do-name { font-size: 11px; font-weight: 700; line-height: 1.2; }
+.decor-opt .do-lv { font-size: 10px; color: var(--muted); }
+.decor-opt.locked { cursor: default; }
+.decor-opt.locked .do-ico { filter: grayscale(1); opacity: .35; }
+.decor-opt .do-count { position: absolute; top: 3px; right: 5px; font-size: 10px; font-weight: 800; color: var(--primary); }
+.decor-swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+.swatch-opt {
+  display: grid; justify-items: center; gap: 3px; padding: 4px; border-radius: 12px; border: 2px solid var(--line); background: var(--card);
+  cursor: pointer; color: inherit; font: inherit; font-size: 11px; font-weight: 700; min-width: 74px;
+}
+.swatch-opt.active { border-color: var(--primary); }
+.swatch-opt.locked { cursor: default; opacity: .55; }
+.swatch-opt .sw-box { width: 64px; height: 30px; border-radius: 8px; overflow: hidden; position: relative; container-type: inline-size; }
+.swatch-opt .sw-box > div { position: absolute; inset: 0; }
 @keyframes heartUp { from { transform: translateY(0) scale(.6); opacity: 1; } to { transform: translateY(-90px) scale(1.2); opacity: 0; } }
 .pet-talk { display: grid; gap: 10px; margin-top: 12px; }
 .pet-talk .bubble { box-shadow: none; background: var(--soft); }
@@ -788,8 +825,6 @@ button.pet-strip { cursor: pointer; }
 .gift-pick input:checked + span { border-color: var(--primary); background: var(--primary-soft); }
 .gift-pick input:focus-visible + span { outline: 2px solid var(--primary); }
 .field textarea { width: 100%; min-height: 76px; border-radius: 10px; border: 1px solid var(--line); background: var(--soft); padding: 10px 12px; color: var(--text); font: inherit; font-size: 15px; resize: vertical; }
-.home-modal .pet-scene { height: 230px; }
-.home-modal .pet-scene .sc-pet { width: 150px; height: 150px; margin-left: -75px; }
 
 .modal-card.chat-card { display: flex; flex-direction: column; height: min(640px, 92vh); padding: 0; overflow: hidden; }
 .chat-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--line); }
@@ -881,13 +916,6 @@ button.pet-strip { cursor: pointer; }
   .pet-buddy .pb-egg { font-size: 36px; }
   body.buddy-on .shell { padding-bottom: calc(132px + env(safe-area-inset-bottom)); }
   .tab-badge { position: absolute; top: 1px; left: 50%; margin-left: 4px; min-width: 17px; height: 17px; padding: 0 4px; font-size: 10px; line-height: 17px; }
-  .pet-scene { height: 250px; }
-  .pet-scene .sc-pet { width: 160px; height: 160px; margin-left: -80px; }
-  .pet-scene.has-guests .sc-pet { left: 38%; }
-  .pet-scene.has-guests .sc-rug { left: 38%; width: 180px; margin-left: -90px; }
-  .pet-scene .sc-guest { width: 92px; height: 112px; }
-  .pet-scene .sc-guest .pet-svg { height: 92px; }
-  .pet-scene .sc-frame { display: none; }
   .tab.active { background: var(--primary-soft); color: var(--primary); }
   .grid.two, .grid.three { grid-template-columns: minmax(0, 1fr); }
   .toast { bottom: calc(90px + env(safe-area-inset-bottom)); }
@@ -919,9 +947,6 @@ button.pet-strip { cursor: pointer; }
 }
 @media (max-width: 440px) {
   .tab { font-size: 9px; padding: 6px 0; letter-spacing: -.02em; }
-  .pet-scene.has-guests .sc-pet { left: 37%; width: 140px; height: 140px; margin-left: -70px; }
-  .pet-scene .sc-guest { width: 84px; }
-  .pet-scene .sc-window { width: 76px; height: 64px; }
   .msg { max-width: 86%; }
   .tab .ico { font-size: 17px; }
 }
@@ -979,7 +1004,7 @@ button.pet-strip { cursor: pointer; }
 /* =========================================================
    KONSTANTA & DATABASE
    ========================================================= */
-const APP_VERSION = '1.7';
+const APP_VERSION = '1.8';
 const UPDATE_BASE = 'https://sdel0ng.github.io/sehatku/';  // versi online resmi + version.json
 const UPDATE_CHECK_MS = 6 * 60 * 60 * 1000;               // cek otomatis tiap 6 jam selama aplikasi terbuka
 const VERSION_KEY = 'sehatku.appVersion';                 // versi terakhir yang dibuka di browser ini
@@ -1416,7 +1441,7 @@ const EQUIVALENTS = [
 ];
 
 /* ---------- Seru: boss mingguan, Tebak Kalori, Peta Nusantara, lelucon ---------- */
-const NEWS_VERSION = '1.7';        // pengumuman fitur baru tampil sekali per versi
+const NEWS_VERSION = '1.8';        // pengumuman fitur baru tampil sekali per versi
 const BOSS_EPOCH = '2024-01-01';   // hari Senin; boss berganti tiap minggu dihitung dari tanggal ini
 const TRIP_DAYS = 90;              // mode jaga berat: 90 hari mencatat = sampai Merauke
 
@@ -1726,6 +1751,66 @@ const PET_STAGES = [
   { id: 'legenda', name: 'Legenda', level: 20 },
 ];
 const PET_NAME_MAX = 16;
+// Furnitur rumah pet: hadiah naik level. size = % lebar ruangan, place = posisi awal saat dipasang
+const FURNITURE = [
+  { id: 'tanaman', emoji: '🪴', name: 'Tanaman Hias', level: 1, size: 11, place: 'floor' },
+  { id: 'lukisan', emoji: '🖼️', name: 'Lukisan', level: 1, size: 10, place: 'wall' },
+  { id: 'boneka', emoji: '🧸', name: 'Boneka Beruang', level: 2, size: 9, place: 'floor' },
+  { id: 'bola', emoji: '⚽', name: 'Bola', level: 3, size: 6, place: 'floor' },
+  { id: 'bunga', emoji: '🌻', name: 'Bunga Matahari', level: 4, size: 10, place: 'floor' },
+  { id: 'sofa', emoji: '🛋️', name: 'Sofa Mini', level: 5, size: 16, place: 'floor' },
+  { id: 'jam', emoji: '🕰️', name: 'Jam Antik', level: 6, size: 9, place: 'wall' },
+  { id: 'buku', emoji: '📚', name: 'Tumpukan Buku', level: 7, size: 8, place: 'floor' },
+  { id: 'kursi', emoji: '🪑', name: 'Kursi Kayu', level: 8, size: 11, place: 'floor' },
+  { id: 'lampion', emoji: '🏮', name: 'Lampion', level: 9, size: 8, place: 'wall' },
+  { id: 'tv', emoji: '📺', name: 'TV Jadul', level: 10, size: 12, place: 'floor' },
+  { id: 'gitar', emoji: '🎸', name: 'Gitar', level: 11, size: 11, place: 'floor' },
+  { id: 'kaktus', emoji: '🌵', name: 'Kaktus', level: 12, size: 10, place: 'floor' },
+  { id: 'layangan', emoji: '🪁', name: 'Layangan', level: 13, size: 10, place: 'wall' },
+  { id: 'skate', emoji: '🛹', name: 'Skateboard', level: 14, size: 9, place: 'floor' },
+  { id: 'piano', emoji: '🎹', name: 'Piano', level: 15, size: 13, place: 'floor' },
+  { id: 'cermin', emoji: '🪞', name: 'Cermin', level: 16, size: 10, place: 'wall' },
+  { id: 'sepeda', emoji: '🚲', name: 'Sepeda', level: 17, size: 14, place: 'floor' },
+  { id: 'kendang', emoji: '🥁', name: 'Kendang', level: 18, size: 10, place: 'floor' },
+  { id: 'balon', emoji: '🎈', name: 'Balon', level: 19, size: 9, place: 'wall' },
+  { id: 'airmancur', emoji: '⛲', name: 'Air Mancur', level: 20, size: 14, place: 'floor' },
+  { id: 'keranjang', emoji: '🧺', name: 'Keranjang Piknik', level: 21, size: 9, place: 'floor' },
+  { id: 'pelita', emoji: '🪔', name: 'Pelita', level: 22, size: 7, place: 'floor' },
+  { id: 'jamur', emoji: '🍄', name: 'Lampu Jamur', level: 23, size: 8, place: 'floor' },
+  { id: 'bambu', emoji: '🎋', name: 'Bambu Hias', level: 24, size: 13, place: 'floor' },
+  { id: 'piala', emoji: '🏆', name: 'Piala Emas', level: 25, size: 9, place: 'floor' },
+  { id: 'komidi', emoji: '🎠', name: 'Kuda Komidi', level: 26, size: 13, place: 'floor' },
+  { id: 'disko', emoji: '🪩', name: 'Bola Disko', level: 27, size: 9, place: 'wall' },
+  { id: 'kelapa', emoji: '🌴', name: 'Pohon Kelapa', level: 28, size: 16, place: 'floor' },
+  { id: 'topeng', emoji: '🎭', name: 'Topeng Wayang', level: 29, size: 9, place: 'wall' },
+  { id: 'pelangi', emoji: '🌈', name: 'Pelangi', level: 30, size: 14, place: 'wall' },
+  { id: 'teratai', emoji: '🪷', name: 'Kolam Teratai', level: 32, size: 9, place: 'floor' },
+  { id: 'kastil', emoji: '🏰', name: 'Kastil Mini', level: 34, size: 15, place: 'floor' },
+  { id: 'roket', emoji: '🚀', name: 'Roket Mainan', level: 36, size: 12, place: 'floor' },
+  { id: 'bianglala', emoji: '🎡', name: 'Bianglala', level: 38, size: 16, place: 'floor' },
+  { id: 'mahkota', emoji: '👑', name: 'Mahkota Raja', level: 40, size: 9, place: 'floor' },
+];
+const FURNITURE_BY_ID = Object.fromEntries(FURNITURE.map(f => [f.id, f]));
+const HOME_WALLS = [
+  { id: 'krem', name: 'Krem Hangat', level: 1 },
+  { id: 'mint', name: 'Mint Segar', level: 5 },
+  { id: 'senja', name: 'Langit Senja', level: 15 },
+  { id: 'batik', name: 'Batik Parang', level: 25 },
+  { id: 'malam', name: 'Malam Berbintang', level: 30 },
+];
+const HOME_FLOORS = [
+  { id: 'kayu', name: 'Lantai Kayu', level: 1 },
+  { id: 'karpet', name: 'Karpet Rumput', level: 10 },
+  { id: 'marmer', name: 'Ubin Marmer', level: 20 },
+  { id: 'emas', name: 'Lantai Emas', level: 40 },
+];
+const HOME_MAX_ITEMS = 24;
+const HOME_SIZES = [1, 1.3, 0.75];   // sedang → besar → kecil
+const HOME_SIZE_LABEL = { 1: 'sedang', 1.3: 'besar', 0.75: 'kecil' };
+const DEFAULT_HOME_ITEMS = [
+  { k: 'h1', id: 'lukisan', x: 0.8, y: 0.38, f: false, s: 1 },
+  { k: 'h2', id: 'tanaman', x: 0.91, y: 0.8, f: false, s: 1 },
+];
 const PET_MOOD_LABEL = { senang: '😊 Senang', bangga: '🤩 Bangga', semangat: '💪 Semangat', kangen: '🥺 Kangen', haus: '💧 Haus', tidur: '😴 Tidur' };
 const PET_MOOD_LINES = {
   senang: ['Hari ini lancar jaya. Lanjutkan, partner! 😊', 'Aku senang banget nemenin kamu hidup sehat 💚', 'Catatanmu rapi, aku jadi tenang 😌'],
@@ -1877,10 +1962,11 @@ const newQuiz = () => ({ best: 0, played: 0, correct: 0, xp: 0, day: '', dayXp: 
 const newRewards = () => ({ opened: 0, stickers: {}, stars: 0, redeemed: 0, outfit: '', theme: 'hijau' });
 const newArcade = () => ({ best: 0, played: 0, xp: 0, day: '', dayXp: 0 });
 const newPet = () => ({ species: '', names: {}, adopted: '', pats: 0, updatedAt: 0, float: true });
+const newHome = () => ({ items: DEFAULT_HOME_ITEMS.map(i => ({ ...i })), wall: 'krem', floor: 'kayu', seen: 1, updatedAt: 0 });
 const newGame = (introSeen = true) => ({
   unlocked: {}, level: 1, perfect: {}, sound: false, introSeen,
   news: introSeen ? NEWS_VERSION : '', quiz: newQuiz(), bosses: {}, trip: { key: '', stop: 0 },
-  rewards: newRewards(), arcade: newArcade(), pet: newPet(),
+  rewards: newRewards(), arcade: newArcade(), pet: newPet(), home: newHome(),
 });
 
 // Nilai contoh untuk pengguna baru — diganti lewat tab Profil
@@ -1997,6 +2083,26 @@ function normalizeGame(g) {
     game.pet.pats = whole(p.pats);
     game.pet.updatedAt = Number(p.updatedAt) > 0 ? Number(p.updatedAt) : 0;
     game.pet.float = p.float !== false;
+  }
+  if (g.home && typeof g.home === 'object') {
+    const h = g.home;
+    const coord = (v, lo, hi, fallback) => (Number.isFinite(Number(v)) && v !== null && v !== '' ? clamp(Number(v), lo, hi) : fallback);
+    if (Array.isArray(h.items)) {
+      const keys = new Set();
+      game.home.items = h.items.filter(it => it && FURNITURE_BY_ID[it.id]).slice(0, HOME_MAX_ITEMS).map((it, i) => {
+        let k = String(it.k || '').slice(0, 24) || 'h' + i;
+        while (keys.has(k)) k += 'x';
+        keys.add(k);
+        return {
+          k, id: it.id, x: coord(it.x, 0.02, 0.98, 0.5), y: coord(it.y, 0.1, 1, 0.85),
+          f: Boolean(it.f), s: HOME_SIZES.includes(Number(it.s)) ? Number(it.s) : 1,
+        };
+      });
+    }
+    if (HOME_WALLS.some(w => w.id === h.wall)) game.home.wall = h.wall;
+    if (HOME_FLOORS.some(w => w.id === h.floor)) game.home.floor = h.floor;
+    game.home.seen = Math.max(1, whole(h.seen));
+    game.home.updatedAt = Number(h.updatedAt) > 0 ? Number(h.updatedAt) : 0;
   }
   return game;
 }
@@ -3948,6 +4054,9 @@ function rewardsAt(L) {
   THEMES.filter(t => t.level === L && t.level > 1).forEach(t => items.push({ icon: '🎨', text: 'Tema ' + t.name }));
   PET_SPECIES.filter(s => s.level === L && L > 1).forEach(s => items.push({ icon: '🐾', text: 'Pet ' + s.name }));
   PET_STAGES.filter(s => s.level === L && L > 1).forEach(s => items.push({ icon: '🌱', text: 'Pet tumbuh: ' + s.name }));
+  FURNITURE.filter(f => f.level === L && L > 1).forEach(f => items.push({ icon: f.emoji, text: f.name }));
+  HOME_WALLS.filter(w => w.level === L && L > 1).forEach(w => items.push({ icon: '🖌️', text: 'Wallpaper ' + w.name }));
+  HOME_FLOORS.filter(w => w.level === L && L > 1).forEach(w => items.push({ icon: '🪵', text: w.name }));
   if (L >= 40 && L % 10 === 0) items.push({ icon: decadeTrophy(L), text: `Piala Level ${L}` });
   return items;
 }
@@ -4479,6 +4588,8 @@ function petTips(stats, pet) {
   for (const fr of unreadFriendships()) push(`Ada pesan baru dari @${socialName(otherOf(fr))} 💬`, 'Buka chat', 'chatOpen', `data-uid="${esc(otherOf(fr))}"`);
   const waiting = chestsWaiting(stats.level.level);
   if (waiting) push(`Psst… ada ${waiting} peti hadiah belum dibuka! 🎁`, 'Buka peti', 'openChest');
+  const freshFurniture = FURNITURE.filter(x => x.level > state.game.home.seen && x.level <= stats.level.level);
+  if (freshFurniture.length) push(`Ada furnitur baru di gudang: ${freshFurniture.slice(0, 3).map(x => x.emoji).join(' ')}. Pasang di rumah kita, yuk! 🏡`, 'Dekorasi', 'decorOpen');
   if (stats.logAtRisk && stats.curLogStreak >= 1) {
     push(`Streak ${stats.curLogStreak} hari kita belum aman hari ini. Catat 1 makanan dulu, yuk! 🔥`, 'Catat makanan', 'tab', 'data-tab="makanan"');
   } else if (!f.logged && hour >= 5 && hour < 11) {
@@ -4541,42 +4652,189 @@ function guestHtml(v, interactive = true) {
   if (!interactive) return `<div class="sc-guest">${inner}</div>`;
   return `<button type="button" class="sc-guest" data-action="visitReplyOpen" data-uid="${esc(v.from)}" title="${esc(v.pet.name)} milik @${esc(socialName(v.from))} — ketuk untuk membaca pesannya">${inner}</button>`;
 }
+// Rumah pet yang terlihat: furnitur/wallpaper/lantai yang levelnya belum tercapai tidak ditampilkan
+function homeView(level, home = state.game.home) {
+  const wall = (HOME_WALLS.find(w => w.id === home.wall && w.level <= level) || HOME_WALLS[0]).id;
+  const floor = (HOME_FLOORS.find(w => w.id === home.floor && w.level <= level) || HOME_FLOORS[0]).id;
+  const items = home.items.filter(it => FURNITURE_BY_ID[it.id] && FURNITURE_BY_ID[it.id].level <= level);
+  return { wall, floor, items };
+}
+// Versi ringkas untuk profil publik (teman melihat rumahmu): "id|x|y|balik|ukuran" dalam per-seribu
+function homePublic(level) {
+  const v = homeView(level);
+  return {
+    w: v.wall,
+    f: v.floor,
+    i: v.items.slice(0, 30).map(it => [it.id, Math.round(it.x * 1000), Math.round(it.y * 1000), it.f ? 1 : 0, Math.round(it.s * 100)].join('|')),
+  };
+}
+function decodeHome(pub) {
+  if (!pub || typeof pub !== 'object') return { wall: 'krem', floor: 'kayu', items: DEFAULT_HOME_ITEMS };
+  const items = (Array.isArray(pub.i) ? pub.i : []).slice(0, 30).map((text, n) => {
+    const [id, x, y, flip, size] = String(text).split('|');
+    if (!FURNITURE_BY_ID[id]) return null;
+    const scale = Number(size) / 100;
+    return {
+      k: 'p' + n, id, x: clamp(Number(x) / 1000 || 0.5, 0.02, 0.98), y: clamp(Number(y) / 1000 || 0.85, 0.1, 1),
+      f: flip === '1', s: HOME_SIZES.includes(scale) ? scale : 1,
+    };
+  }).filter(Boolean);
+  return {
+    wall: HOME_WALLS.some(w => w.id === pub.w) ? pub.w : 'krem',
+    floor: HOME_FLOORS.some(w => w.id === pub.f) ? pub.f : 'kayu',
+    items,
+  };
+}
+const itemDepth = y => 10 + Math.round(y * 90);
+function furnitureHtml(it, selected) {
+  const fu = FURNITURE_BY_ID[it.id];
+  if (!fu) return '';
+  return `<div class="sc-item${it.f ? ' flip' : ''}${selected ? ' sel' : ''}" data-key="${esc(it.k)}" title="${esc(fu.name)}" style="left:${(it.x * 100).toFixed(2)}%;top:${(it.y * 100).toFixed(2)}%;--fs:${(fu.size * it.s).toFixed(2)};z-index:${itemDepth(it.y)}"><span>${fu.emoji}</span></div>`;
+}
 function petSceneHtml(o) {
   const tod = timeOfDay();
   const guests = o.guests || [];
   const water = clamp(o.waterPct || 0, 0, 100);
+  const home = o.home || decodeHome(null);
   return `
-    <div class="pet-scene tod-${tod}${guests.length ? ' has-guests' : ''}">
+    <div class="pet-scene tod-${tod} wall-${home.wall} floor-${home.floor}${guests.length ? ' has-guests' : ''}${o.decor ? ' decor' : ''}" aria-label="${esc(o.title)}">
+      <div class="sc-wall"></div><div class="sc-floor"></div>
       <div class="sc-window">${tod === 'malam' ? '🌙' : tod === 'sore' ? '🌇' : tod === 'pagi' ? '🌤️' : '☀️'}</div>
-      <div class="sc-frame">🏡 ${esc(o.title)}</div>
       <div class="sc-rug"></div>
+      ${home.items.map(it => furnitureHtml(it, o.decor && ui.decorSel === it.k)).join('')}
       ${o.bowl ? `<div class="sc-bowls"><div class="sc-bowl" title="Mangkuk: sayur &amp; buah yang dicatat hari ini"><span>${o.bowl.join('')}</span></div>
         <div class="sc-water" title="Air minum hari ini ${fmt(water)}%"><span style="height:${water}%"></span></div></div>` : ''}
       ${o.main}
       ${guests.length ? `<div class="sc-guests">${guests.slice(0, 2).map(v => guestHtml(v, o.guestInteractive !== false)).join('')}</div>` : ''}
+      ${tod === 'malam' ? '<div class="sc-night"></div>' : ''}
       <div class="sc-hearts" id="${o.heartsId || ''}"></div>
     </div>`;
 }
 function petHomeInner(stats, pet) {
   const mood = petMood(stats);
   const away = myPetAway();
-  const tip = currentTip(petTips(stats, pet));
   const f = stats.today.f;
+  const level = stats.level.level;
+  const decor = ui.decorate;
   const main = away
     ? `<div class="sc-away"><b>🐾 ${esc(pet.name)} lagi main ke rumah @${esc(socialName(away.to))}</b>
         <div class="small">Pulang paling lambat ${esc(clockText(away.at + VISIT_HOURS * 3600000))}</div>
         <button type="button" class="btn small mt-s" data-action="visitRecall">Panggil pulang</button></div>`
     : `<button type="button" class="sc-pet" id="petMain" data-action="petTap" aria-label="Elus ${esc(pet.name)}">${petSvg(pet.id, { stage: pet.stage.id, mood, label: pet.name })}</button>`;
-  return petSceneHtml({
-    title: `Rumah ${pet.name}`, main, guests: activeVisitors(), bowl: todaysBowl(),
+  const scene = petSceneHtml({
+    title: `Rumah ${pet.name}`, main, guests: activeVisitors(), bowl: todaysBowl(), home: homeView(level), decor,
     waterPct: f.t.waterMl ? f.tot.water / f.t.waterMl * 100 : 0, heartsId: 'petHearts',
-  }) + `
+  });
+  if (decor) return scene + decorPanelHtml(level);
+  const tip = currentTip(petTips(stats, pet));
+  const fresh = FURNITURE.filter(x => x.level > state.game.home.seen && x.level <= level).length;
+  return scene + `
     <div class="pet-talk">
       <div class="pet-meta"><span class="pill">${PET_MOOD_LABEL[mood]}</span><span class="pill">🌱 ${esc(pet.stage.name)}</span><span class="pill">💚 ${fmt(state.game.pet.pats)}× dielus</span></div>
       <div class="bubble" id="petBubble"><span class="who">${esc(pet.name)} · asisten kamu</span><span id="petLine">${esc(tip.text)}</span></div>
-      <div class="row wrap gap-s">${tipActionHtml(tip)}<button type="button" class="btn small" data-action="petNextTip">💡 Tips lain</button><button type="button" class="btn small" data-action="petTap">🤚 Elus</button><button type="button" class="btn small" data-action="petRename">✏️ Ganti nama</button><button type="button" class="btn small" data-action="buddyToggle" aria-pressed="${state.game.pet.float ? 'true' : 'false'}">🫧 Melayang: ${state.game.pet.float ? 'nyala' : 'mati'}</button></div>
+      <div class="row wrap gap-s">${tipActionHtml(tip)}<button type="button" class="btn small" data-action="decorStart">🛠️ Dekorasi rumah${fresh ? ` <span class="new-pill">${fresh} baru</span>` : ''}</button><button type="button" class="btn small" data-action="petNextTip">💡 Tips lain</button><button type="button" class="btn small" data-action="petTap">🤚 Elus</button><button type="button" class="btn small" data-action="petRename">✏️ Ganti nama</button><button type="button" class="btn small" data-action="buddyToggle" aria-pressed="${state.game.pet.float ? 'true' : 'false'}">🫧 Melayang: ${state.game.pet.float ? 'nyala' : 'mati'}</button></div>
       <p class="tiny muted">${state.game.pet.float ? `${esc(pet.name)} melayang dan ikut ke tab mana pun kamu pergi. Ketuk untuk tips, geser kalau menghalangi.` : `Nyalakan “Melayang” supaya ${esc(pet.name)} ikut ke semua tab.`}</p>
     </div>`;
+}
+
+// ---------- Mode dekorasi: tambah, geser, balik, ubah ukuran, simpan ke gudang ----------
+function decorPanelHtml(level) {
+  const home = state.game.home;
+  const view = homeView(level);
+  const selected = view.items.find(it => it.k === ui.decorSel);
+  const selFu = selected && FURNITURE_BY_ID[selected.id];
+  const counts = {};
+  home.items.forEach(it => {
+    counts[it.id] = (counts[it.id] || 0) + 1;
+  });
+  const selBar = selFu
+    ? `<div class="decor-sel"><span class="ds-ico">${selFu.emoji}</span><b>${esc(selFu.name)}</b>
+        <span class="row wrap gap-s" style="margin-left:auto">
+          <button type="button" class="btn small" data-action="decorFlip">↔️ Balik</button>
+          <button type="button" class="btn small" data-action="decorSize">🔍 Ukuran: ${HOME_SIZE_LABEL[selected.s]}</button>
+          <button type="button" class="btn small danger" data-action="decorRemove">📦 Simpan ke gudang</button>
+        </span></div>`
+    : '<div class="decor-sel">👆 Seret furnitur untuk memindahkan, ketuk untuk memilih. Tambah dari gudang di bawah.</div>';
+  const opts = FURNITURE.map(f => (f.level <= level
+    ? `<button type="button" class="decor-opt" data-action="decorAdd" data-id="${f.id}" title="Pasang ${esc(f.name)}"><span class="do-ico">${f.emoji}</span><span class="do-name">${esc(f.name)}</span>${counts[f.id] ? `<span class="do-count">×${counts[f.id]}</span>` : ''}${f.level > (ui.decorNewFrom == null ? home.seen : ui.decorNewFrom) && f.level > 1 ? '<span class="do-lv">✨ baru</span>' : ''}</button>`
+    : `<div class="decor-opt locked" title="Terbuka di Level ${f.level}"><span class="do-ico">${f.emoji}</span><span class="do-name">???</span><span class="do-lv">🔒 Lv ${f.level}</span></div>`)).join('');
+  const swatches = (list, kind, current) => list.map(w => {
+    const open = w.level <= level;
+    const cls = kind === 'Wall' ? `wall-${w.id}` : `floor-${w.id}`;
+    return `<button type="button" class="swatch-opt ${current === w.id ? 'active' : ''} ${open ? '' : 'locked'}" data-action="decor${kind}" data-id="${w.id}" ${current === w.id ? 'aria-pressed="true"' : ''}>
+      <span class="sw-box ${cls}"><div class="${kind === 'Wall' ? 'sc-wall' : 'sc-floor'}"></div></span><span>${open ? esc(w.name) : `🔒 Lv ${w.level}`}</span></button>`;
+  }).join('');
+  return `
+    <div class="decor-panel" id="decorPanel">
+      ${selBar}
+      <div>
+        <div class="card-head"><h3>📦 Gudang furnitur</h3><span class="pill">${view.items.length}/${HOME_MAX_ITEMS} terpasang · ${FURNITURE.filter(f => f.level <= level).length}/${FURNITURE.length} terbuka</span></div>
+        <div class="decor-grid">${opts}</div>
+      </div>
+      <div><div class="card-head"><h3>🖌️ Wallpaper</h3></div><div class="decor-swatches">${swatches(HOME_WALLS, 'Wall', view.wall)}</div></div>
+      <div><div class="card-head"><h3>🪵 Lantai</h3></div><div class="decor-swatches">${swatches(HOME_FLOORS, 'Floor', view.floor)}</div></div>
+      <div class="row wrap gap-s"><button type="button" class="btn primary" data-action="decorDone">✅ Selesai</button><button type="button" class="btn" data-action="decorReset">↩️ Atur ulang</button></div>
+      <p class="tiny muted">Furnitur baru didapat setiap naik level. Tips: geser furnitur ke atas untuk menempel di dinding; yang lebih ke bawah tampil di depan. Semua perubahan tersimpan otomatis${cloudEnabled() ? ' dan terlihat teman saat berkunjung' : ''}.</p>
+    </div>`;
+}
+function homeChanged() {
+  state.game.home.updatedAt = Date.now();
+  save();
+  renderPetHome();
+}
+function decorSelected() {
+  return state.game.home.items.find(it => it.k === ui.decorSel) || null;
+}
+let decorDrag = null;
+function decorPointerDown(e) {
+  if (!ui.decorate || (e.button !== undefined && e.button > 0)) return;
+  const el = e.target.closest('.pet-scene.decor .sc-item');
+  if (!el) return;
+  const item = state.game.home.items.find(it => it.k === el.dataset.key);
+  if (!item) return;
+  e.preventDefault();
+  decorDrag = { el, item, rect: el.closest('.pet-scene').getBoundingClientRect(), sx: e.clientX, sy: e.clientY, ox: item.x, oy: item.y, id: e.pointerId, moved: false };
+  try {
+    el.setPointerCapture(e.pointerId);
+  } catch (err) {
+    /* abaikan */
+  }
+}
+function decorPointerMove(e) {
+  const d = decorDrag;
+  if (!d || d.id !== e.pointerId) return;
+  const dx = e.clientX - d.sx;
+  const dy = e.clientY - d.sy;
+  if (!d.moved && Math.hypot(dx, dy) < 5) return;
+  if (!d.moved) {
+    d.moved = true;
+    d.el.classList.add('dragging');
+  }
+  d.item.x = clamp(d.ox + dx / d.rect.width, 0.02, 0.98);
+  d.item.y = clamp(d.oy + dy / d.rect.height, 0.1, 1);
+  d.el.style.left = `${(d.item.x * 100).toFixed(2)}%`;
+  d.el.style.top = `${(d.item.y * 100).toFixed(2)}%`;
+  d.el.style.zIndex = itemDepth(d.item.y);
+}
+function decorPointerUp(e) {
+  const d = decorDrag;
+  if (!d || d.id !== e.pointerId) return;
+  decorDrag = null;
+  d.el.classList.remove('dragging');
+  ui.decorSel = d.moved || ui.decorSel !== d.item.k ? d.item.k : null;
+  if (d.moved) homeChanged();
+  else renderPetHome();
+}
+function decorNudge(e) {
+  const item = decorSelected();
+  if (!ui.decorate || !item || ui.tab !== 'pet') return false;
+  const step = e.shiftKey ? 0.05 : 0.01;
+  const move = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
+  if (!move) return false;
+  item.x = clamp(item.x + move[0], 0.02, 0.98);
+  item.y = clamp(item.y + move[1], 0.1, 1);
+  homeChanged();
+  return true;
 }
 function adoptCardHtml(level) {
   const list = unlockedSpecies(level);
@@ -4875,14 +5133,18 @@ function buddyCelebrate(events) {
   const level = events.find(e => e.type === 'level');
   const badge = events.find(e => e.type === 'badge');
   let line = '';
+  let decorButton = '';
   if (level) {
     const L = level.info.level;
     const from = level.from || L - 1;
     const species = PET_SPECIES.find(s => s.level > from && s.level <= L);
     const stage = PET_STAGES.find(s => s.level > from && s.level <= L && s.level > 1);
+    const furniture = FURNITURE.filter(s => s.level > from && s.level <= L);
     if (stage) line = `Level ${L}! Lihat, aku tumbuh jadi ${stage.name}! 🌱✨`;
     else if (species) line = `Level ${L}! Ada pet baru: ${species.name}. Cek koleksi, ya 🐾`;
+    else if (furniture.length) line = `Level ${L}! Dapat ${furniture[0].emoji} ${furniture[0].name} buat rumah kita 🏡`;
     else line = `Yeay, Level ${L}! Aku ikut bangga 🎉`;
+    if (furniture.length && activePet()) decorButton = '<button type="button" class="btn small primary" data-action="decorOpen">🛠️ Pasang furnitur</button>';
   } else if (events.some(e => e.type === 'boss')) line = 'Boss tumbang! Kita jago banget ⚔️';
   else if (badge) line = `Lencana baru: ${badge.badge.name}! 🏅`;
   else if (events.some(e => e.type === 'perfect')) line = 'Hari sempurna! Aku bangga banget 🤩';
@@ -4891,7 +5153,7 @@ function buddyCelebrate(events) {
   clearTimeout(buddy.sayTimer);
   buddy.sayTimer = setTimeout(() => {
     buddyUpdate();
-    if (buddySay(line, { ms: 5000 })) buddyJoy(true);
+    if (buddySay(line, { ms: decorButton ? 8000 : 5000, actions: decorButton })) buddyJoy(true);
   }, 1400);
 }
 // Kalimat saat tiba di tab baru (paling sering sekali per 10 menit per tab)
@@ -5331,6 +5593,10 @@ function tabFromHash() {
 
 function setTab(tab) {
   if (!TABS.includes(tab)) tab = 'beranda';
+  if (tab !== 'pet') {
+    ui.decorate = false;
+    ui.decorSel = null;
+  }
   if (tab !== 'makanan') ui.pendingMeal = null;
   const changed = ui.tab !== tab;
   ui.tab = tab;
@@ -5527,22 +5793,21 @@ function openGameIntro() {
 function openNews() {
   const level = getStats().level.level;
   const pet = activePet(level);
+  const unlocked = FURNITURE.filter(f => f.level <= level);
   openModal(`
     <div class="welcome">
       <div class="pet-opt active" style="max-width:150px;margin:0 auto"><div class="po-art" style="width:120px;height:120px">${petSvg(pet ? pet.id : 'oyen', { stage: petStage(level).id, mood: 'bangga' })}</div></div>
-      <h2>Kenalan sama pet asistenmu!</h2>
-      <p>Sekarang kamu bisa mengadopsi <b>pet</b> yang menemani di Beranda dan ikut tumbuh setiap kamu naik level.</p>
+      <h2>Rumah pet bisa didekorasi! 🛋️</h2>
+      <p>Setiap naik level kamu dapat <b>furnitur</b> baru untuk rumah pet — dan kamu bebas menatanya.</p>
       <ul class="intro-list">
-        <li>🥚 Pet pertama: Kucing Oyen, Kelinci, atau Anak Ayam</li>
-        <li>🌱 Tumbuh dari Bayi → Remaja (Lv 4) → Dewasa (Lv 10) → Legenda (Lv 20)</li>
-        <li>🐾 ${PET_SPECIES.length} jenis pet — yang baru terbuka saat naik level, sampai Naga &amp; Garuda!</li>
-        <li>🫧 <b>Pet melayang</b> ikut ke tab mana pun kamu pergi — ketuk untuk tips, geser kalau menghalangi</li>
-        <li>💡 Jadi asisten: ingatkan minum, catat makan, jaga streak &amp; tunjukkan misi</li>
-        ${cloudEnabled() ? '<li>🌐 Tambah teman lewat username, chat, dan kirim pet main ke rumah teman sambil membawa pesan</li>' : ''}
+        <li>🛋️ ${FURNITURE.length} furnitur + wallpaper &amp; lantai, terbuka bertahap sampai Level 40 (${unlocked.length} sudah terbuka untukmu)</li>
+        <li>🛠️ Dekorasi: tambah dari gudang, geser ke mana saja, balik arah, ubah ukuran, simpan lagi</li>
+        <li>🐾 Pet asisten tumbuh mengikuti levelmu &amp; melayang ikut ke semua tab</li>
+        ${cloudEnabled() ? '<li>🌐 Teman bisa melihat rumahmu saat berkunjung</li>' : ''}
       </ul>
       <div class="modal-actions" style="justify-content:center">
         <button type="button" class="btn" data-action="newsDone">Nanti saja</button>
-        <button type="button" class="btn primary" data-action="newsGo">${pet ? `Ke rumah ${esc(pet.name)} 🐾` : 'Adopsi sekarang 🐾'}</button>
+        <button type="button" class="btn primary" data-action="newsGo">${pet ? 'Dekorasi rumah 🛠️' : 'Adopsi pet dulu 🐾'}</button>
       </div>
     </div>`, { type: 'news' });
 }
@@ -5942,6 +6207,9 @@ function mergeGame(a, b) {
     updatedAt: Math.max(pa.updatedAt || 0, pb.updatedAt || 0),
     float: newer.float !== false,
   };
+  // Rumah pet: susunan terbaru menang, furnitur yang sudah dilihat ambil yang terbanyak
+  if ((b.home.updatedAt || 0) > (a.home.updatedAt || 0)) g.home = JSON.parse(JSON.stringify(b.home));
+  g.home.seen = Math.max(a.home.seen || 1, b.home.seen || 1);
   return g;
 }
 function mergeStates(a, b) {
@@ -6855,10 +7123,10 @@ function publicFields() {
   const stats = getStats();
   return {
     name: social.me ? social.me.name : '', level: stats.level.level, streak: stats.curLogStreak,
-    badges: stats.unlockedCount, pet: petPublic(stats.level.level),
+    badges: stats.unlockedCount, pet: petPublic(stats.level.level), home: homePublic(stats.level.level),
   };
 }
-const publishSig = f => [f.name, f.level, f.streak, f.badges, f.pet.species, f.pet.name, f.pet.stage].join('|');
+const publishSig = f => [f.name, f.level, f.streak, f.badges, f.pet.species, f.pet.name, f.pet.stage, JSON.stringify(f.home || null)].join('|');
 function publishProfile(force) {
   const api = socialApi();
   if (!socialReady() || !api || !social.me) return;
@@ -7122,7 +7390,7 @@ function openFriendHome(uid) {
   openModal(`
     <div class="home-modal">
       ${modalHead(`🏠 Rumah @${esc(p.username)}`, `${p.name ? esc(p.name) + ' · ' : ''}${presenceHtml(p)}`)}
-      ${petSceneHtml({ title: sp ? `Rumah ${p.pet.name}` : `Rumah @${p.username}`, main, guests, guestInteractive: false })}
+      ${petSceneHtml({ title: sp ? `Rumah ${p.pet.name}` : `Rumah @${p.username}`, main, guests, guestInteractive: false, home: decodeHome(p.home) })}
       ${guests.length ? `<p class="small mt-s">🐾 ${esc(myPet.name)} sedang main di sini.</p>` : ''}
       <div class="stats3 mt">
         <div class="stat"><div class="l">Level</div><div class="v">${lvl.emoji} ${p.level}</div></div>
@@ -7422,6 +7690,7 @@ const actions = {
   newsGo: () => {
     closeModal();
     setTab('pet');
+    if (activePet()) actions.decorStart();
   },
   mascotTap: el => {
     ui.mascotTaps += 1;
@@ -7560,6 +7829,89 @@ const actions = {
     save();
     render();
     toast(`${petName(sp.id)} sekarang menemanimu 🐾`);
+  },
+  decorStart: () => {
+    const level = getStats().level.level;
+    ui.decorate = true;
+    ui.decorSel = null;
+    ui.decorNewFrom = state.game.home.seen;
+    if (state.game.home.seen < level) {
+      state.game.home.seen = level;
+      save();
+    }
+    renderPetHome();
+    const card = $('#petHomeCard');
+    if (card && card.scrollIntoView) card.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  },
+  decorOpen: () => {
+    if (!activePet()) return setTab('pet');
+    setTab('pet');
+    actions.decorStart();
+  },
+  decorDone: () => {
+    ui.decorate = false;
+    ui.decorSel = null;
+    renderPetHome();
+    const pet = activePet();
+    toast(`Rumah ${pet ? pet.name : 'pet'} sudah rapi ✨`);
+  },
+  decorAdd: el => {
+    const fu = FURNITURE_BY_ID[el.dataset.id];
+    if (!fu) return;
+    if (fu.level > getStats().level.level) return toast(`${fu.name} terbuka di Level ${fu.level} 🔒`);
+    const home = state.game.home;
+    if (home.items.length >= HOME_MAX_ITEMS) return toast(`Rumah sudah penuh (${HOME_MAX_ITEMS} furnitur). Simpan beberapa ke gudang dulu 📦`, 'error');
+    const onWall = fu.place === 'wall';
+    const item = {
+      k: 'h' + uid(), id: fu.id, x: r2(clamp(0.5 + (Math.random() - 0.5) * 0.6, 0.08, 0.92)),
+      y: r2(onWall ? 0.28 + Math.random() * 0.16 : 0.78 + Math.random() * 0.14), f: false, s: 1,
+    };
+    home.items.push(item);
+    ui.decorSel = item.k;
+    homeChanged();
+  },
+  decorRemove: () => {
+    const item = decorSelected();
+    if (!item) return;
+    state.game.home.items = state.game.home.items.filter(it => it.k !== item.k);
+    ui.decorSel = null;
+    homeChanged();
+    toast(`${FURNITURE_BY_ID[item.id].name} disimpan ke gudang 📦`);
+  },
+  decorFlip: () => {
+    const item = decorSelected();
+    if (!item) return;
+    item.f = !item.f;
+    homeChanged();
+  },
+  decorSize: () => {
+    const item = decorSelected();
+    if (!item) return;
+    item.s = HOME_SIZES[(HOME_SIZES.indexOf(item.s) + 1) % HOME_SIZES.length];
+    homeChanged();
+  },
+  decorWall: el => {
+    const w = HOME_WALLS.find(x => x.id === el.dataset.id);
+    if (!w) return;
+    if (w.level > getStats().level.level) return toast(`Wallpaper ${w.name} terbuka di Level ${w.level} 🔒`);
+    state.game.home.wall = w.id;
+    homeChanged();
+  },
+  decorFloor: el => {
+    const w = HOME_FLOORS.find(x => x.id === el.dataset.id);
+    if (!w) return;
+    if (w.level > getStats().level.level) return toast(`${w.name} terbuka di Level ${w.level} 🔒`);
+    state.game.home.floor = w.id;
+    homeChanged();
+  },
+  decorReset: () => {
+    if (!confirm('Kembalikan rumah ke susunan awal?\n\nSemua furnitur disimpan ke gudang, kecuali lukisan & tanaman awal. Wallpaper & lantai kembali ke bawaan.')) return;
+    const home = state.game.home;
+    home.items = DEFAULT_HOME_ITEMS.map(i => ({ ...i }));
+    home.wall = 'krem';
+    home.floor = 'kayu';
+    ui.decorSel = null;
+    homeChanged();
   },
   buddyNextTip: () => {
     ui.petTip += 1;
@@ -7813,7 +8165,7 @@ const forms = {
         if (owner && owner !== social.uid) throw Object.assign(new Error('taken'), { code: 'social/taken' });
       }
       const stats = getStats();
-      const profile = { username, name, level: stats.level.level, streak: stats.curLogStreak, badges: stats.unlockedCount, pet: petPublic(stats.level.level) };
+      const profile = { username, name, level: stats.level.level, streak: stats.curLogStreak, badges: stats.unlockedCount, pet: petPublic(stats.level.level), home: homePublic(stats.level.level) };
       await api.saveProfile(social.uid, profile, old);
       social.me = { ...(social.me || {}), uid: social.uid, ...profile, lastSeen: Date.now() };
       social.profiles[social.uid] = { ...social.me, fetchedAt: Date.now() };
@@ -8131,6 +8483,14 @@ const arcadePointer = e => {
   arcade.target = clamp((e.clientX - rect.left) / rect.width, 0, 1);
 };
 document.addEventListener('pointerdown', arcadePointer);
+document.addEventListener('pointerdown', decorPointerDown);
+document.addEventListener('pointermove', decorPointerMove);
+document.addEventListener('pointerup', decorPointerUp);
+document.addEventListener('pointercancel', decorPointerUp);
+document.addEventListener('keydown', e => {
+  if (e.target && e.target.closest && e.target.closest('input, textarea, select')) return;
+  if (decorNudge(e)) e.preventDefault();
+});
 document.addEventListener('pointermove', arcadePointer);
 window.addEventListener('online', () => {
   if (cloud.user) scheduleSync(800);

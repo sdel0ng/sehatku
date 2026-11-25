@@ -2,7 +2,7 @@
 
 **SehatKu** is a lightweight, offline calorie & health tracker that runs entirely in the browser — a single HTML file with no install, no account and no server. The interface is in Bahasa Indonesia.
 
-Current version: **1.7** (see the [Changelog](#changelog)).
+Current version: **1.8** (see the [Changelog](#changelog)).
 
 **▶️ Try it online: https://sdel0ng.github.io/sehatku/** — works on phones too. Your data stays in your own browser; nothing is ever uploaded.
 
@@ -77,6 +77,8 @@ Everything is calculated from what you already log; there is nothing extra to fi
 - **Grows with your level:** Bayi (Lv 1) → Remaja (Lv 4) → Dewasa (Lv 10, with a scarf) → Legenda (Lv 20, with a crown).
 - **15 pets, more choices as you level up:** Kucing Oyen, Kelinci and Anak Ayam at the start, then Anak Anjing (Lv 2), Hamster (4), Panda (6), Kodok (8), Penguin (10), Rubah (12), Kukang (14), Kura-kura (17), Komodo (20), Harimau Sumatra (25), Naga Antaboga (30) and Garuda Emas (40). New pets and growth stages appear on the level-reward track. Switch pets any time; each keeps its own name.
 - **🫧 Floats with you:** the pet floats over the app and follows you to whichever tab you open — it hops over to sit on the active tab (bottom bar on phones, beside the menu on wide screens), its eyes follow your finger or mouse, and it reacts when you log food, water, exercise or weight and when you level up. Tap it for a tip, drag it aside if it's in the way, or switch floating off in the Pet tab. It goes home when you open the Pet tab and disappears while you play Tangkap Sayur.
+- **🛋️ Furniture for every level:** each level-up adds furniture to the pet's house — 36 pieces from a 🪴 plant and 🖼️ painting at the start, 🛋️ sofa (Lv 5), 📺 TV (Lv 10) and 🎹 piano (Lv 15) up to ⛲ fountain (Lv 20), 🌈 rainbow (Lv 30) and 👑 crown (Lv 40) — plus 5 wallpapers and 4 floors. New items show up on the level-reward track and the pet announces them.
+- **🛠️ Decorate:** tap *Dekorasi rumah* in the Pet tab to add furniture from the storage, drag it anywhere (higher up = on the wall, lower = in front), flip it, change its size, put it back in storage, change wallpaper and floor, or reset. Up to 24 pieces; arrow keys nudge the selected piece. The room keeps the same proportions on every screen, so your layout looks the same on phone and laptop — and friends see it when they visit.
 - **Its home shows your day:** the bowl fills with the vegetables and fruit you logged, the water bowl follows your water intake, and its mood changes (senang, bangga, semangat, kangen, haus, tidur). Tap it to pet it.
 
 ## How to use
@@ -111,7 +113,7 @@ These features turn on once the maintainer connects a Firebase project (see belo
 - **Friends:** send, accept, decline or cancel requests; remove friends; block users (a blocked user can't send you requests).
 - **Chat:** one-to-one chat with friends, emoji stickers, unread markers, read receipts and live delivery while the app is open.
 - **Pet visits:** send your pet to a friend's home with a note and a small gift (🍎 🥕 🍌 …). It appears in their pet's home; they can read the note and **send it home** with a reply and a gift back. A pet can be in one home at a time and walks home by itself after 12 hours. Visits also show up in the chat.
-- **Privacy:** other users can only see your username, display name, level, streak, number of badges and your pet. Food logs, weight and other health data stay private to your account. Everything is protected by `firestore.rules`.
+- **Privacy:** other users can only see your username, display name, level, streak, number of badges, your pet and how its house is decorated. Food logs, weight and other health data stay private to your account. Everything is protected by `firestore.rules`.
 - **Limits:** no push notifications yet — new messages and visits appear while the app is open (badge on the 🐾 Pet tab and a pop-up).
 
 ### Connecting Firebase (maintainers)
@@ -150,6 +152,7 @@ To look for updates, the app downloads the small public `version.json` from GitH
 
 ## Changelog
 
+- **1.8** — 🛋️ Furniture rewards: 36 furniture pieces, 5 wallpapers and 4 floors unlock as you level up (something new on every level up to 30). New decorate mode: add, drag, flip, resize, store and reset; the pet's house keeps its proportions on every screen and is shared with friends when accounts are on.
 - **1.7** — 🫧 The pet now floats over the app and follows you between tabs: perches on the active tab, looks at your finger/mouse, announces what you log, cheers on level-ups and brings friend news. Tap for tips, drag to move it, or turn floating off in the Pet tab.
 - **1.6** — 🐾 **Pet asisten**: adopt a pet that grows with your level (15 pets, 4 growth stages), lives on the dashboard as an assistant with actionable tips, and has its own home. Prepared (switched on when accounts launch): usernames, friend search, friend requests, chat, sending your pet to visit friends with a note and gift, blocking. New 🐾 Pet tab.
 - **1.5** — Android app (APK) published on GitHub Releases: works offline, saves backups through Android's save dialog and updates itself inside the app. The website's Profil tab shows an “📱 Aplikasi Android” download card.
