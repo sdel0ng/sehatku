@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sehatku_green">#0f9d76</color>
+    <color name="sehatku_background">#f3f6f5</color>
+
+    <style name="AppTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/sehatku_green</item>
+        <item name="android:colorAccent">@color/sehatku_green</item>
+        <item name="android:statusBarColor">@color/sehatku_green</item>
+        <item name="android:windowBackground">@color/sehatku_background</item>
+    </style>
+</resources>

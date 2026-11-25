@@ -629,6 +629,7 @@ button.mascot:focus-visible { outline: 2px solid var(--primary); outline-offset:
 .cloud-chip:hover { border-color: var(--primary); }
 .cloud-chip.warn { border-color: rgba(245, 158, 11, .6); background: rgba(245, 158, 11, .12); }
 .btn:disabled { opacity: .55; cursor: default; }
+a.btn { text-decoration: none; }
 .account-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; min-width: 0; }
 .account-row b { overflow-wrap: anywhere; }
 .avatar { flex: none; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--primary); color: #fff; font-weight: 800; }
@@ -749,11 +750,13 @@ button.mascot:focus-visible { outline: 2px solid var(--primary); outline-offset:
 /* =========================================================
    KONSTANTA & DATABASE
    ========================================================= */
-const APP_VERSION = '1.4';
+const APP_VERSION = '1.5';
 const UPDATE_BASE = 'https://sdel0ng.github.io/sehatku/';  // versi online resmi + version.json
 const UPDATE_CHECK_MS = 6 * 60 * 60 * 1000;               // cek otomatis tiap 6 jam selama aplikasi terbuka
 const VERSION_KEY = 'sehatku.appVersion';                 // versi terakhir yang dibuka di browser ini
 const UPDATE_SNOOZE_KEY = 'sehatku.updateSnooze';         // "Nanti saja" → banner versi itu disembunyikan 1 hari
+const ANDROID_APK_URL = 'https://github.com/sdel0ng/sehatku/releases/latest/download/SehatKu.apk';
+const androidApp = window.AndroidApp || null;            // jembatan dari aplikasi Android (APK SehatKu)
 // Akun & sinkronisasi (Firebase). Isi dengan konfigurasi web app Firebase; null = fitur akun disembunyikan.
 const CLOUD_CONFIG = null;
 const FIREBASE_SDK = 'https://www.gstatic.com/firebasejs/11.10.0/';
@@ -3285,6 +3288,7 @@ function viewProfile() {
         <p class="tiny muted">Tersimpan: ${fmt(nDays)} hari tercatat · ${fmt(nFoods)} entri makanan · ${fmt(state.weights.length)} data berat · ${fmt(state.customFoods.length)} makanan custom.</p>
       </div>
       <div class="card" id="updateCard">${updateCardInner()}</div>
+      ${androidApp ? '' : androidCardHtml()}
       <div class="card small muted">ℹ️ SehatKu adalah alat bantu pemantauan, bukan alat diagnosis. Nilai gizi makanan &amp; kalori olahraga adalah perkiraan. Konsultasikan dengan dokter atau ahli gizi bila punya kondisi medis (diabetes, hipertensi, kehamilan, dll.).</div>
     </div>
   </div>`;
@@ -4361,6 +4365,11 @@ function copyMealFromYesterday(meal) {
   toast(`${source.length} item disalin dari kemarin ✓`);
 }
 function download(filename, content, type) {
+  if (androidApp) {
+    // Aplikasi Android: buka dialog simpan file bawaan HP
+    androidApp.saveFile(filename, String(content), type);
+    return;
+  }
   const blob = new Blob([content], { type });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -4440,8 +4449,34 @@ function parseRelease(data) {
     version: String(data.version),
     date: isDateKey(data.date) ? data.date : '',
     notes: (Array.isArray(data.notes) ? data.notes : []).slice(0, 8).map(n => String(n).slice(0, 160)),
+    apk: Number.isInteger(data.apk) && data.apk > 0 ? data.apk : 0,
   };
 }
+function androidInfo() {
+  try {
+    return JSON.parse(androidApp.info());
+  } catch (e) {
+    return {};
+  }
+}
+function apkUpdateHtml() {
+  const release = updater.latest;
+  if (!androidApp || !release || !release.apk || release.apk <= (androidInfo().code || 0)) return '';
+  return `<p class="small">📱 Versi aplikasi Android baru tersedia. <a href="${ANDROID_APK_URL}">Unduh APK terbaru</a></p>`;
+}
+function androidCardHtml() {
+  const onAndroid = /Android/i.test(navigator.userAgent);
+  return `
+    <div class="card">
+      <h3>📱 Aplikasi Android</h3>
+      <p class="small">${onAndroid ? 'Pasang SehatKu sebagai aplikasi di HP ini — buka langsung dari layar utama dan tetap jalan tanpa internet.' : 'SehatKu juga tersedia sebagai aplikasi Android (APK). Buka halaman ini di HP Android untuk memasangnya.'}</p>
+      <div class="row wrap gap-s"><a class="btn small primary" href="${ANDROID_APK_URL}">⬇️ Unduh APK</a></div>
+      <p class="tiny muted">Gratis, tanpa iklan. Saat memasang, izinkan “instal dari sumber ini”. Catatan di browser tidak otomatis pindah ke aplikasi — pindahkan lewat Export/Import backup.</p>
+    </div>`;
+}
+// Dipanggil dari aplikasi Android setelah menyimpan file / gagal mengunduh pembaruan
+window.sehatkuNotify = message => toast(String(message || ''));
+window.sehatkuUpdateFailed = () => toast('Gagal mengunduh pembaruan — coba lagi saat online', 'error');
 const updateAvailable = () => Boolean(updater.latest && compareVersions(updater.latest.version, APP_VERSION) > 0);
 
 async function checkForUpdate(manual = false) {
@@ -4506,8 +4541,9 @@ function updateCardInner() {
     : '';
   return `
     <h3>🔄 Versi aplikasi</h3>
-    <p class="small">SehatKu <b>${APP_VERSION}</b> · ${updater.hosted() ? 'versi online' : 'file di perangkat ini'}${checked}</p>
+    <p class="small">SehatKu <b>${APP_VERSION}</b> · ${androidApp ? `aplikasi Android (APK ${esc(String(androidInfo().apk || '?'))})` : updater.hosted() ? 'versi online' : 'file di perangkat ini'}${checked}</p>
     <p class="small">${statusText}</p>
+    ${apkUpdateHtml()}
     ${updater.status === 'available' ? updateNotesHtml(release) : ''}
     <div class="row wrap gap-s">
       <button type="button" class="btn small" data-action="checkUpdate" ${updater.status === 'checking' ? 'disabled' : ''}>Cek pembaruan</button>
@@ -4523,6 +4559,12 @@ function refreshUpdateUi() {
 function applyUpdate() {
   const release = updater.latest;
   if (!release) return;
+  if (androidApp) {
+    // Aplikasi Android: unduh SehatKu.html terbaru di dalam aplikasi, lalu muat ulang
+    toast('Mengunduh pembaruan…');
+    androidApp.downloadUpdate(`${UPDATE_BASE}SehatKu.html?v=${encodeURIComponent(release.version)}`, release.version);
+    return;
+  }
   if (updater.hosted()) {
     // Versi online: muat ulang dari server dengan alamat baru supaya cache terlewati
     updater.navigate(`${location.pathname}?v=${encodeURIComponent(release.version)}${location.hash}`);
@@ -5053,7 +5095,7 @@ function accountCardInner() {
   if (!cloudEnabled()) return '';
   const u = cloud.user;
   if (!u) {
-    const local = !updater.hosted();
+    const local = !updater.hosted() || Boolean(androidApp);
     return `
       <h3>☁️ Akun &amp; sinkronisasi</h3>
       <p class="small">Masuk supaya progresmu tersimpan di akun dan bisa dilanjutkan di HP, tablet, atau laptop lain. Tanpa akun, catatan hanya ada di browser ini.</p>
@@ -5061,7 +5103,7 @@ function accountCardInner() {
         <button type="button" class="btn small primary" data-action="cloudGoogle" ${local ? 'disabled' : ''}>Masuk dengan Google</button>
         <button type="button" class="btn small" data-action="cloudEmail">✉️ Masuk / daftar dengan email</button>
       </div>
-      ${local ? `<p class="tiny warn-text">Login Google hanya bisa dari versi online: ${esc(UPDATE_BASE)}</p>` : ''}
+      ${local ? `<p class="tiny warn-text">${androidApp ? 'Di aplikasi Android, masuk pakai email.' : `Login Google hanya bisa dari versi online: ${esc(UPDATE_BASE)}`}</p>` : ''}
       ${cloud.status === 'loading' ? '<p class="tiny muted">⏳ Menyiapkan layanan akun…</p>' : ''}
       ${cloud.error ? `<p class="tiny warn-text">${esc(cloud.error)}</p>` : ''}
       <p class="tiny muted">Catatan akun disimpan di Google Firebase dan hanya bisa dibuka oleh akunmu sendiri.</p>`;
@@ -5415,7 +5457,7 @@ const actions = {
     renderUpdateBanner();
     toast('Oke, diingatkan lagi besok. Bisa diperbarui kapan saja dari tab Profil.');
   },
-  openOnline: () => window.open(UPDATE_BASE, '_blank', 'noopener'),
+  openOnline: () => (androidApp ? androidApp.openExternal(UPDATE_BASE) : window.open(UPDATE_BASE, '_blank', 'noopener')),
   downloadLatest: async el => {
     el.disabled = true;
     try {
@@ -5432,7 +5474,7 @@ const actions = {
 
   exportJson: () => {
     download(`sehatku-backup-${todayKey()}.json`, JSON.stringify(state, null, 2), 'application/json');
-    toast('Backup diunduh ✓');
+    toast(androidApp ? 'Pilih tempat menyimpan backup…' : 'Backup diunduh ✓');
   },
   importJson: () => $('#importFile').click(),
   exportCsv: () => exportCsv(),

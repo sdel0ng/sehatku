@@ -2,9 +2,11 @@
 
 **SehatKu** is a lightweight, offline calorie & health tracker that runs entirely in the browser — a single HTML file with no install, no account and no server. The interface is in Bahasa Indonesia.
 
-Current version: **1.4** (see the [Changelog](#changelog)).
+Current version: **1.5** (see the [Changelog](#changelog)).
 
 **▶️ Try it online: https://sdel0ng.github.io/sehatku/** — works on phones too. Your data stays in your own browser; nothing is ever uploaded.
+
+**📱 Android app: [download SehatKu.apk](https://github.com/sdel0ng/sehatku/releases/latest/download/SehatKu.apk)** (Android 7.0+, about 0.2 MB).
 
 ## Features
 
@@ -83,6 +85,16 @@ Everything is calculated from what you already log; there is nothing extra to fi
 
 and set its icon to `SehatKu.ico` — the app then opens in its own window.
 
+## 📱 Android app
+
+Download **[SehatKu.apk](https://github.com/sdel0ng/sehatku/releases/latest/download/SehatKu.apk)** on your phone, open it and allow *“install from this source”* when Android asks. SehatKu is not on the Play Store; the APK is signed by the SehatKu maintainer (certificate SHA-256 `0F:3C:E8:14:C2:E1:A7:28:1C:03:60:0E:37:5F:8D:6B:EA:93:BA:6C:D1:AA:93:1B:83:62:22:CD:41:37:C4:A7`).
+
+- **Works offline** from the first launch, because the whole app is inside the APK.
+- **Updates inside the app:** when a new version is published, **Perbarui** downloads it within the app, with no reinstall. If a new APK is ever needed, the app says so.
+- **Backups:** Profil → Export backup opens Android's save dialog, and Import backup opens the file picker.
+- **Separate data:** the app keeps its own records on that phone. Move them from the browser version with Export/Import backup.
+- **Sign-in:** inside the app, sign-in (when accounts launch) uses email; Google sign-in works on the website.
+
 ## Updates
 
 - **Online version:** SehatKu checks for a new version when it opens (and every few hours while it stays open). When one is published, a banner appears: tap **🔄 Perbarui** to load it. You can also check manually in **Profil → Versi aplikasi**. Updates never touch your data.
@@ -92,7 +104,8 @@ and set its icon to `SehatKu.ico` — the app then opens in its own window.
 
 1. Bump `APP_VERSION` in `SehatKu.html`.
 2. Put the same version, the date and 1–3 short notes (in Indonesian, shown to users) in `version.json`.
-3. Commit both files together to `main`. GitHub Pages publishes them within about a minute, and every open copy of the app picks up the new version on its next check.
+3. Commit both files together to `main`. GitHub Pages publishes them within about a minute, and every open copy of the app (including the Android app) picks up the new version on its next check.
+4. Only when the Android shell itself changes: bump `versionCode` in `android/app.json`, run `python android/build_apk.py`, upload `android/build/SehatKu.apk` to a new GitHub Release and set `"apk"` in `version.json` to the new `versionCode`. The build needs JDK 17, Android build-tools 34, platform 34 and the **private signing key**. The key is never in this repository, and every APK must use the same key or phones refuse the update.
 
 ## Data & privacy
 
@@ -112,6 +125,7 @@ To look for updates, the app downloads the small public `version.json` from GitH
 
 ## Changelog
 
+- **1.5** — Android app (APK) published on GitHub Releases: works offline, saves backups through Android's save dialog and updates itself inside the app. The website's Profil tab shows an “📱 Aplikasi Android” download card.
 - **1.4** — Level rewards: a treasure chest every level-up, the 36-sticker Album Stiker Nusantara (with duplicate stars), outfits for Bro Koli, six colour themes and big rewards at Level 10, 20, 30 and every 10 levels after. New arcade game **Tangkap Sayur**. Players already above Level 1 get their earlier chests straight away.
 - **1.3** — Update checker: a banner tells you when a new version is published, **Perbarui** loads it in one tap on the online version, and downloaded copies can fetch the newest file. Manual check in Profil → Versi aplikasi; a short "diperbarui ke versi …" message confirms each update.
 - **1.2.1** — Public release on GitHub Pages. New users start with neutral example values (165 cm, 65 kg) instead of personal ones; existing saved data is unchanged.
