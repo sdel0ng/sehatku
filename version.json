@@ -1,9 +1,10 @@
 {
-  "version": "1.5",
+  "version": "1.6",
   "date": "2026-11-25",
   "apk": 1,
   "notes": [
-    "📱 SehatKu sekarang ada aplikasi Android (APK)",
-    "Unduh di Profil → Aplikasi Android, atau di GitHub"
+    "🐾 Baru: pet asisten yang tumbuh mengikuti levelmu — adopsi di tab Pet",
+    "15 jenis pet terbuka bertahap, dari Kucing Oyen sampai Garuda Emas",
+    "Pet mengingatkan minum, catat makan, misi & streak di Beranda"
   ]
 }

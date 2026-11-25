@@ -1,0 +1,217 @@
+rules_version = '2';
+
+// SehatKu — aturan keamanan Cloud Firestore
+//
+// users/{uid}                       → info revisi sinkron catatan (hanya pemilik)
+// users/{uid}/chunks/{n}            → potongan data catatan JSON (hanya pemilik)
+// usernames/{username}              → { uid } — menjamin username unik (huruf kecil)
+// profiles/{uid}                    → profil publik: username, nama, level, streak, lencana, pet
+// friendships/{uidA_uidB}           → permintaan & status pertemanan (uidA < uidB)
+// chats/{uidA_uidB}/messages/{id}   → pesan chat antar teman
+// visits/{ownerUid}                 → kunjungan pet: 1 pet hanya bisa berada di 1 rumah
+// blocks/{blocker_blocked}          → daftar blokir
+//
+// Data kesehatan (makanan, berat, dll.) hanya ada di users/{uid} dan tidak pernah publik.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+    function me() {
+      return request.auth.uid;
+    }
+    function docPath(coll, id) {
+      return /databases/$(database)/documents/$(coll)/$(id);
+    }
+    function pairOf(a, b) {
+      return a < b ? a + '_' + b : b + '_' + a;
+    }
+    function inPair(pairId) {
+      return signedIn() && me() in pairId.split('_');
+    }
+    function areFriends(pairId) {
+      return exists(docPath('friendships', pairId))
+        && get(docPath('friendships', pairId)).data.status == 'accepted'
+        && me() in get(docPath('friendships', pairId)).data.members;
+    }
+    function changedKeys() {
+      return request.resource.data.diff(resource.data).affectedKeys();
+    }
+    function validUsername(name) {
+      return name is string && name.matches('^[a-z][a-z0-9_.]{2,19}$');
+    }
+    function validPet(p) {
+      return p is map
+        && p.keys().hasOnly(['species', 'name', 'stage'])
+        && p.species is string && p.species.size() <= 20
+        && p.name is string && p.name.size() <= 20
+        && p.stage is string && p.stage.size() <= 12;
+    }
+    function validGift(g) {
+      return g is string && g.size() <= 16;
+    }
+
+    // ---------- Catatan pribadi (sinkronisasi) ----------
+    match /users/{uid} {
+      allow read, write: if signedIn() && me() == uid;
+
+      match /chunks/{chunk} {
+        allow read, write: if signedIn() && me() == uid;
+      }
+    }
+
+    // ---------- Username unik ----------
+    // Dibuat/dihapus bersamaan dengan profil (batch), jadi tidak bisa "menimbun" username.
+    match /usernames/{name} {
+      allow get: if signedIn();
+      allow create: if signedIn()
+        && validUsername(name)
+        && request.resource.data.keys().hasOnly(['uid'])
+        && request.resource.data.uid == me()
+        && getAfter(docPath('profiles', me())).data.username == name;
+      allow delete: if signedIn()
+        && resource.data.uid == me()
+        && (!existsAfter(docPath('profiles', me()))
+            || getAfter(docPath('profiles', me())).data.username != name);
+    }
+
+    // ---------- Profil publik ----------
+    function validProfile(d) {
+      return d.keys().hasOnly(['username', 'name', 'level', 'streak', 'badges', 'pet', 'lastSeen', 'updatedAt'])
+        && validUsername(d.username)
+        && d.name is string && d.name.size() <= 30
+        && d.level is int && d.level >= 1 && d.level <= 9999
+        && d.streak is int && d.streak >= 0 && d.streak <= 100000
+        && d.badges is int && d.badges >= 0 && d.badges <= 1000
+        && validPet(d.pet)
+        && d.lastSeen is timestamp
+        && d.updatedAt is timestamp;
+    }
+    match /profiles/{uid} {
+      allow get: if signedIn();
+      allow list: if signedIn() && request.query.limit <= 20;
+      allow create, update: if signedIn() && me() == uid
+        && validProfile(request.resource.data)
+        && getAfter(docPath('usernames', request.resource.data.username)).data.uid == uid;
+      allow delete: if signedIn() && me() == uid;
+    }
+
+    // ---------- Pertemanan ----------
+    function validRequest(pairId, d) {
+      return d.keys().hasOnly(['members', 'from', 'to', 'status', 'createdAt', 'read'])
+        && d.from == me()
+        && d.to is string && d.to != me()
+        && pairId == pairOf(d.from, d.to)
+        && d.members == pairId.split('_')
+        && d.status == 'pending'
+        && d.createdAt == request.time
+        && d.read is map && d.read.size() == 0
+        && exists(docPath('profiles', me()))
+        && exists(docPath('profiles', d.to))
+        && !exists(docPath('blocks', d.to + '_' + me()))
+        && !exists(docPath('blocks', me() + '_' + d.to));
+    }
+    function isAccept() {
+      return resource.data.status == 'pending'
+        && me() == resource.data.to
+        && changedKeys().hasOnly(['status', 'acceptedAt'])
+        && request.resource.data.status == 'accepted'
+        && request.resource.data.acceptedAt == request.time;
+    }
+    function isLastMessage() {
+      let m = request.resource.data.lastMsg;
+      return resource.data.status == 'accepted'
+        && changedKeys().hasOnly(['lastMsg', 'lastAt'])
+        && request.resource.data.lastAt == request.time
+        && m is map && m.keys().hasOnly(['from', 'text', 'kind'])
+        && m.from == me()
+        && m.text is string && m.text.size() <= 120
+        && m.kind is string && m.kind.size() <= 10;
+    }
+    function isReadMark() {
+      return changedKeys().hasOnly(['read'])
+        && request.resource.data.read.diff(resource.data.read).affectedKeys().hasOnly([me()])
+        && request.resource.data.read[me()] == request.time;
+    }
+    match /friendships/{pairId} {
+      allow get: if inPair(pairId);
+      allow list: if signedIn() && me() in resource.data.members;
+      allow create: if signedIn() && validRequest(pairId, request.resource.data);
+      allow update: if signedIn() && me() in resource.data.members
+        && (isAccept() || isLastMessage() || isReadMark());
+      allow delete: if signedIn() && me() in resource.data.members;
+    }
+
+    // ---------- Chat antar teman ----------
+    function validMessage(m) {
+      return m.keys().hasOnly(['from', 'text', 'kind', 'at', 'pet', 'gift'])
+        && m.from == me()
+        && m.at == request.time
+        && m.kind in ['text', 'sticker', 'visit', 'return']
+        && m.text is string && m.text.size() <= 500
+        && (!('pet' in m) || validPet(m.pet))
+        && (!('gift' in m) || validGift(m.gift));
+    }
+    match /chats/{pairId}/messages/{msgId} {
+      allow read: if inPair(pairId);
+      allow create: if inPair(pairId) && validMessage(request.resource.data) && areFriends(pairId);
+      allow delete: if inPair(pairId);
+    }
+
+    // ---------- Kunjungan pet ----------
+    function validVisit(ownerId, v) {
+      return v.keys().hasOnly(['from', 'to', 'pairId', 'pet', 'note', 'gift', 'at', 'status', 'reply', 'replyGift', 'returnedAt'])
+        && v.from == ownerId
+        && v.to is string && v.to != ownerId
+        && v.pairId == pairOf(ownerId, v.to)
+        && validPet(v.pet) && v.pet.species.size() > 0
+        && v.note is string && v.note.size() <= 200
+        && validGift(v.gift)
+        && v.at == request.time
+        && v.status == 'visiting'
+        && v.reply == '' && v.replyGift == '' && v.returnedAt == null
+        && areFriends(v.pairId);
+    }
+    function isRecall() {
+      return resource.data.status == 'visiting'
+        && changedKeys().hasOnly(['status', 'returnedAt'])
+        && request.resource.data.status == 'home'
+        && request.resource.data.returnedAt == request.time;
+    }
+    function isSendHome() {
+      let d = request.resource.data;
+      return resource.data.status == 'visiting'
+        && changedKeys().hasOnly(['status', 'reply', 'replyGift', 'returnedAt'])
+        && d.status == 'home'
+        && d.returnedAt == request.time
+        && d.reply is string && d.reply.size() <= 200
+        && validGift(d.replyGift);
+    }
+    match /visits/{ownerId} {
+      allow get: if signedIn() && (me() == ownerId || me() == resource.data.to);
+      allow list: if signedIn() && resource.data.to == me();
+      allow create: if signedIn() && me() == ownerId && validVisit(ownerId, request.resource.data);
+      allow update: if signedIn() && (
+        (me() == ownerId
+          && (resource.data.status == 'home' || resource.data.at < request.time - duration.value(12, 'h'))
+          && validVisit(ownerId, request.resource.data))
+        || (me() == ownerId && isRecall())
+        || (me() == resource.data.to && isSendHome())
+      );
+      allow delete: if signedIn() && me() == ownerId;
+    }
+
+    // ---------- Blokir ----------
+    match /blocks/{blockId} {
+      allow read: if signedIn() && resource.data.blocker == me();
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['blocker', 'blocked', 'at'])
+        && request.resource.data.blocker == me()
+        && request.resource.data.blocked is string && request.resource.data.blocked != me()
+        && blockId == me() + '_' + request.resource.data.blocked
+        && request.resource.data.at == request.time;
+      allow delete: if signedIn() && resource.data.blocker == me();
+    }
+  }
+}

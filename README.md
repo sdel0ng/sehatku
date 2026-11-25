@@ -2,7 +2,7 @@
 
 **SehatKu** is a lightweight, offline calorie & health tracker that runs entirely in the browser — a single HTML file with no install, no account and no server. The interface is in Bahasa Indonesia.
 
-Current version: **1.5** (see the [Changelog](#changelog)).
+Current version: **1.6** (see the [Changelog](#changelog)).
 
 **▶️ Try it online: https://sdel0ng.github.io/sehatku/** — works on phones too. Your data stays in your own browser; nothing is ever uploaded.
 
@@ -71,6 +71,13 @@ Everything is calculated from what you already log; there is nothing extra to fi
 
 \* The budget includes exercise credit. A day counts once breakfast, lunch and dinner are logged, or once the day is over.
 
+### Pet asisten (v1.6)
+
+- **Adopt a pet** in the new 🐾 **Pet** tab. It lives on the dashboard as your assistant: it reminds you to log meals and drink water (with a one-tap **+1 gelas**), protects your streak, points to unfinished missions, unopened chests and the weekly boss, and suggests a walk when you go over budget.
+- **Grows with your level:** Bayi (Lv 1) → Remaja (Lv 4) → Dewasa (Lv 10, with a scarf) → Legenda (Lv 20, with a crown).
+- **15 pets, more choices as you level up:** Kucing Oyen, Kelinci and Anak Ayam at the start, then Anak Anjing (Lv 2), Hamster (4), Panda (6), Kodok (8), Penguin (10), Rubah (12), Kukang (14), Kura-kura (17), Komodo (20), Harimau Sumatra (25), Naga Antaboga (30) and Garuda Emas (40). New pets and growth stages appear on the level-reward track. Switch pets any time; each keeps its own name.
+- **Its home shows your day:** the bowl fills with the vegetables and fruit you logged, the water bowl follows your water intake, and its mood changes (senang, bangga, semangat, kangen, haus, tidur). Tap it to pet it.
+
 ## How to use
 
 1. Open the [online version](https://sdel0ng.github.io/sehatku/), **or** download `SehatKu.html` (and `SehatKu.ico` if you want a desktop shortcut icon) and open it in Microsoft Edge or Google Chrome.
@@ -95,6 +102,23 @@ Download **[SehatKu.apk](https://github.com/sdel0ng/sehatku/releases/latest/down
 - **Separate data:** the app keeps its own records on that phone. Move them from the browser version with Export/Import backup.
 - **Sign-in:** inside the app, sign-in (when accounts launch) uses email; Google sign-in works on the website.
 
+## 🌐 Friends, chat & pet visits (needs an account)
+
+These features turn on once the maintainer connects a Firebase project (see below); until then the Pet tab works fully offline without them.
+
+- **Username & search:** pick a unique username (3–20 characters: a–z, 0–9, `.` or `_`) and find friends by typing part of theirs.
+- **Friends:** send, accept, decline or cancel requests; remove friends; block users (a blocked user can't send you requests).
+- **Chat:** one-to-one chat with friends, emoji stickers, unread markers, read receipts and live delivery while the app is open.
+- **Pet visits:** send your pet to a friend's home with a note and a small gift (🍎 🥕 🍌 …). It appears in their pet's home; they can read the note and **send it home** with a reply and a gift back. A pet can be in one home at a time and walks home by itself after 12 hours. Visits also show up in the chat.
+- **Privacy:** other users can only see your username, display name, level, streak, number of badges and your pet. Food logs, weight and other health data stay private to your account. Everything is protected by `firestore.rules`.
+- **Limits:** no push notifications yet — new messages and visits appear while the app is open (badge on the 🐾 Pet tab and a pop-up).
+
+### Connecting Firebase (maintainers)
+
+1. Create a Firebase project and enable **Authentication → Email/Password** (and Google for the website). Add `sdel0ng.github.io` under authorized domains.
+2. Create a **Cloud Firestore** database (production mode) and publish the rules from [`firestore.rules`](firestore.rules).
+3. Register a Web app and paste its config object into `const CLOUD_CONFIG = …` in `SehatKu.html`, then publish a new version.
+
 ## Updates
 
 - **Online version:** SehatKu checks for a new version when it opens (and every few hours while it stays open). When one is published, a banner appears: tap **🔄 Perbarui** to load it. You can also check manually in **Profil → Versi aplikasi**. Updates never touch your data.
@@ -109,7 +133,7 @@ Download **[SehatKu.apk](https://github.com/sdel0ng/sehatku/releases/latest/down
 
 ## Data & privacy
 
-All data, including XP, badges and settings, is stored locally in the browser's `localStorage`; nothing is sent anywhere. Data belongs to that browser profile only, and clearing browser data deletes it, so use **Export backup** (Profil tab) regularly. Backups include game progress. Older v1.0 backups can still be restored; levels and badges are recalculated from the logs.
+All data, including XP, badges, your pet and settings, is stored locally in the browser's `localStorage`; nothing is sent anywhere unless you sign in to an account (when accounts are enabled), which syncs your records privately to your own Firebase account. Data belongs to that browser profile only, and clearing browser data deletes it, so use **Export backup** (Profil tab) regularly. Backups include game progress. Older v1.0 backups can still be restored; levels and badges are recalculated from the logs.
 
 The online version and a downloaded copy keep **separate** data (each browser/site has its own storage). To move your history, use **Export backup** in one and **Import backup** in the other.
 
@@ -125,6 +149,7 @@ To look for updates, the app downloads the small public `version.json` from GitH
 
 ## Changelog
 
+- **1.6** — 🐾 **Pet asisten**: adopt a pet that grows with your level (15 pets, 4 growth stages), lives on the dashboard as an assistant with actionable tips, and has its own home. Prepared (switched on when accounts launch): usernames, friend search, friend requests, chat, sending your pet to visit friends with a note and gift, blocking. New 🐾 Pet tab.
 - **1.5** — Android app (APK) published on GitHub Releases: works offline, saves backups through Android's save dialog and updates itself inside the app. The website's Profil tab shows an “📱 Aplikasi Android” download card.
 - **1.4** — Level rewards: a treasure chest every level-up, the 36-sticker Album Stiker Nusantara (with duplicate stars), outfits for Bro Koli, six colour themes and big rewards at Level 10, 20, 30 and every 10 levels after. New arcade game **Tangkap Sayur**. Players already above Level 1 get their earlier chests straight away.
 - **1.3** — Update checker: a banner tells you when a new version is published, **Perbarui** loads it in one tap on the online version, and downloaded copies can fetch the newest file. Manual check in Profil → Versi aplikasi; a short "diperbarui ke versi …" message confirms each update.
