@@ -2,7 +2,7 @@
 
 **SehatKu** is a lightweight, offline calorie & health tracker that runs entirely in the browser — a single HTML file with no install, no account and no server. The interface is in Bahasa Indonesia.
 
-Current version: **1.3** (see the [Changelog](#changelog)).
+Current version: **1.4** (see the [Changelog](#changelog)).
 
 **▶️ Try it online: https://sdel0ng.github.io/sehatku/** — works on phones too. Your data stays in your own browser; nothing is ever uploaded.
 
@@ -13,8 +13,8 @@ Current version: **1.3** (see the [Changelog](#changelog)).
 - **Aktivitas (exercise)** — 20 activities; calories from MET × body weight × duration; weekly active minutes vs. the WHO 150-minute guideline.
 - **Berat (weight)** — weight & waist log, trend chart, kg/week trend, estimated goal date, BMI per Kemenkes RI, WHO Asia-Pacific or WHO.
 - **Statistik** — 7/14/30-day averages, days on target, estimated deficit, macro split and top calorie sources.
-- **Prestasi (achievements)** — level & XP, streaks, daily missions, a 12-week calendar heatmap and 30 badges with progress.
-- **Seru (fun)** — weekly boss battle, the Tebak Kalori quiz, the Peta Nusantara journey map, Bro Koli's joke corner and "Statistik Kocak" (see below).
+- **Prestasi (achievements)** — level & XP, 🎁 level rewards (treasure chests, a 36-sticker album, outfits for Bro Koli and colour themes), streaks, daily missions, a 12-week calendar heatmap and 30 badges with progress.
+- **Seru (fun)** — the Tangkap Sayur arcade game, weekly boss battle, the Tebak Kalori quiz, the Peta Nusantara journey map, Bro Koli's joke corner and "Statistik Kocak" (see below).
 - **Profil** — personal data and targets, JSON backup/restore and CSV export for Excel.
 
 ## Gamification
@@ -31,11 +31,23 @@ Everything is calculated from what you already log; there is nothing extra to fi
 
 ### Seru tab (v1.2)
 
+- **🕹️ Tangkap Sayur** (v1.4) — move Bro Koli to catch falling veggies, fruit and fish, grab ⭐ bonuses and dodge gorengan, donuts and sweet drinks (three hits and it's over). Five catches in a row give a ×2 combo, ten give ×3. Every 50 points = 1 XP, up to 20 XP per day.
 - **👹 Boss Mingguan** — a new villain every Monday: Raja Gorengan, Ratu Gula, Si Mager, Hantu Begadang, Naga Boba, Tuyul Ngemil, Monster Micin and Genderuwo Porsi Jumbo (550–650 HP). Each healthy habit you log is an attack. Logging food 10, three main meals 15, calories on target 30, protein 20, water 20, exercise 15 (+15 if ≥ 30 min), steps 20, sleep 15, vegetables 10, fruit 10, no fried food 15 and no sugary drinks 15. Each boss has two weaknesses that deal double damage. Beat it before Sunday midnight for +100 XP and a trophy.
 - **🧠 Tebak Kalori** — "which has more (or fewer) calories?" with two foods from the database. Pairs get closer as your streak grows. Each correct answer gives +2 XP, up to 20 XP per day.
 - **🗺️ Peta Nusantara** — progress toward your goal weight is a trip through 16 cities from Sabang to Merauke, with a celebration at every new city. In maintain mode the trip advances with days logged instead (90 days = Merauke).
 - **😂 Pojok Bro Koli** — pantun, riddles (*tebak-tebakan*) and cheesy health pick-up lines; tapping Bro Koli on the dashboard tells one too.
 - **📈 Statistik Kocak** — lifetime totals in fun units: water in refill gallons, steps in football pitches, exercise calories in pisang goreng, sleep in movies and kg in 1 kg sugar packs.
+
+### Level rewards (v1.4)
+
+- **Every level-up:** a 🎁 *Peti Harta* (treasure chest). Opening it gives a sticker for the **Album Stiker Nusantara**: 36 stickers of Indonesian food, animals, places and legends in four rarities (Biasa 60 %, Langka 28 %, Epik 10 %, Legendaris 2 %). Duplicates turn into ⭐ stars; 5 stars buy a new sticker. A chest's content is fixed by its number, so it's the same on every device.
+- **Unlocks along the way:** outfits for Bro Koli (🧢 Lv 3, 🎀 Lv 5, 👒 Lv 7, ⛑️ Lv 13, 🌺 Lv 15, 🎓 Lv 25) and colour themes (Laut Biru Lv 5, Malam Galaksi Lv 15).
+- **Big rewards:**
+  - **Lv 10:** Senja Bali theme, 🎩 Topi Tinggi and a *Peti Emas* (Epik or better).
+  - **Lv 20:** 👑 Mahkota Sultan, Emas Keraton theme and a *Peti Legendaris*.
+  - **Lv 30:** 🌟 Bintang Legenda, Kembang Sepatu theme and a *Peti Legendaris*.
+  - **Every 10 levels after that:** a new trophy plus a *Peti Legendaris*.
+- Existing players receive the chests for every level they had already reached.
 
 | Earn XP for | XP |
 |---|---|
@@ -51,6 +63,7 @@ Everything is calculated from what you already log; there is nothing extra to fi
 | All missions completed (Hari Sempurna) | +20 |
 | Correct answer in Tebak Kalori (max. 20 XP/day) | 2 |
 | Defeating the weekly boss | 100 |
+| Tangkap Sayur: every 50 points (max. 20 XP/day) | 1 |
 | Weigh-in (max. once per week) | 15 |
 | Each badge unlocked | 50 |
 
@@ -99,6 +112,7 @@ To look for updates, the app downloads the small public `version.json` from GitH
 
 ## Changelog
 
+- **1.4** — Level rewards: a treasure chest every level-up, the 36-sticker Album Stiker Nusantara (with duplicate stars), outfits for Bro Koli, six colour themes and big rewards at Level 10, 20, 30 and every 10 levels after. New arcade game **Tangkap Sayur**. Players already above Level 1 get their earlier chests straight away.
 - **1.3** — Update checker: a banner tells you when a new version is published, **Perbarui** loads it in one tap on the online version, and downloaded copies can fetch the newest file. Manual check in Profil → Versi aplikasi; a short "diperbarui ke versi …" message confirms each update.
 - **1.2.1** — Public release on GitHub Pages. New users start with neutral example values (165 cm, 65 kg) instead of personal ones; existing saved data is unchanged.
 - **1.2** — New **Seru** tab: weekly boss battle, Tebak Kalori quiz, Peta Nusantara journey map, joke corner and Statistik Kocak. Tap Bro Koli for a joke, boss HP on the dashboard, food emoji in the food log and 5 new badges (30 total). Existing data is kept; bosses already beaten in earlier weeks and your current city are filled in quietly from your logs, and a one-time popup introduces the new tab.
