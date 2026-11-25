@@ -2,7 +2,7 @@
 
 **SehatKu** is a lightweight, offline calorie & health tracker that runs entirely in the browser — a single HTML file with no install, no account and no server. The interface is in Bahasa Indonesia.
 
-Current version: **1.6** (see the [Changelog](#changelog)).
+Current version: **1.7** (see the [Changelog](#changelog)).
 
 **▶️ Try it online: https://sdel0ng.github.io/sehatku/** — works on phones too. Your data stays in your own browser; nothing is ever uploaded.
 
@@ -76,6 +76,7 @@ Everything is calculated from what you already log; there is nothing extra to fi
 - **Adopt a pet** in the new 🐾 **Pet** tab. It lives on the dashboard as your assistant: it reminds you to log meals and drink water (with a one-tap **+1 gelas**), protects your streak, points to unfinished missions, unopened chests and the weekly boss, and suggests a walk when you go over budget.
 - **Grows with your level:** Bayi (Lv 1) → Remaja (Lv 4) → Dewasa (Lv 10, with a scarf) → Legenda (Lv 20, with a crown).
 - **15 pets, more choices as you level up:** Kucing Oyen, Kelinci and Anak Ayam at the start, then Anak Anjing (Lv 2), Hamster (4), Panda (6), Kodok (8), Penguin (10), Rubah (12), Kukang (14), Kura-kura (17), Komodo (20), Harimau Sumatra (25), Naga Antaboga (30) and Garuda Emas (40). New pets and growth stages appear on the level-reward track. Switch pets any time; each keeps its own name.
+- **🫧 Floats with you:** the pet floats over the app and follows you to whichever tab you open — it hops over to sit on the active tab (bottom bar on phones, beside the menu on wide screens), its eyes follow your finger or mouse, and it reacts when you log food, water, exercise or weight and when you level up. Tap it for a tip, drag it aside if it's in the way, or switch floating off in the Pet tab. It goes home when you open the Pet tab and disappears while you play Tangkap Sayur.
 - **Its home shows your day:** the bowl fills with the vegetables and fruit you logged, the water bowl follows your water intake, and its mood changes (senang, bangga, semangat, kangen, haus, tidur). Tap it to pet it.
 
 ## How to use
@@ -149,6 +150,7 @@ To look for updates, the app downloads the small public `version.json` from GitH
 
 ## Changelog
 
+- **1.7** — 🫧 The pet now floats over the app and follows you between tabs: perches on the active tab, looks at your finger/mouse, announces what you log, cheers on level-ups and brings friend news. Tap for tips, drag to move it, or turn floating off in the Pet tab.
 - **1.6** — 🐾 **Pet asisten**: adopt a pet that grows with your level (15 pets, 4 growth stages), lives on the dashboard as an assistant with actionable tips, and has its own home. Prepared (switched on when accounts launch): usernames, friend search, friend requests, chat, sending your pet to visit friends with a note and gift, blocking. New 🐾 Pet tab.
 - **1.5** — Android app (APK) published on GitHub Releases: works offline, saves backups through Android's save dialog and updates itself inside the app. The website's Profil tab shows an “📱 Aplikasi Android” download card.
 - **1.4** — Level rewards: a treasure chest every level-up, the 36-sticker Album Stiker Nusantara (with duplicate stars), outfits for Bro Koli, six colour themes and big rewards at Level 10, 20, 30 and every 10 levels after. New arcade game **Tangkap Sayur**. Players already above Level 1 get their earlier chests straight away.

@@ -1,10 +1,10 @@
 {
-  "version": "1.6",
+  "version": "1.7",
   "date": "2026-11-25",
   "apk": 1,
   "notes": [
-    "🐾 Baru: pet asisten yang tumbuh mengikuti levelmu — adopsi di tab Pet",
-    "15 jenis pet terbuka bertahap, dari Kucing Oyen sampai Garuda Emas",
-    "Pet mengingatkan minum, catat makan, misi & streak di Beranda"
+    "🫧 Pet sekarang melayang & ikut ke tab mana pun kamu pergi",
+    "Ketuk pet untuk tips, geser kalau menghalangi, matikan di tab Pet",
+    "Pet ikut bereaksi saat kamu catat makan, minum, olahraga & naik level"
   ]
 }

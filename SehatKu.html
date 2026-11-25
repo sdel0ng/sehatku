@@ -813,6 +813,51 @@ button.pet-strip { cursor: pointer; }
   .pet-svg *, .pet-strip .ps-egg, .pet-scene .sc-mail, .pet-scene .sc-heart { animation: none !important; }
 }
 
+
+/* ---------- Pet melayang (ikut ke semua tab) ---------- */
+.pet-buddy {
+  position: fixed; left: 0; top: 0; z-index: 50; width: 64px; height: 64px;
+  transform: translate3d(-200px, -200px, 0); transition: transform .9s cubic-bezier(.45, .05, .25, 1); will-change: transform;
+}
+.pet-buddy.no-anim, .pet-buddy.dragging { transition: none; }
+.pet-buddy .pb-pet {
+  position: absolute; inset: 0; padding: 0; border: 0; background: none; cursor: grab; touch-action: none;
+  filter: drop-shadow(0 5px 6px rgba(0, 0, 0, .18)); -webkit-tap-highlight-color: transparent;
+}
+.pet-buddy .pb-pet:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 18px; }
+.pet-buddy.dragging .pb-pet { cursor: grabbing; }
+.pet-buddy .pb-flip { display: block; width: 100%; height: 100%; transition: transform .25s; }
+.pet-buddy.face-left .pb-flip { transform: scaleX(-1); }
+.pet-buddy .pb-hop { display: block; width: 100%; height: 100%; animation: buddyFloat 3.2s ease-in-out infinite; }
+.pet-buddy.walking .pb-hop { animation: buddyHop .3s ease-in-out infinite; }
+.pet-buddy.joy .pb-hop { animation: buddyJoy .7s cubic-bezier(.3, 1.6, .5, 1); }
+.pet-buddy.dragging .pb-hop { animation: none; transform: scale(1.1) rotate(-8deg); }
+.pet-buddy .pb-egg { display: grid; place-items: center; width: 100%; height: 100%; font-size: 42px; animation: eggWobble 2.4s ease-in-out infinite; }
+.pet-buddy .pet-look { transform: translate(var(--lx, 0px), var(--ly, 0px)); transition: transform .2s ease-out; }
+.pet-buddy .pb-bubble {
+  position: absolute; bottom: calc(100% + 6px); left: var(--bx, -70px); width: max-content; max-width: min(250px, calc(100vw - 16px));
+  padding: 9px 12px; border-radius: 14px; background: var(--card); color: var(--text); border: 1px solid var(--line);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .18); font-size: 13px; line-height: 1.4; animation: pop .25s ease-out;
+}
+.pet-buddy .pb-bubble::after {
+  content: ""; position: absolute; top: 100%; left: var(--ax, 50%); margin-left: -7px;
+  border: 7px solid transparent; border-top-color: var(--card);
+}
+.pet-buddy .pb-bubble .who { display: block; font-size: 11px; font-weight: 800; color: var(--primary); }
+.pet-buddy .pb-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+.pet-buddy .pb-actions .btn { height: 30px; padding: 0 10px; font-size: 12px; }
+.pet-buddy.side .pb-bubble { bottom: auto; top: 50%; left: calc(100% + 10px); transform: translateY(-50%); animation: none; }
+.pet-buddy.side .pb-bubble::after { top: 50%; left: auto; right: 100%; margin: -7px 0 0; border-top-color: transparent; border-right-color: var(--card); }
+.pet-buddy .pb-heart { position: absolute; top: 4px; font-size: 16px; animation: heartUp 1s ease-out forwards; pointer-events: none; }
+@keyframes buddyFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes buddyHop { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-9px) rotate(3deg); } }
+@keyframes buddyJoy { 0% { transform: translateY(0) scale(1); } 40% { transform: translateY(-18px) scale(1.12); } 100% { transform: translateY(0) scale(1); } }
+@keyframes eggWobble { 0%, 70%, 100% { transform: rotate(0); } 78% { transform: rotate(-12deg); } 86% { transform: rotate(10deg); } 94% { transform: rotate(-5deg); } }
+.ps-tipicon { display: grid; place-items: center; width: 100%; height: 100%; font-size: 36px; border-radius: 18px; background: var(--primary-soft); }
+@media (prefers-reduced-motion: reduce) {
+  .pet-buddy, .pet-buddy * { animation: none !important; transition: none !important; }
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1080px) {
   .grid.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -832,6 +877,9 @@ button.pet-strip { cursor: pointer; }
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .tab .ico { width: auto; }
+  .pet-buddy { width: 56px; height: 56px; }
+  .pet-buddy .pb-egg { font-size: 36px; }
+  body.buddy-on .shell { padding-bottom: calc(132px + env(safe-area-inset-bottom)); }
   .tab-badge { position: absolute; top: 1px; left: 50%; margin-left: 4px; min-width: 17px; height: 17px; padding: 0 4px; font-size: 10px; line-height: 17px; }
   .pet-scene { height: 250px; }
   .pet-scene .sc-pet { width: 160px; height: 160px; margin-left: -80px; }
@@ -918,6 +966,10 @@ button.pet-strip { cursor: pointer; }
 <div id="modal" class="modal" hidden><div class="modal-card" id="modalCard" role="dialog" aria-modal="true"></div></div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <div id="celebrate" class="celebrate" hidden></div>
+<div id="petBuddy" class="pet-buddy" hidden>
+  <div class="pb-bubble" id="buddyBubble" role="status" aria-live="polite" hidden></div>
+  <button type="button" class="pb-pet" id="buddyPet" aria-label="Pet asisten — ketuk untuk tips, geser untuk memindahkan"><span class="pb-flip"><span class="pb-hop" id="buddyArt"></span></span></button>
+</div>
 <input type="file" id="importFile" accept=".json,application/json" hidden data-change="importFile">
 
 <script>
@@ -927,7 +979,7 @@ button.pet-strip { cursor: pointer; }
 /* =========================================================
    KONSTANTA & DATABASE
    ========================================================= */
-const APP_VERSION = '1.6';
+const APP_VERSION = '1.7';
 const UPDATE_BASE = 'https://sdel0ng.github.io/sehatku/';  // versi online resmi + version.json
 const UPDATE_CHECK_MS = 6 * 60 * 60 * 1000;               // cek otomatis tiap 6 jam selama aplikasi terbuka
 const VERSION_KEY = 'sehatku.appVersion';                 // versi terakhir yang dibuka di browser ini
@@ -1364,7 +1416,7 @@ const EQUIVALENTS = [
 ];
 
 /* ---------- Seru: boss mingguan, Tebak Kalori, Peta Nusantara, lelucon ---------- */
-const NEWS_VERSION = '1.6';        // pengumuman fitur baru tampil sekali per versi
+const NEWS_VERSION = '1.7';        // pengumuman fitur baru tampil sekali per versi
 const BOSS_EPOCH = '2024-01-01';   // hari Senin; boss berganti tiap minggu dihitung dari tanggal ini
 const TRIP_DAYS = 90;              // mode jaga berat: 90 hari mencatat = sampai Merauke
 
@@ -1824,7 +1876,7 @@ const newDay = () => ({ foods: [], exercises: [], waterMl: 0, steps: null, sleep
 const newQuiz = () => ({ best: 0, played: 0, correct: 0, xp: 0, day: '', dayXp: 0 });
 const newRewards = () => ({ opened: 0, stickers: {}, stars: 0, redeemed: 0, outfit: '', theme: 'hijau' });
 const newArcade = () => ({ best: 0, played: 0, xp: 0, day: '', dayXp: 0 });
-const newPet = () => ({ species: '', names: {}, adopted: '', pats: 0, updatedAt: 0 });
+const newPet = () => ({ species: '', names: {}, adopted: '', pats: 0, updatedAt: 0, float: true });
 const newGame = (introSeen = true) => ({
   unlocked: {}, level: 1, perfect: {}, sound: false, introSeen,
   news: introSeen ? NEWS_VERSION : '', quiz: newQuiz(), bosses: {}, trip: { key: '', stop: 0 },
@@ -1944,6 +1996,7 @@ function normalizeGame(g) {
     game.pet.adopted = isDateKey(p.adopted) ? p.adopted : '';
     game.pet.pats = whole(p.pats);
     game.pet.updatedAt = Number(p.updatedAt) > 0 ? Number(p.updatedAt) : 0;
+    game.pet.float = p.float !== false;
   }
   return game;
 }
@@ -2731,6 +2784,7 @@ function celebrate(events) {
   }
   celebrationQueue.push(...items);
   if (!celebrating) nextCelebration();
+  buddyCelebrate(events);
 }
 function nextCelebration() {
   const box = $('#celebrate');
@@ -4248,7 +4302,7 @@ const PET_ART = (() => {
       ? sp.eyes.map(([x, y], i) => line(i ? `M${x + 5} ${y - 9} L${x - 4} ${y - 12}` : `M${x - 5} ${y - 9} L${x + 4} ${y - 12}`, OL, 2.2)).join('')
       : '';
     const blink = kind === 'dot' || kind === 'big' || kind === 'panda';
-    return `<g class="${blink ? 'pet-eyes' : ''}">${out}</g>${brows}`;
+    return `<g class="pet-look"><g class="${blink ? 'pet-eyes' : ''}">${out}</g></g>${brows}`;
   }
 
   function mouthSvg(sp, mood) {
@@ -4474,7 +4528,7 @@ function petStripHtml(stats) {
   const count = socialBadgeCount();
   const away = myPetAway();
   return `<div class="card pet-strip" id="petStrip">
-    <button type="button" class="ps-pet" data-action="tab" data-tab="pet" aria-label="Buka rumah ${esc(pet.name)}">${away ? '<span class="ps-egg">🏡</span>' : petSvg(pet.id, { stage: pet.stage.id, mood: petMood(stats) })}${count ? `<span class="pet-count">${count}</span>` : ''}</button>
+    <button type="button" class="ps-pet" data-action="tab" data-tab="pet" aria-label="Buka rumah ${esc(pet.name)}">${away ? '<span class="ps-egg">🏡</span>' : state.game.pet.float ? '<span class="ps-tipicon">💡</span>' : petSvg(pet.id, { stage: pet.stage.id, mood: petMood(stats) })}${count ? `<span class="pet-count">${count}</span>` : ''}</button>
     <div class="ps-text"><span class="who">${esc(pet.name)} · asisten kamu${away ? ` (lagi di rumah @${esc(socialName(away.to))})` : ''}</span><span>${esc(tip.text)}</span>
       <div class="ps-actions">${tipActionHtml(tip)}<button type="button" class="btn small" data-action="petNextTip">💡 Lainnya</button></div></div>
   </div>`;
@@ -4520,7 +4574,8 @@ function petHomeInner(stats, pet) {
     <div class="pet-talk">
       <div class="pet-meta"><span class="pill">${PET_MOOD_LABEL[mood]}</span><span class="pill">🌱 ${esc(pet.stage.name)}</span><span class="pill">💚 ${fmt(state.game.pet.pats)}× dielus</span></div>
       <div class="bubble" id="petBubble"><span class="who">${esc(pet.name)} · asisten kamu</span><span id="petLine">${esc(tip.text)}</span></div>
-      <div class="row wrap gap-s">${tipActionHtml(tip)}<button type="button" class="btn small" data-action="petNextTip">💡 Tips lain</button><button type="button" class="btn small" data-action="petTap">🤚 Elus</button><button type="button" class="btn small" data-action="petRename">✏️ Ganti nama</button></div>
+      <div class="row wrap gap-s">${tipActionHtml(tip)}<button type="button" class="btn small" data-action="petNextTip">💡 Tips lain</button><button type="button" class="btn small" data-action="petTap">🤚 Elus</button><button type="button" class="btn small" data-action="petRename">✏️ Ganti nama</button><button type="button" class="btn small" data-action="buddyToggle" aria-pressed="${state.game.pet.float ? 'true' : 'false'}">🫧 Melayang: ${state.game.pet.float ? 'nyala' : 'mati'}</button></div>
+      <p class="tiny muted">${state.game.pet.float ? `${esc(pet.name)} melayang dan ikut ke tab mana pun kamu pergi. Ketuk untuk tips, geser kalau menghalangi.` : `Nyalakan “Melayang” supaya ${esc(pet.name)} ikut ke semua tab.`}</p>
     </div>`;
 }
 function adoptCardHtml(level) {
@@ -4621,6 +4676,355 @@ function spawnHearts() {
 }
 
 /* =========================================================
+   PET MELAYANG: ikut ke tab mana pun kamu pergi
+   ========================================================= */
+const buddy = {
+  el: null, art: null, bubble: null, sig: '', tab: '', x: -200, y: -200, placed: false, parked: null,
+  bubbleTimer: null, walkTimer: null, joyTimer: null, raf: 0, lookTimer: null, lookedAt: 0, lookAt: null, drag: null, lastSay: 0, lastIdleTip: 0,
+  arrived: {}, sayTimer: null,
+};
+const PET_TAB_LINES = {
+  beranda: ['Ringkasan hari ini siap. Ayo cek bareng! 👀', 'Aku jagain progresmu di sini 💚'],
+  makanan: ['Mau catat makan apa? Jangan lupa sayur, ya 🥦', 'Camilan juga dicatat, biar jujur 😋'],
+  aktivitas: ['Ayo gerak! Aku lari di sampingmu 🏃', 'Jalan kaki 10 menit juga dihitung, lho 🚶'],
+  berat: ['Timbang pagi hari biar hasilnya konsisten ⚖️', 'Naik-turun sedikit itu wajar. Lihat trennya, ya 📉'],
+  statistik: ['Wah, grafik! Lihat progres kita 📈', 'Konsisten itu kuncinya. Kita sudah sejauh ini ✨'],
+  prestasi: ['Lencana kita makin banyak! 🏅', 'Setiap naik level aku ikut tumbuh 🌱'],
+  seru: ['Main yuk! Aku dukung dari sini 🎮', 'Tebak Kalori, siapa takut? 🤓'],
+  profil: ['Cek target harianmu di sini 🎯', 'Jangan lupa export backup sesekali 💾'],
+};
+const buddyOn = () => Boolean(state && state.game.pet.float);
+function buddyInit() {
+  buddy.el = $('#petBuddy');
+  buddy.art = $('#buddyArt');
+  buddy.bubble = $('#buddyBubble');
+  if (!buddy.el) return;
+  const pet = $('#buddyPet');
+  pet.addEventListener('pointerdown', buddyPointerDown);
+  pet.addEventListener('pointermove', buddyPointerMove);
+  pet.addEventListener('pointerup', buddyPointerUp);
+  pet.addEventListener('pointercancel', buddyPointerUp);
+  pet.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      buddyTap();
+    }
+  });
+  // Tombol di balon kata menjalankan aksinya, lalu balonnya ditutup
+  buddy.bubble.addEventListener('click', e => {
+    if (e.target.closest('[data-action]')) setTimeout(buddyHush, 0);
+  });
+  window.addEventListener('resize', () => buddyPlace(true));
+  window.addEventListener('scroll', () => {
+    if (buddy.raf) return;
+    buddy.raf = requestAnimationFrame(() => {
+      buddy.raf = 0;
+      buddyPlace(false);
+    });
+  }, { passive: true });
+  document.addEventListener('pointermove', buddyLook, { passive: true });
+  document.addEventListener('pointerdown', buddyLook, { passive: true });
+  setInterval(buddyIdle, 8000);
+}
+
+// Tampilkan / sembunyikan, ganti gambar bila pet atau suasana hatinya berubah, lalu ikut pindah tab
+function buddyUpdate() {
+  if (!buddy.el) return;
+  const stats = getStats();
+  const pet = activePet(stats.level.level);
+  const visible = buddyOn() && ui.tab !== 'pet' && !myPetAway() && !arcade.running;
+  if (!visible) {
+    if (!buddy.el.hidden) {
+      buddy.el.hidden = true;
+      buddyHush();
+    }
+    document.body.classList.remove('buddy-on');
+    buddy.tab = ui.tab;
+    return;
+  }
+  const mood = pet ? petMood(stats) : '';
+  const sig = pet ? [pet.id, pet.stage.id, mood, pet.name].join('|') : 'egg';
+  if (sig !== buddy.sig) {
+    buddy.sig = sig;
+    buddy.art.innerHTML = pet ? petSvg(pet.id, { stage: pet.stage.id, mood }) : '<span class="pb-egg">🥚</span>';
+    $('#buddyPet').setAttribute('aria-label', pet ? `${pet.name} — ketuk untuk tips, geser untuk memindahkan` : 'Telur misterius — ketuk untuk mengadopsi pet');
+  }
+  const wasHidden = buddy.el.hidden;
+  buddy.el.hidden = false;
+  document.body.classList.add('buddy-on');
+  const moved = buddy.tab !== ui.tab;
+  buddy.tab = ui.tab;
+  if (wasHidden) buddy.placed = false;
+  if (moved) buddy.parked = null;
+  buddyPlace(true);
+  if (moved) buddyArrive(stats, pet);
+}
+function buddyTarget() {
+  const size = buddy.el.offsetWidth || 60;
+  const tabs = $('#tabs');
+  const btn = tabs && tabs.querySelector(`[data-tab="${ui.tab}"]`);
+  if (!btn) return { x: innerWidth - size - 16, y: innerHeight - size - 16, side: false };
+  const r = btn.getBoundingClientRect();
+  if (getComputedStyle(tabs).position === 'fixed') {
+    // HP: bertengger di atas tombol tab yang aktif
+    const bar = tabs.getBoundingClientRect();
+    return { x: clamp(r.left + r.width / 2 - size / 2, 4, innerWidth - size - 4), y: bar.top - size + 12, side: false };
+  }
+  // Layar lebar: duduk di ujung kanan menu yang aktif
+  return { x: r.right - size - 2, y: r.top + r.height / 2 - size / 2 - 6, side: true };
+}
+function buddyMoveTo(x, y) {
+  buddy.x = x;
+  buddy.y = y;
+  buddy.el.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
+}
+function buddyPlace(force) {
+  if (!buddy.el || buddy.el.hidden || buddy.drag) return;
+  const size = buddy.el.offsetWidth || 60;
+  if (buddy.parked && buddy.parked.tab === ui.tab) {
+    buddyMoveTo(clamp(buddy.parked.x, 0, innerWidth - size), clamp(buddy.parked.y, 0, innerHeight - size));
+    buddyBubblePos();
+    return;
+  }
+  const t = buddyTarget();
+  const dx = t.x - buddy.x;
+  const dy = t.y - buddy.y;
+  if (!force && Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+  buddy.el.classList.toggle('side', t.side);
+  if (!buddy.placed) {
+    buddy.el.classList.add('no-anim');
+    buddyMoveTo(t.x, t.y);
+    void buddy.el.offsetWidth;
+    buddy.el.classList.remove('no-anim');
+    buddy.placed = true;
+  } else {
+    if (Math.hypot(dx, dy) > 14) {
+      // Berjalan sambil melompat kecil, menghadap arah tujuan
+      if (Math.abs(dx) > 4) buddy.el.classList.toggle('face-left', dx < 0);
+      buddy.el.classList.add('walking');
+      clearTimeout(buddy.walkTimer);
+      buddy.walkTimer = setTimeout(() => buddy.el.classList.remove('walking'), 900);
+    }
+    buddyMoveTo(t.x, t.y);
+  }
+  buddyBubblePos();
+}
+function buddyBubblePos() {
+  if (!buddy.bubble || buddy.bubble.hidden || buddy.el.classList.contains('side')) return;
+  const size = buddy.el.offsetWidth || 60;
+  const width = buddy.bubble.offsetWidth;
+  const center = buddy.x + size / 2;
+  const left = clamp(center - width / 2, 8, Math.max(8, innerWidth - width - 8));
+  buddy.bubble.style.setProperty('--bx', `${Math.round(left - buddy.x)}px`);
+  buddy.bubble.style.setProperty('--ax', `${Math.round(clamp(center - left, 14, width - 14))}px`);
+}
+
+// Balon kata kecil dari pet
+function buddySay(text, opts = {}) {
+  if (!buddy.el || buddy.el.hidden || buddy.drag) return false;
+  const pet = activePet();
+  buddy.bubble.innerHTML = `<span class="who">${esc(pet ? pet.name : 'Telur misterius')}</span>${esc(text)}${opts.actions ? `<div class="pb-actions">${opts.actions}</div>` : ''}`;
+  buddy.bubble.hidden = false;
+  buddyBubblePos();
+  clearTimeout(buddy.bubbleTimer);
+  buddy.bubbleTimer = setTimeout(buddyHush, opts.ms || 4500);
+  buddy.lastSay = Date.now();
+  return true;
+}
+function buddyHush() {
+  if (buddy.bubble) buddy.bubble.hidden = true;
+}
+function buddyJoy(hearts = false) {
+  if (!buddy.el || buddy.el.hidden) return;
+  buddy.el.classList.remove('joy');
+  void buddy.el.offsetWidth;
+  buddy.el.classList.add('joy');
+  clearTimeout(buddy.joyTimer);
+  buddy.joyTimer = setTimeout(() => buddy.el.classList.remove('joy'), 750);
+  if (!hearts) return;
+  ['💚', '💖', '💛'].forEach((emoji, i) => {
+    const heart = document.createElement('span');
+    heart.className = 'pb-heart';
+    heart.textContent = emoji;
+    heart.style.left = `${10 + i * 14}px`;
+    heart.style.animationDelay = `${i * 0.1}s`;
+    buddy.el.appendChild(heart);
+    setTimeout(() => heart.remove(), 1300);
+  });
+}
+// Pesan konfirmasi: diucapkan pet kalau sedang melayang, selain itu pakai toast biasa
+function buddyAnnounce(toastText, line) {
+  if (buddySay(line, { ms: 3800 })) {
+    buddyJoy();
+    return false;
+  }
+  return toast(toastText);
+}
+function buddyFoodLine(food) {
+  const healthy = VEGGIE_RE.test(food.name) || FRUIT_RE.test(food.name);
+  return healthy ? `Nyam! ${food.name} masuk mangkukku ${foodEmoji(food)} Sehat banget!` : `Nyam! ${food.name} tercatat ✓ 😋`;
+}
+function buddyWater() {
+  const f = getStats().today.f;
+  const glasses = Math.floor(f.tot.water / GLASS_ML);
+  const goal = Math.ceil(f.t.waterMl / GLASS_ML);
+  const line = f.tot.water >= f.t.waterMl ? `Target air tercapai! ${glasses} gelas 🎉💧` : `Glek glek! 💧 ${glasses} dari ${goal} gelas`;
+  if (buddySay(line, { ms: 3000 })) buddyJoy();
+}
+function buddyCelebrate(events) {
+  const level = events.find(e => e.type === 'level');
+  const badge = events.find(e => e.type === 'badge');
+  let line = '';
+  if (level) {
+    const L = level.info.level;
+    const from = level.from || L - 1;
+    const species = PET_SPECIES.find(s => s.level > from && s.level <= L);
+    const stage = PET_STAGES.find(s => s.level > from && s.level <= L && s.level > 1);
+    if (stage) line = `Level ${L}! Lihat, aku tumbuh jadi ${stage.name}! 🌱✨`;
+    else if (species) line = `Level ${L}! Ada pet baru: ${species.name}. Cek koleksi, ya 🐾`;
+    else line = `Yeay, Level ${L}! Aku ikut bangga 🎉`;
+  } else if (events.some(e => e.type === 'boss')) line = 'Boss tumbang! Kita jago banget ⚔️';
+  else if (badge) line = `Lencana baru: ${badge.badge.name}! 🏅`;
+  else if (events.some(e => e.type === 'perfect')) line = 'Hari sempurna! Aku bangga banget 🤩';
+  else if (events.some(e => e.type === 'city')) line = 'Kita sampai kota baru di Peta Nusantara! 🗺️';
+  if (!line) return;
+  clearTimeout(buddy.sayTimer);
+  buddy.sayTimer = setTimeout(() => {
+    buddyUpdate();
+    if (buddySay(line, { ms: 5000 })) buddyJoy(true);
+  }, 1400);
+}
+// Kalimat saat tiba di tab baru (paling sering sekali per 10 menit per tab)
+function buddyArrive(stats, pet) {
+  const tab = ui.tab;
+  const now = Date.now();
+  if (now - (buddy.arrived[tab] || 0) < 10 * 60000 || (!buddy.bubble.hidden && now - buddy.lastSay < 2500)) return;
+  buddy.arrived[tab] = now;
+  let line;
+  if (!pet) line = 'Ketuk aku! Ada yang mau menetas… 🥚';
+  else line = buddyTabLine(tab, stats);
+  clearTimeout(buddy.sayTimer);
+  buddy.sayTimer = setTimeout(() => buddySay(line, { ms: 3500 }), 950);
+}
+function buddyTabLine(tab, stats) {
+  const f = stats.today.f;
+  const left = Math.round(f.budget - f.tot.kcal);
+  if (tab === 'makanan') {
+    if (!f.logged) return 'Mau catat makan apa? Aku tunggu di sini 😋';
+    if (!f.veggie) return 'Belum ada sayur hari ini. Tambah satu, yuk? 🥦';
+    if (left > 0) return `Sisa jatah ${fmt(left)} kkal. Pilih yang bergizi, ya 👌`;
+  }
+  if (tab === 'aktivitas') return f.exercised ? `Sudah ${fmt(f.tot.exMin)} menit olahraga hari ini. Mantap! 💪` : PET_TAB_LINES.aktivitas[0];
+  if (tab === 'berat') {
+    const last = sortedWeights().slice(-1)[0];
+    const days = last ? daysBetween(last.date, todayKey()) : 0;
+    if (days >= 7) return `Terakhir timbang ${days} hari lalu. Catat sekarang? ⚖️`;
+  }
+  if (tab === 'prestasi') {
+    const waiting = chestsWaiting(stats.level.level);
+    if (waiting) return `Ada ${waiting} peti hadiah menunggu dibuka! 🎁`;
+  }
+  if (tab === 'seru' && !stats.week.wonOn) return `Boss ${stats.week.boss.name} tinggal ${fmt(Math.max(0, stats.week.boss.hp - stats.week.dmg))} HP. Serang! ⚔️`;
+  const lines = PET_TAB_LINES[tab] || PET_TAB_LINES.beranda;
+  return lines[Math.floor(Math.random() * lines.length)];
+}
+// Sesekali bergerak sendiri & mengingatkan hal penting
+function buddyIdle() {
+  if (!buddy.el || buddy.el.hidden || buddy.drag || !buddy.bubble.hidden || document.visibilityState !== 'visible') return;
+  const roll = Math.random();
+  if (roll < 0.35) buddyJoy();
+  else if (roll < 0.55) buddy.el.classList.toggle('face-left');
+  const pet = activePet();
+  if (!pet || Date.now() - buddy.lastIdleTip < 4 * 60000 || Date.now() - buddy.lastSay < 60000) return;
+  const tip = petTips(getStats(), pet).find(t => t.action);
+  if (!tip) return;
+  buddy.lastIdleTip = Date.now();
+  buddySay(tip.text, { ms: 7000, actions: tipActionHtml(tip) });
+}
+function buddyTap() {
+  const pet = activePet();
+  if (!pet) {
+    setTab('pet');
+    return;
+  }
+  state.game.pet.pats += 1;
+  save();
+  buddyJoy(true);
+  playNotes([[880, 0], [1175, 0.08]], 'sine', 0.18, 0.1);
+  buddyShowTip();
+}
+function buddyShowTip() {
+  const pet = activePet();
+  if (!pet) return;
+  const tip = currentTip(petTips(getStats(), pet));
+  buddySay(tip.text, {
+    ms: 9000,
+    actions: `${tipActionHtml(tip)}<button type="button" class="btn small" data-action="buddyNextTip">💡 Lainnya</button><button type="button" class="btn small" data-action="tab" data-tab="pet" aria-label="Rumah ${esc(pet.name)}">🏡</button><button type="button" class="btn small" data-action="buddyHide" aria-label="Sembunyikan pet melayang">🙈</button>`,
+  });
+}
+
+// Geser untuk memindahkan; ketuk untuk tips. Pindah tab = pet menyusul lagi.
+function buddyPointerDown(e) {
+  if (e.button !== undefined && e.button > 0) return;
+  buddy.drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: buddy.x, oy: buddy.y, moved: false };
+  try {
+    e.currentTarget.setPointerCapture(e.pointerId);
+  } catch (err) {
+    /* abaikan */
+  }
+}
+function buddyPointerMove(e) {
+  const d = buddy.drag;
+  if (!d || d.id !== e.pointerId) return;
+  const dx = e.clientX - d.sx;
+  const dy = e.clientY - d.sy;
+  if (!d.moved && Math.hypot(dx, dy) < 6) return;
+  if (!d.moved) {
+    d.moved = true;
+    buddy.el.classList.add('dragging');
+    buddyHush();
+  }
+  const size = buddy.el.offsetWidth || 60;
+  buddyMoveTo(clamp(d.ox + dx, 0, innerWidth - size), clamp(d.oy + dy, 0, innerHeight - size));
+}
+function buddyPointerUp(e) {
+  const d = buddy.drag;
+  if (!d || d.id !== e.pointerId) return;
+  buddy.drag = null;
+  buddy.el.classList.remove('dragging');
+  if (d.moved) {
+    buddy.parked = { tab: ui.tab, x: buddy.x, y: buddy.y };
+    buddy.el.classList.remove('side');
+  } else if (e.type === 'pointerup') {
+    buddyTap();
+  }
+}
+// Mata pet melirik ke arah kursor / jari
+function buddyLook(e) {
+  if (!buddy.el || buddy.el.hidden) return;
+  buddy.lookAt = { x: e.clientX, y: e.clientY };
+  const wait = 40 - (performance.now() - (buddy.lookedAt || 0));
+  clearTimeout(buddy.lookTimer);
+  if (wait > 0) {
+    buddy.lookTimer = setTimeout(buddyLookNow, wait);
+    return;
+  }
+  buddyLookNow();
+}
+function buddyLookNow() {
+  if (!buddy.lookAt || !buddy.el) return;
+  buddy.lookedAt = performance.now();
+  const size = buddy.el.offsetWidth || 60;
+  const dx = buddy.lookAt.x - (buddy.x + size / 2);
+  const dy = buddy.lookAt.y - (buddy.y + size * 0.45);
+  const dist = Math.hypot(dx, dy) || 1;
+  const reach = Math.min(1, dist / 150);
+  const flip = buddy.el.classList.contains('face-left') ? -1 : 1;
+  buddy.el.style.setProperty('--lx', `${(dx / dist * 2.6 * reach * flip).toFixed(2)}px`);
+  buddy.el.style.setProperty('--ly', `${(dy / dist * 2 * reach).toFixed(2)}px`);
+}
+
+/* =========================================================
    GAME TANGKAP SAYUR (canvas)
    ========================================================= */
 const arcade = {
@@ -4680,6 +5084,7 @@ function arcadeStart() {
   $('#arcadeOverlay').hidden = true;
   arcade.last = performance.now();
   arcade.raf = requestAnimationFrame(arcadeFrame);
+  buddyUpdate();
 }
 function arcadeFrame(now) {
   if (!arcade.running) return;
@@ -4774,6 +5179,7 @@ function arcadeOver() {
   if (card) card.innerHTML = arcadeCardInner();
   arcadeAttach();
   updateGameChip();
+  buddyUpdate();
 }
 function arcadePause() {
   if (!arcade.running) return;
@@ -4785,6 +5191,7 @@ function arcadePause() {
     overlay.innerHTML = '<div class="ao-title">⏸️ Dijeda</div><button type="button" class="btn primary mt" data-action="arcadeResume">▶️ Lanjut</button>';
     overlay.hidden = false;
   }
+  buddyUpdate();
 }
 function arcadeResume() {
   if (!arcade.paused || !arcade.canvas || !arcade.canvas.isConnected) {
@@ -4796,6 +5203,7 @@ function arcadeResume() {
   $('#arcadeOverlay').hidden = true;
   arcade.last = performance.now();
   arcade.raf = requestAnimationFrame(arcadeFrame);
+  buddyUpdate();
 }
 function arcadeDraw() {
   const a = arcade;
@@ -4913,6 +5321,7 @@ function render() {
   // Siapkan layanan akun saat tab Profil dibuka (supaya pop-up login Google tidak diblokir)
   if ((ui.tab === 'profil' || ui.tab === 'pet') && cloudEnabled() && !cloud.ready && !cloud.initPromise) cloudInit();
   renderPetBadge();
+  buddyUpdate();
 }
 
 function tabFromHash() {
@@ -5127,6 +5536,7 @@ function openNews() {
         <li>🥚 Pet pertama: Kucing Oyen, Kelinci, atau Anak Ayam</li>
         <li>🌱 Tumbuh dari Bayi → Remaja (Lv 4) → Dewasa (Lv 10) → Legenda (Lv 20)</li>
         <li>🐾 ${PET_SPECIES.length} jenis pet — yang baru terbuka saat naik level, sampai Naga &amp; Garuda!</li>
+        <li>🫧 <b>Pet melayang</b> ikut ke tab mana pun kamu pergi — ketuk untuk tips, geser kalau menghalangi</li>
         <li>💡 Jadi asisten: ingatkan minum, catat makan, jaga streak &amp; tunjukkan misi</li>
         ${cloudEnabled() ? '<li>🌐 Tambah teman lewat username, chat, dan kirim pet main ke rumah teman sambil membawa pesan</li>' : ''}
       </ul>
@@ -5530,6 +5940,7 @@ function mergeGame(a, b) {
     adopted,
     pats: Math.max(pa.pats, pb.pats),
     updatedAt: Math.max(pa.updatedAt || 0, pb.updatedAt || 0),
+    float: newer.float !== false,
   };
   return g;
 }
@@ -6361,7 +6772,10 @@ function socialStop() {
 // Notifikasi kecil saat ada kabar baru (bukan saat data pertama dimuat)
 function socialNotify(makeText) {
   setTimeout(() => {
-    if (socialReady()) toast(makeText());
+    if (!socialReady()) return;
+    const text = makeText();
+    if (buddySay(text, { ms: 6500, actions: '<button type="button" class="btn small primary" data-action="tab" data-tab="pet">Lihat</button>' })) buddyJoy();
+    else toast(text);
   }, 350);
 }
 function onFriendships(uid, list) {
@@ -6491,6 +6905,7 @@ function renderPetBadge() {
 const socialSig = () => [cloud.user ? cloud.user.uid : '', cloud.status === 'loading' ? 'l' : '', social.status, social.me ? social.me.username : ''].join('|');
 function renderSocial() {
   renderPetBadge();
+  buddyUpdate();
   if (ui.tab === 'pet') {
     const area = $('#socialArea');
     if (area) {
@@ -6948,6 +7363,7 @@ const actions = {
     ui.waterPop = after > before ? after : null;
     save();
     render();
+    if (after > before && ui.date === todayKey()) buddyWater();
   },
   glass: el => {
     const i = Number(el.dataset.i);
@@ -6958,6 +7374,7 @@ const actions = {
     ui.waterPop = next > current ? next : null;
     save();
     render();
+    if (next > current && ui.date === todayKey()) buddyWater();
   },
 
   delExercise: el => {
@@ -7129,7 +7546,7 @@ const actions = {
     save();
     render();
     const pet = activePet();
-    toast(`Glek glek! 💧 ${pet ? pet.name + ' ikut segar' : 'Segar'} (${fmt(d.waterMl / GLASS_ML)} gelas)`);
+    buddyAnnounce(`Glek glek! 💧 ${pet ? pet.name + ' ikut segar' : 'Segar'} (${fmt(d.waterMl / GLASS_ML)} gelas)`, `Glek glek! 💧 Segarnya… ${fmt(d.waterMl / GLASS_ML)} gelas hari ini`);
   },
   petPick: el => {
     const sp = speciesInfo(el.dataset.id);
@@ -7143,6 +7560,25 @@ const actions = {
     save();
     render();
     toast(`${petName(sp.id)} sekarang menemanimu 🐾`);
+  },
+  buddyNextTip: () => {
+    ui.petTip += 1;
+    setTimeout(buddyShowTip, 0);
+  },
+  buddyHide: () => {
+    state.game.pet.float = false;
+    state.game.pet.updatedAt = Date.now();
+    save();
+    render();
+    toast('Pet tidak melayang lagi. Nyalakan kembali di tab Pet 🐾');
+  },
+  buddyToggle: () => {
+    const p = state.game.pet;
+    p.float = !p.float;
+    p.updatedAt = Date.now();
+    save();
+    render();
+    toast(p.float ? `${activePet() ? activePet().name : 'Pet'} kembali melayang & ikut ke semua tab 🫧` : 'Pet melayang dimatikan');
   },
   petRename: () => {
     const pet = activePet();
@@ -7447,7 +7883,7 @@ const forms = {
     closeModal();
     ui.foodQuery = '';
     render();
-    return toast(`${food.name} ditambahkan ✓`);
+    return buddyAnnounce(`${food.name} ditambahkan ✓`, buddyFoodLine(food));
   },
   editEntry: form => {
     if (!modalCtx || !modalCtx.id) return;
@@ -7493,7 +7929,7 @@ const forms = {
     closeModal();
     ui.foodQuery = '';
     render();
-    return toast(`${food.name} ditambahkan ✓`);
+    return buddyAnnounce(`${food.name} ditambahkan ✓`, buddyFoodLine(food));
   },
   addExercise: form => {
     const fd = new FormData(form);
@@ -7521,7 +7957,7 @@ const forms = {
     ensureDay(ui.date).exercises.push(entry);
     save();
     render();
-    return toast(`${entry.name}: ${fmt(entry.kcal)} kkal ✓`);
+    return buddyAnnounce(`${entry.name}: ${fmt(entry.kcal)} kkal ✓`, `Keren! ${entry.name} ${fmt(entry.minutes)} menit, ${fmt(entry.kcal)} kkal terbakar 💪`);
   },
   addWeight: form => {
     const fd = new FormData(form);
@@ -7535,7 +7971,7 @@ const forms = {
     upsertWeight(date, kg, waist);
     save();
     render();
-    return toast(`Berat ${fmtMax(kg, 1)} kg tersimpan ✓`);
+    return buddyAnnounce(`Berat ${fmtMax(kg, 1)} kg tersimpan ✓`, `Berat ${fmtMax(kg, 1)} kg tercatat ⚖️ Konsisten timbang itu keren!`);
   },
   profile: form => {
     const fd = new FormData(form);
@@ -7722,6 +8158,7 @@ window.addEventListener('error', e => showSysBanner('Terjadi error: ' + (e.messa
    MULAI
    ========================================================= */
 function init() {
+  buddyInit();
   storageOk = storageAvailable();
   let raw = null;
   if (storageOk) {
