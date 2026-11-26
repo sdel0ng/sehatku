@@ -1043,7 +1043,7 @@ button.pet-strip { cursor: pointer; }
 /* =========================================================
    KONSTANTA & DATABASE
    ========================================================= */
-const APP_VERSION = '1.9';
+const APP_VERSION = '2.0';
 const UPDATE_BASE = 'https://sdel0ng.github.io/sehatku/';  // versi online resmi + version.json
 const UPDATE_CHECK_MS = 6 * 60 * 60 * 1000;               // cek otomatis tiap 6 jam selama aplikasi terbuka
 const VERSION_KEY = 'sehatku.appVersion';                 // versi terakhir yang dibuka di browser ini
@@ -1051,8 +1051,16 @@ const UPDATE_SNOOZE_KEY = 'sehatku.updateSnooze';         // "Nanti saja" → ba
 const ANDROID_APK_URL = 'https://github.com/sdel0ng/sehatku/releases/latest/download/SehatKu.apk';
 const androidApp = window.AndroidApp || null;            // jembatan dari aplikasi Android (APK SehatKu)
 // Akun & sinkronisasi (Firebase). Isi dengan konfigurasi web app Firebase; null = fitur akun disembunyikan.
-const CLOUD_CONFIG = null;
+const CLOUD_CONFIG = {
+  apiKey: 'AIzaSyDpMpvTxoYiWxFggnodxn1UJdfWw1ycL6I',
+  authDomain: 'sehatku-sdel0ng.firebaseapp.com',
+  projectId: 'sehatku-sdel0ng',
+  storageBucket: 'sehatku-sdel0ng.firebasestorage.app',
+  messagingSenderId: '714033044096',
+  appId: '1:714033044096:web:ef97808c7a8616f9722465',
+};
 const FIREBASE_SDK = 'https://www.gstatic.com/firebasejs/11.10.0/';
+const CLOUD_GOOGLE = false;              // login Google tampil setelah penyedia Google diaktifkan di Firebase
 const SYNC_KEY = 'sehatku.sync.v1';      // akun tertaut, revisi cloud terakhir & sidik data saat terakhir sinkron
 const SYNC_CHUNK = 250000;               // karakter per dokumen Firestore (batas dokumen 1 MiB)
 const TOMBSTONE_DAYS = 120;              // catatan penghapusan disimpan 120 hari supaya ikut terhapus di perangkat lain
@@ -1480,7 +1488,7 @@ const EQUIVALENTS = [
 ];
 
 /* ---------- Seru: boss mingguan, Tebak Kalori, Peta Nusantara, lelucon ---------- */
-const NEWS_VERSION = '1.9';        // pengumuman fitur baru tampil sekali per versi
+const NEWS_VERSION = '2.0';        // pengumuman fitur baru tampil sekali per versi
 const BOSS_EPOCH = '2024-01-01';   // hari Senin; boss berganti tiap minggu dihitung dari tanggal ini
 const TRIP_DAYS = 90;              // mode jaga berat: 90 hari mencatat = sampai Merauke
 
@@ -6027,22 +6035,22 @@ function openGameIntro() {
 function openNews() {
   const level = getStats().level.level;
   const pet = activePet(level);
-  const slots = petSlots(level);
   openModal(`
     <div class="welcome">
       <div class="pet-opt active" style="max-width:150px;margin:0 auto"><div class="po-art" style="width:120px;height:120px">${petSvg(pet ? pet.id : 'oyen', { stage: petStage(level).id, mood: 'bangga' })}</div></div>
-      <h2>Rumah pet makin besar &amp; ramai! 🏠</h2>
-      <p>Rumah pet sekarang punya <b>2 ruangan</b>, pet-nya <b>jalan-jalan sendiri</b>, dan kamu bisa mengadopsi <b>lebih dari satu pet</b>.</p>
+      <h2>SehatKu sekarang online! 🌐</h2>
+      <p>Buat akun gratis dengan email, lalu ajak temanmu bergabung.</p>
       <ul class="intro-list">
-        <li>🏠 Rumah lebar 2 ruangan — geser ke kiri/kanan untuk melihat semuanya</li>
-        <li>🚶 Pet berjalan, istirahat &amp; berekspresi sendiri (❤️ 🎵 💤)</li>
-        <li>🐾 Adopsi sampai ${PET_MAX} pet — slot bertambah setiap naik level (kamu: ${slots} slot)</li>
-        <li>⭐ Pilih satu pet jadi asisten: melayang di semua tab &amp; memberi tips</li>
-        <li>🛋️ Furnitur tiap naik level &amp; dekorasi rumah tetap ada</li>
+        <li>☁️ <b>Akun &amp; sinkron</b> — catatan aman di cloud &amp; sama di HP, laptop, dan aplikasi Android</li>
+        <li>🔎 <b>Username</b> — cari teman dan kirim permintaan pertemanan</li>
+        <li>💬 <b>Chat</b> dengan teman, lengkap dengan stiker</li>
+        <li>🐾 <b>Kirim pet berkunjung</b> ke rumah teman membawa pesan &amp; oleh-oleh</li>
+        <li>🏠 <b>Lihat rumah teman</b> — furnitur dan semua pet-nya jalan-jalan</li>
+        <li>🔒 Data kesehatan tetap privat — teman hanya melihat username, level, streak &amp; pet</li>
       </ul>
       <div class="modal-actions" style="justify-content:center">
         <button type="button" class="btn" data-action="newsDone">Nanti saja</button>
-        <button type="button" class="btn primary" data-action="newsGo">${pet ? 'Lihat rumah 🏠' : 'Adopsi pet dulu 🐾'}</button>
+        <button type="button" class="btn primary" data-action="newsGo">Buat akun &amp; cari teman 🌐</button>
       </div>
     </div>`, { type: 'news' });
 }
@@ -6996,15 +7004,15 @@ function accountCardInner() {
   if (!cloudEnabled()) return '';
   const u = cloud.user;
   if (!u) {
-    const local = !updater.hosted() || Boolean(androidApp);
+    const local = !updater.hosted() || Boolean(androidApp) || !CLOUD_GOOGLE;
     return `
       <h3>☁️ Akun &amp; sinkronisasi</h3>
       <p class="small">Masuk supaya progresmu tersimpan di akun dan bisa dilanjutkan di HP, tablet, atau laptop lain. Tanpa akun, catatan hanya ada di browser ini.</p>
       <div class="row wrap gap-s">
-        <button type="button" class="btn small primary" data-action="cloudGoogle" ${local ? 'disabled' : ''}>Masuk dengan Google</button>
-        <button type="button" class="btn small" data-action="cloudEmail">✉️ Masuk / daftar dengan email</button>
+        ${CLOUD_GOOGLE ? `<button type="button" class="btn small primary" data-action="cloudGoogle" ${local ? 'disabled' : ''}>Masuk dengan Google</button>` : ''}
+        <button type="button" class="btn small ${CLOUD_GOOGLE ? '' : 'primary'}" data-action="cloudEmail">✉️ Masuk / daftar dengan email</button>
       </div>
-      ${local ? `<p class="tiny warn-text">${androidApp ? 'Di aplikasi Android, masuk pakai email.' : `Login Google hanya bisa dari versi online: ${esc(UPDATE_BASE)}`}</p>` : ''}
+      ${CLOUD_GOOGLE && local ? `<p class="tiny warn-text">${androidApp ? 'Di aplikasi Android, masuk pakai email.' : `Login Google hanya bisa dari versi online: ${esc(UPDATE_BASE)}`}</p>` : ''}
       ${cloud.status === 'loading' ? '<p class="tiny muted">⏳ Menyiapkan layanan akun…</p>' : ''}
       ${cloud.error ? `<p class="tiny warn-text">${esc(cloud.error)}</p>` : ''}
       <p class="tiny muted">Catatan akun disimpan di Google Firebase dan hanya bisa dibuka oleh akunmu sendiri.</p>`;
@@ -7432,7 +7440,7 @@ function renderSocial() {
 function socialAreaHtml() {
   const pet = activePet();
   if (!cloud.user) {
-    const local = !updater.hosted() || Boolean(androidApp);
+    const local = !updater.hosted() || Boolean(androidApp) || !CLOUD_GOOGLE;
     return `
     <div class="card">
       <h3>🌐 Teman, chat &amp; kunjungan pet</h3>
@@ -7928,6 +7936,10 @@ const actions = {
   newsGo: () => {
     closeModal();
     setTab('pet');
+    if (cloudEnabled() && !cloud.user) {
+      cloudInit();
+      openEmailAuth('signup');
+    }
   },
   mascotTap: el => {
     ui.mascotTaps += 1;

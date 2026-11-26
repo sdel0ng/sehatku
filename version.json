@@ -1,10 +1,10 @@
 {
-  "version": "1.9",
+  "version": "2.0",
   "date": "2026-11-26",
   "apk": 1,
   "notes": [
-    "🏠 Rumah pet lebih besar: 2 ruangan, geser untuk melihat semuanya",
-    "🚶 Pet jalan-jalan sendiri di rumah",
-    "🐾 Adopsi lebih dari satu pet (sampai 8, slot bertambah tiap naik level)"
+    "🌐 SehatKu online: buat akun gratis dengan email, catatan tersinkron di HP, laptop & aplikasi Android",
+    "👥 Cari teman lewat username, chat, dan kirim pet berkunjung ke rumah teman",
+    "🔒 Data kesehatan tetap privat — tanpa akun semuanya tetap jalan offline"
   ]
 }
