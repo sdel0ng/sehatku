@@ -1,10 +1,10 @@
 {
-  "version": "2.2",
+  "version": "2.3",
   "date": "2026-11-26",
   "apk": 1,
   "notes": [
-    "🍜 220 menu baru: jajanan kaki lima, kafe, restoran, dessert, food court & Chinese food",
-    "🎒 Starter Pack: misi pemula dengan XP ekstra supaya cepat naik level",
-    "📖 Panduan singkat untuk pengguna baru (bisa dibuka lagi dari Profil)"
+    "📲 Pasang SehatKu di PC/laptop & iPhone/iPad: Profil → Pasang aplikasi",
+    "💻 Di Edge/Chrome cukup klik Instal — ikon & jendela sendiri, jalan tanpa internet",
+    "🍎 iPhone/iPad: panduan Tambah ke Layar Utama + kode QR untuk pindah perangkat"
   ]
 }

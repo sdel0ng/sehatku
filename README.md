@@ -2,11 +2,13 @@
 
 **SehatKu** is a lightweight calorie & health tracker that runs entirely in the browser — a single HTML file, nothing to install. It works fully offline without an account; a free, optional account adds cloud sync between devices, friends, chat and pet visits. The interface is in Bahasa Indonesia.
 
-Current version: **2.2** (see the [Changelog](#changelog)).
+Current version: **2.3** (see the [Changelog](#changelog)).
 
 **▶️ Try it online: https://sdel0ng.github.io/sehatku/** — works on phones too. Without an account your data stays in your own browser; it is only uploaded if you sign in.
 
 **📱 Android app: [download SehatKu.apk](https://github.com/sdel0ng/sehatku/releases/latest/download/SehatKu.apk)** (Android 7.0+, about 0.2 MB).
+
+**💻 PC / laptop & 🍎 iPhone / iPad:** open the [online version](https://sdel0ng.github.io/sehatku/#pasang) and tap **📲 Pasang aplikasi**. See [Install on PC, iPhone & iPad](#-install-on-pc-iphone--ipad).
 
 ## Features
 
@@ -18,7 +20,7 @@ Current version: **2.2** (see the [Changelog](#changelog)).
 - **Prestasi (achievements)** — level & XP, 🎁 level rewards (treasure chests, a 36-sticker album, outfits for Bro Koli and colour themes), streaks, daily missions, a 12-week calendar heatmap and 30 badges with progress.
 - **Seru (fun)** — the Tangkap Sayur arcade game, weekly boss battle, the Tebak Kalori quiz, the Peta Nusantara journey map, Bro Koli's joke corner and "Statistik Kocak" (see below).
 - **Teman (friends)** — with a free account: 🌏 **Ruang publik** (everyone on SehatKu, add friends with one tap), chat, pet visits and friends' houses (see [below](#-accounts-friends-chat--pet-visits)).
-- **Profil** — personal data and targets, ☁️ account & sync, JSON backup/restore and CSV export for Excel.
+- **Profil** — personal data and targets, ☁️ account & sync, JSON backup/restore, CSV export for Excel and 📲 **Pasang aplikasi**, with install buttons for Android, iPhone/iPad and PC.
 
 ## Gamification
 
@@ -113,8 +115,8 @@ That adds up to 1,150 XP (1,450 with an account), enough for about Level 5 on th
 ## How to use
 
 1. Open the [online version](https://sdel0ng.github.io/sehatku/), **or** download `SehatKu.html` (and `SehatKu.ico` if you want a desktop shortcut icon) and open it in Microsoft Edge or Google Chrome.
-2. Fill in your profile on first launch (the starting numbers are only examples). After you save it, a 📖 **Panduan singkat** (quick guide) explains the app in six short steps. Reopen it any time from the Profil tab or the Starter Pack card.
-3. On a phone, use the browser's *Add to Home screen* to open it like an app.
+2. Fill in your profile on first launch (the starting numbers are only examples). After you save it, a 📖 **Panduan singkat** (quick guide) explains the app in a few short steps. Reopen it any time from the Profil tab or the Starter Pack card.
+3. Optional: install it as an app with **Profil → 📲 Pasang aplikasi**. On Android that is the APK; on iPhone/iPad and PC see [below](#-install-on-pc-iphone--ipad).
 4. Optional: create a free account (💬 Teman tab or Profil) to sync between devices and add friends — see [Accounts, friends, chat & pet visits](#-accounts-friends-chat--pet-visits).
 
 **Windows desktop shortcut (optional):** create a shortcut with target
@@ -134,6 +136,15 @@ Download **[SehatKu.apk](https://github.com/sdel0ng/sehatku/releases/latest/down
 - **Backups:** Profil → Export backup opens Android's save dialog, and Import backup opens the file picker.
 - **Your data:** without an account the app keeps its own records on that phone (move them with Export/Import backup). Sign in with the same account in the app and on the website to keep both in sync.
 - **Sign-in:** email & password — the same account as on the website.
+
+## 💻 Install on PC, iPhone & iPad
+
+SehatKu installs straight from the [online version](https://sdel0ng.github.io/sehatku/) as an app (a *progressive web app*). It is free and needs no app store. The installed app gets its own icon and window, opens without internet and updates itself like the website. Every copy has the 📲 **Pasang aplikasi** card in Profil with three buttons — 🤖 Android, 🍎 iPhone / iPad, 💻 PC / Laptop. The button for the device you are on is highlighted. On another device, the button shows a QR code and the link to open there.
+
+- **💻 PC / laptop (Windows, Mac, Linux, Chromebook):** in Microsoft Edge or Google Chrome, click **💻 PC / Laptop** → **Instal**. SehatKu then appears in the Start menu or Launchpad and can be pinned to the taskbar. You can also use the install icon at the right of the address bar, or Edge's menu **⋯ → Aplikasi → Instal SehatKu**. On a Mac with Safari, use **File → Tambahkan ke Dock**. Firefox can't install web apps. In Edge and Chrome the installed app shares its records with the website in that browser.
+- **🍎 iPhone / iPad:** open the online version in **Safari**, tap **Bagikan** (the square with an arrow), then **Tambah ke Layar Utama** → **Tambah**. On iOS 16.4 or later this also works from Chrome or Edge. iOS keeps a home-screen app's storage separate from Safari, so sign in to your account (or use Export/Import backup) to bring your records along. SehatKu is not in the App Store.
+- **On the Beranda tab** the online version shows a small *Pasang SehatKu* banner on phones, and on PCs whose browser can install apps. Tap × to hide it on that device.
+- **Downloaded `SehatKu.html` files** can't be installed (browsers only install from a website). The 💻 button there opens the online version instead. A downloaded file still works offline in any browser as before.
 
 ## 🌐 Accounts, friends, chat & pet visits
 
@@ -165,6 +176,7 @@ The online features use the Firebase project **`sehatku-sdel0ng`** on the free S
 
 - **Online version:** SehatKu checks for a new version when it opens (and every few hours while it stays open). When one is published, a banner appears: tap **🔄 Perbarui** to load it. You can also check manually in **Profil → Versi aplikasi**. Updates never touch your data.
 - **Downloaded file:** the app still tells you when a new version is out. Choose **Unduh file terbaru** and replace your old `SehatKu.html` (your data lives in the browser, not in the file), or switch to the online version.
+- **Installed app (PC, iPhone/iPad):** works like the online version — **🔄 Perbarui** loads the new version. A small service worker (`sw.js`) always asks the website first and only uses its saved copy of the app when you are offline, so updates are never held back.
 
 ### Publishing a new version (maintainers)
 
@@ -172,6 +184,7 @@ The online features use the Firebase project **`sehatku-sdel0ng`** on the free S
 2. Put the same version, the date and 1–3 short notes (in Indonesian, shown to users) in `version.json`.
 3. Commit both files together to `main`. GitHub Pages publishes them within about a minute, and every open copy of the app (including the Android app) picks up the new version on its next check.
 4. Only when the Android shell itself changes: bump `versionCode` in `android/app.json`, run `python android/build_apk.py`, upload `android/build/SehatKu.apk` to a new GitHub Release and set `"apk"` in `version.json` to the new `versionCode`. The build needs JDK 17, Android build-tools 34, platform 34 and the **private signing key**. The key is never in this repository, and every APK must use the same key or phones refuse the update.
+5. The installable web app uses `manifest.webmanifest`, `sw.js` and the icons `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` and `apple-touch-icon.png` next to `SehatKu.html`. They don't need changes for a normal release; `sw.js` is network-first, so a new `SehatKu.html` reaches installed apps on its own.
 
 ## Data & privacy
 
@@ -183,6 +196,8 @@ Without an account, the online version and a downloaded copy keep **separate** d
 
 To look for updates, the app downloads the small public `version.json` from GitHub Pages; nothing about you or your data is sent.
 
+The online version and installed apps keep a copy of the app files (not your data) in the browser's cache, so they can open offline.
+
 ## How targets are calculated
 
 - BMR (Mifflin-St Jeor): 10 × weight (kg) + 6.25 × height (cm) − 5 × age + 5 (men) or − 161 (women)
@@ -193,6 +208,7 @@ To look for updates, the app downloads the small public `version.json` from GitH
 
 ## Changelog
 
+- **2.3** — 📲 **Install SehatKu anywhere:** a new **Pasang aplikasi** card in Profil has buttons for 🤖 Android (APK), 🍎 iPhone / iPad (Add to Home Screen, with step-by-step help) and 💻 PC / laptop (one-click install in Edge/Chrome on Windows, Mac, Linux and Chromebook). Installed apps get their own icon and window and open offline. On another device, each button shows a QR code to scan. The online version shows a small dismissible install banner on Beranda, and the quick guide gets an install step. The Android-only card is replaced.
 - **2.2** — 🍜 **220 new foods and drinks** (332 in total) in six new categories: street food (*kaki lima*), cafés & coffee, restaurants, desserts, food courts & fast food and Chinese food; the category chips scroll sideways on phones. A few existing items moved into the new categories (e.g. kopi susu gula aren → Kafe & kopi, martabak manis → Jajanan kaki lima). 🎒 **Starter Pack** for new players: 11 first-step missions with extra XP plus a 300 XP bonus, about Level 5 on day one. 📖 **Panduan singkat**: a six-step quick guide that opens after the first profile save and from Profil any time. Existing records are unchanged.
 - **2.1** — 💬 New **Teman** tab: friends, requests and chats on one page (no longer in the Pet tab); chats open full screen on phones and side by side on wide screens, and the Back button closes them. 🌏 **Ruang publik** lists everyone on SehatKu, newest activity first, with one-tap **➕ Tambah** and a peek at their house; you can hide yourself from it. New messages pop up with a **Balas** button, and the unread count shows on the Teman tab and in the window title. Fixed: friends' houses now show their real furniture and all their pets.
 - **2.0** — 🌐 **SehatKu is online.** Free accounts with email & password: records sync between phone, laptop and the Android app (merge on first sign-in, nothing gets lost). Usernames, friend search and requests, 💬 chat with stickers, 🐾 pet visits with notes and gifts, and 🏠 friends' houses with their furniture and pets. Health data stays private; friends only see your public pet profile. Without an account everything keeps working offline as before.

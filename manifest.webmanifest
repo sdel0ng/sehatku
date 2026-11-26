@@ -1,0 +1,24 @@
+{
+  "name": "SehatKu — Pemantau Kalori & Kesehatan",
+  "short_name": "SehatKu",
+  "description": "Pantau kalori, gizi, air minum, aktivitas & berat badan. Gratis, tanpa iklan, tetap jalan tanpa internet.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./SehatKu.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f3f6f5",
+  "theme_color": "#0f9d76",
+  "categories": ["health", "fitness", "food", "lifestyle"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Catat makanan", "short_name": "Makanan", "url": "./SehatKu.html#makanan", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Catat olahraga", "short_name": "Aktivitas", "url": "./SehatKu.html#aktivitas", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Teman & chat", "short_name": "Teman", "url": "./SehatKu.html#teman", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] }
+  ]
+}
