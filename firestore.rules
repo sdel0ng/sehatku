@@ -79,10 +79,11 @@ service cloud.firestore {
     // ---------- Profil publik ----------
     function validHome(h) {
       return h is map
-        && h.keys().hasOnly(['w', 'f', 'i'])
+        && h.keys().hasOnly(['w', 'f', 'i', 'p'])
         && h.w is string && h.w.size() <= 16
         && h.f is string && h.f.size() <= 16
-        && h.i is list && h.i.size() <= 30;
+        && h.i is list && h.i.size() <= 30
+        && (!('p' in h) || (h.p is list && h.p.size() <= 8));
     }
     function validProfile(d) {
       return d.keys().hasOnly(['username', 'name', 'level', 'streak', 'badges', 'pet', 'home', 'lastSeen', 'updatedAt'])

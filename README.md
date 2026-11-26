@@ -2,7 +2,7 @@
 
 **SehatKu** is a lightweight, offline calorie & health tracker that runs entirely in the browser — a single HTML file with no install, no account and no server. The interface is in Bahasa Indonesia.
 
-Current version: **1.8** (see the [Changelog](#changelog)).
+Current version: **1.9** (see the [Changelog](#changelog)).
 
 **▶️ Try it online: https://sdel0ng.github.io/sehatku/** — works on phones too. Your data stays in your own browser; nothing is ever uploaded.
 
@@ -79,6 +79,9 @@ Everything is calculated from what you already log; there is nothing extra to fi
 - **🫧 Floats with you:** the pet floats over the app and follows you to whichever tab you open — it hops over to sit on the active tab (bottom bar on phones, beside the menu on wide screens), its eyes follow your finger or mouse, and it reacts when you log food, water, exercise or weight and when you level up. Tap it for a tip, drag it aside if it's in the way, or switch floating off in the Pet tab. It goes home when you open the Pet tab and disappears while you play Tangkap Sayur.
 - **🛋️ Furniture for every level:** each level-up adds furniture to the pet's house — 36 pieces from a 🪴 plant and 🖼️ painting at the start, 🛋️ sofa (Lv 5), 📺 TV (Lv 10) and 🎹 piano (Lv 15) up to ⛲ fountain (Lv 20), 🌈 rainbow (Lv 30) and 👑 crown (Lv 40) — plus 5 wallpapers and 4 floors. New items show up on the level-reward track and the pet announces them.
 - **🛠️ Decorate:** tap *Dekorasi rumah* in the Pet tab to add furniture from the storage, drag it anywhere (higher up = on the wall, lower = in front), flip it, change its size, put it back in storage, change wallpaper and floor, or reset. Up to 24 pieces; arrow keys nudge the selected piece. The room keeps the same proportions on every screen, so your layout looks the same on phone and laptop — and friends see it when they visit.
+- **🏠 A bigger house:** the pet house is a wide two-room home (living room + bedroom). On phones it's taller and you swipe sideways to see all of it; on wide screens it fills the card.
+- **🚶 Pets live on their own:** pets wander around the house, rest, turn to face where they walk and show little emotes (❤️ 🎵 💤 at night). Tap any pet to pet it.
+- **🐾 More than one pet:** adopt up to 8 pets (even several of the same kind). Pet slots grow with your level: 1 at the start, 2 at Lv 3, 3 at Lv 6, 4 at Lv 10, 5 at Lv 15, 6 at Lv 20, 7 at Lv 30 and 8 at Lv 40. Choose one as your ⭐ assistant — it floats with you, gives tips and visits friends — while the others play at home. Rename or release pets any time.
 - **Its home shows your day:** the bowl fills with the vegetables and fruit you logged, the water bowl follows your water intake, and its mood changes (senang, bangga, semangat, kangen, haus, tidur). Tap it to pet it.
 
 ## How to use
@@ -152,6 +155,7 @@ To look for updates, the app downloads the small public `version.json` from GitH
 
 ## Changelog
 
+- **1.9** — 🏠 Bigger two-room pet house (swipe on phones, full width on laptops). 🚶 Pets walk around by themselves with emotes. 🐾 Adopt up to 8 pets — slots unlock with level — and pick one ⭐ assistant. The floating pet also takes short strolls. Friends will see all your pets walking in your house once accounts are on.
 - **1.8** — 🛋️ Furniture rewards: 36 furniture pieces, 5 wallpapers and 4 floors unlock as you level up (something new on every level up to 30). New decorate mode: add, drag, flip, resize, store and reset; the pet's house keeps its proportions on every screen and is shared with friends when accounts are on.
 - **1.7** — 🫧 The pet now floats over the app and follows you between tabs: perches on the active tab, looks at your finger/mouse, announces what you log, cheers on level-ups and brings friend news. Tap for tips, drag to move it, or turn floating off in the Pet tab.
 - **1.6** — 🐾 **Pet asisten**: adopt a pet that grows with your level (15 pets, 4 growth stages), lives on the dashboard as an assistant with actionable tips, and has its own home. Prepared (switched on when accounts launch): usernames, friend search, friend requests, chat, sending your pet to visit friends with a note and gift, blocking. New 🐾 Pet tab.
