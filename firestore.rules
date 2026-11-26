@@ -5,7 +5,8 @@ rules_version = '2';
 // users/{uid}                       → info revisi sinkron catatan (hanya pemilik)
 // users/{uid}/chunks/{n}            → potongan data catatan JSON (hanya pemilik)
 // usernames/{username}              → { uid } — menjamin username unik (huruf kecil)
-// profiles/{uid}                    → profil publik: username, nama, level, streak, lencana, pet, susunan rumah pet
+// profiles/{uid}                    → profil publik: username, nama, level, streak, lencana, pet, susunan rumah pet,
+//                                     tampil/tidak di Ruang publik (listed)
 // friendships/{uidA_uidB}           → permintaan & status pertemanan (uidA < uidB)
 // chats/{uidA_uidB}/messages/{id}   → pesan chat antar teman
 // visits/{ownerUid}                 → kunjungan pet: 1 pet hanya bisa berada di 1 rumah
@@ -86,8 +87,9 @@ service cloud.firestore {
         && (!('p' in h) || (h.p is list && h.p.size() <= 8));
     }
     function validProfile(d) {
-      return d.keys().hasOnly(['username', 'name', 'level', 'streak', 'badges', 'pet', 'home', 'lastSeen', 'updatedAt'])
+      return d.keys().hasOnly(['username', 'name', 'level', 'streak', 'badges', 'pet', 'home', 'listed', 'lastSeen', 'updatedAt'])
         && (!('home' in d) || validHome(d.home))
+        && (!('listed' in d) || d.listed is bool)
         && validUsername(d.username)
         && d.name is string && d.name.size() <= 30
         && d.level is int && d.level >= 1 && d.level <= 9999
@@ -99,6 +101,7 @@ service cloud.firestore {
     }
     match /profiles/{uid} {
       allow get: if signedIn();
+      // Pencarian username & Ruang publik: hanya untuk yang sudah masuk, maksimal 20 profil per permintaan
       allow list: if signedIn() && request.query.limit <= 20;
       allow create, update: if signedIn() && me() == uid
         && validProfile(request.resource.data)

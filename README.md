@@ -2,7 +2,7 @@
 
 **SehatKu** is a lightweight calorie & health tracker that runs entirely in the browser — a single HTML file, nothing to install. It works fully offline without an account; a free, optional account adds cloud sync between devices, friends, chat and pet visits. The interface is in Bahasa Indonesia.
 
-Current version: **2.0** (see the [Changelog](#changelog)).
+Current version: **2.1** (see the [Changelog](#changelog)).
 
 **▶️ Try it online: https://sdel0ng.github.io/sehatku/** — works on phones too. Without an account your data stays in your own browser; it is only uploaded if you sign in.
 
@@ -17,6 +17,7 @@ Current version: **2.0** (see the [Changelog](#changelog)).
 - **Statistik** — 7/14/30-day averages, days on target, estimated deficit, macro split and top calorie sources.
 - **Prestasi (achievements)** — level & XP, 🎁 level rewards (treasure chests, a 36-sticker album, outfits for Bro Koli and colour themes), streaks, daily missions, a 12-week calendar heatmap and 30 badges with progress.
 - **Seru (fun)** — the Tangkap Sayur arcade game, weekly boss battle, the Tebak Kalori quiz, the Peta Nusantara journey map, Bro Koli's joke corner and "Statistik Kocak" (see below).
+- **Teman (friends)** — with a free account: 🌏 **Ruang publik** (everyone on SehatKu, add friends with one tap), chat, pet visits and friends' houses (see [below](#-accounts-friends-chat--pet-visits)).
 - **Profil** — personal data and targets, ☁️ account & sync, JSON backup/restore and CSV export for Excel.
 
 ## Gamification
@@ -89,7 +90,7 @@ Everything is calculated from what you already log; there is nothing extra to fi
 1. Open the [online version](https://sdel0ng.github.io/sehatku/), **or** download `SehatKu.html` (and `SehatKu.ico` if you want a desktop shortcut icon) and open it in Microsoft Edge or Google Chrome.
 2. Fill in your profile on first launch (the starting numbers are only examples).
 3. On a phone, use the browser's *Add to Home screen* to open it like an app.
-4. Optional: create a free account (🐾 Pet tab or Profil) to sync between devices and add friends — see [Accounts, friends, chat & pet visits](#-accounts-friends-chat--pet-visits-v20).
+4. Optional: create a free account (💬 Teman tab or Profil) to sync between devices and add friends — see [Accounts, friends, chat & pet visits](#-accounts-friends-chat--pet-visits).
 
 **Windows desktop shortcut (optional):** create a shortcut with target
 
@@ -109,27 +110,29 @@ Download **[SehatKu.apk](https://github.com/sdel0ng/sehatku/releases/latest/down
 - **Your data:** without an account the app keeps its own records on that phone (move them with Export/Import backup). Sign in with the same account in the app and on the website to keep both in sync.
 - **Sign-in:** email & password — the same account as on the website.
 
-## 🌐 Accounts, friends, chat & pet visits (v2.0)
+## 🌐 Accounts, friends, chat & pet visits
 
-The online features are live since v2.0. They are optional: without an account everything else keeps working offline.
+The online features are live since v2.0; since v2.1 they have their own 💬 **Teman** tab. They are optional: without an account everything else keeps working offline.
 
-**Getting started:** open the 🐾 **Pet** tab (or **Profil → Akun & sinkronisasi**), tap **✉️ Masuk / daftar dengan email**, choose **Daftar baru**, enter your email and a password (at least 6 characters), then pick a username. Sign in with the same email and password on your other devices. Forgot the password? **Lupa password?** sends a reset email.
+**Getting started:** open the 💬 **Teman** tab (or **Profil → Akun & sinkronisasi**), tap **✉️ Masuk / daftar dengan email**, choose **Daftar baru**, enter your email and a password (at least 6 characters), then pick a username. Sign in with the same email and password on your other devices. Forgot the password? **Lupa password?** sends a reset email.
 
 - **Account & sync:** your records (food, exercise, weight, XP, pets, furniture …) sync to your account automatically after every change and whenever the app opens. The first time you sign in on a device that already has records while your account has records too, SehatKu asks what to do: 🔀 **Gabungkan** (merge both, recommended), ☁️ **Pakai data akun** or 📱 **Pakai data perangkat ini**. Closing that dialog cancels the sign-in and leaves the device untouched.
 - **Signing out & deleting:** when signing out you can keep a copy on the device or wipe it (for shared devices). **Hapus akun & catatan di cloud** in Profil deletes the account together with its cloud records, username, friendships and chats; the records on the device stay.
-- **Username & search:** pick a unique username (3–20 characters: a–z, 0–9, `.` or `_`) and find friends by typing part of theirs.
+- **🌏 Ruang publik:** a list of everyone on SehatKu who chose to be listed, most recently active first (20 at a time, **Muat lagi** for more). Tap **➕ Tambah** to send a friend request straight away, or tap a person to peek at their house. You appear there by default; switch it off under **✏️ Ubah** on the Teman tab — friends can still find you by username.
+- **Username & search:** pick a unique username (3–20 characters: a–z, 0–9, `.` or `_`); the search box in Ruang publik finds people by part of their username.
 - **Friends:** send, accept, decline or cancel requests; remove friends; block users (a blocked user can't send you requests).
-- **Chat:** one-to-one chat with friends, emoji stickers, unread markers, read receipts and live delivery while the app is open.
+- **Chat:** the **💬 Chat** list on the Teman tab shows requests, guests and friends with the latest message. Chats open full screen on phones and next to the list on wide screens; the phone/browser **Back** button closes a chat. Emoji stickers, unread markers, read receipts and live delivery while the app is open.
+- **New-message alerts:** while SehatKu is open, a new message pops up (via your floating pet or a toast) with a **Balas** button that opens the chat; the Teman tab shows a count and the window title starts with the number of unread chats, e.g. *(2) SehatKu*.
 - **Pet visits:** send your pet to a friend's home with a note and a small gift (🍎 🥕 🍌 …). It appears in their pet's home; they can read the note and **send it home** with a reply and a gift back. A pet can be in one home at a time and walks home by itself after 12 hours. Visits also show up in the chat.
-- **Friend houses:** tap 🏠 next to a friend to look around their house — their furniture and all their pets walking around.
+- **Friend houses:** tap 🏠 next to a friend (or anyone in Ruang publik) to look around their house — their furniture and all their pets walking around.
 - **Privacy:** other signed-in users can only see your username, display name, level, streak, number of badges, your pets, how their house is decorated and when you were last active. Food logs, weight and other health data stay private to your account. Everything is protected by [`firestore.rules`](firestore.rules).
-- **Limits:** no push notifications — new messages and visits appear while the app is open (badge on the 🐾 Pet tab and a pop-up). Sign-in is by email only for now; Google sign-in may be added later.
+- **Limits:** no push notifications yet — alerts only appear while SehatKu is open (they need a small server, which the free Firebase plan doesn't include). Sign-in is by email only for now; Google sign-in may be added later.
 
 ### Firebase backend (maintainers)
 
 The online features use the Firebase project **`sehatku-sdel0ng`** on the free Spark plan: Authentication (Email/Password) and Cloud Firestore (region `asia-southeast2`, Jakarta). The web config in `const CLOUD_CONFIG` in `SehatKu.html` is public by design; access is controlled by [`firestore.rules`](firestore.rules).
 
-- **Rules:** after editing `firestore.rules`, deploy them with the Firebase CLI: `firebase deploy --only firestore:rules` (from a folder whose `firebase.json` points at the rules file).
+- **Rules & indexes:** after editing [`firestore.rules`](firestore.rules) or [`firestore.indexes.json`](firestore.indexes.json), deploy both with the Firebase CLI: `firebase deploy --only firestore` (from a folder whose `firebase.json` points at the two files). Ruang publik needs the composite index on `profiles` (`listed` ↑, `lastSeen` ↓); deploy rules and indexes **before** publishing an app version that relies on them.
 - **Google sign-in (optional):** enable the Google provider under Authentication → Sign-in method, set `const CLOUD_GOOGLE = true;` in `SehatKu.html` and publish a new version. Google sign-in only works on the website (authorized domain `sdel0ng.github.io`); the Android app and downloaded copies keep using email.
 - **Own backend / offline build:** for a fork, create a Firebase project, enable Email/Password, create a Cloud Firestore database in production mode, publish `firestore.rules`, register a Web app and paste its config into `CLOUD_CONFIG`. With `const CLOUD_CONFIG = null;` the app is fully offline and the account features are hidden.
 
@@ -149,7 +152,7 @@ The online features use the Firebase project **`sehatku-sdel0ng`** on the free S
 
 Without an account, all data — including XP, badges, pets and settings — is stored only in the browser's `localStorage` and nothing is sent anywhere. It belongs to that browser profile only, and clearing browser data deletes it, so use **Export backup** (Profil tab) regularly or sign in. Backups include game progress. Older v1.0 backups can still be restored; levels and badges are recalculated from the logs.
 
-With an account, your records are also stored in Cloud Firestore (Google Firebase, Jakarta region) under your account, where only you can read or change them. Your email is used for sign-in and password resets only. Your public profile (username, display name, level, streak, badge count, pets, house decoration and last-active time) is visible to other signed-in users so friends can find you; friend requests, chats and pet visits are visible only to the two people involved.
+With an account, your records are also stored in Cloud Firestore (Google Firebase, Jakarta region) under your account, where only you can read or change them. Your email is used for sign-in and password resets only. Your public profile (username, display name, level, streak, badge count, pets, house decoration and last-active time) is visible to other signed-in users so friends can find you, and is listed in Ruang publik unless you switch that off; friend requests, chats and pet visits are visible only to the two people involved.
 
 Without an account, the online version and a downloaded copy keep **separate** data (each browser/site has its own storage). To move your history, sign in to the same account in both, or use **Export backup** in one and **Import backup** in the other.
 
@@ -165,6 +168,7 @@ To look for updates, the app downloads the small public `version.json` from GitH
 
 ## Changelog
 
+- **2.1** — 💬 New **Teman** tab: friends, requests and chats on one page (no longer in the Pet tab); chats open full screen on phones and side by side on wide screens, and the Back button closes them. 🌏 **Ruang publik** lists everyone on SehatKu, newest activity first, with one-tap **➕ Tambah** and a peek at their house; you can hide yourself from it. New messages pop up with a **Balas** button, and the unread count shows on the Teman tab and in the window title. Fixed: friends' houses now show their real furniture and all their pets.
 - **2.0** — 🌐 **SehatKu is online.** Free accounts with email & password: records sync between phone, laptop and the Android app (merge on first sign-in, nothing gets lost). Usernames, friend search and requests, 💬 chat with stickers, 🐾 pet visits with notes and gifts, and 🏠 friends' houses with their furniture and pets. Health data stays private; friends only see your public pet profile. Without an account everything keeps working offline as before.
 - **1.9** — 🏠 Bigger two-room pet house (swipe on phones, full width on laptops). 🚶 Pets walk around by themselves with emotes. 🐾 Adopt up to 8 pets — slots unlock with level — and pick one ⭐ assistant. The floating pet also takes short strolls. Friends will see all your pets walking in your house once accounts are on.
 - **1.8** — 🛋️ Furniture rewards: 36 furniture pieces, 5 wallpapers and 4 floors unlock as you level up (something new on every level up to 30). New decorate mode: add, drag, flip, resize, store and reset; the pet's house keeps its proportions on every screen and is shared with friends when accounts are on.

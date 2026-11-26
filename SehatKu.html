@@ -880,6 +880,41 @@ button.pet-strip { cursor: pointer; }
 .chat-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; padding: 8px 12px 12px; }
 .chat-form input { height: 42px; border-radius: 12px; border: 1px solid var(--line); background: var(--soft); padding: 0 12px; color: var(--text); font-size: 15px; }
 .chat-tools { display: flex; gap: 6px; padding: 0 12px 12px; }
+
+/* ---------- Halaman Teman: chat & ruang publik ---------- */
+.teman { display: grid; gap: 16px; align-items: start; }
+.t-side { display: grid; gap: 16px; align-content: start; min-width: 0; }
+.t-seg { display: flex; width: 100%; }
+.t-seg button { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 10px; font-size: 14px; }
+.seg-count { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 99px; background: var(--danger); color: #fff; font-size: 11px; font-weight: 800; line-height: 18px; }
+.friend-row.tap { cursor: pointer; }
+.friend-row.tap:hover, .friend-row.tap:focus-visible { box-shadow: inset 0 0 0 1px var(--primary); outline: none; }
+.friend-row.active { box-shadow: inset 0 0 0 2px var(--primary); }
+.t-chat { display: flex; flex-direction: column; padding: 0; overflow: hidden; min-height: 0; }
+.chat-who { display: flex; align-items: center; gap: 10px; min-width: 0; border: 0; background: none; padding: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.chat-who > span:last-child { display: grid; min-width: 0; }
+.chat-who b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chat-head .ch-tools { display: flex; gap: 6px; align-items: center; }
+.chat-back { font-size: 20px; }
+.chat-empty { flex: 1; display: grid; place-content: center; justify-items: center; gap: 8px; padding: 24px; text-align: center; }
+.chat-empty .ce-art { font-size: 56px; line-height: 1; }
+.dir-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.pet-social { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+@media (min-width: 821px) {
+  .teman { grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); }
+  .t-chat { position: sticky; top: 78px; height: calc(100vh - 100px); min-height: 420px; }
+  .t-chat .chat-head { grid-template-columns: minmax(0, 1fr) auto; }
+  .chat-back { display: none; }
+}
+@media (max-width: 820px) {
+  .t-chat { display: none; }
+  .teman.chat-open .t-chat {
+    display: flex; position: fixed; left: 0; right: 0; top: 0; height: 100%; z-index: 60;
+    border: 0; border-radius: 0; box-shadow: none; padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  }
+  .chat-x { display: none; }
+  body.chat-full { overflow: hidden; }
+}
 @media (prefers-reduced-motion: reduce) {
   .pet-svg *, .pet-strip .ps-egg, .pet-scene .sc-mail, .pet-scene .sc-heart, .pet-scene .sc-walker .wk-hop, .pet-scene .sc-emote { animation: none !important; }
   .pet-scene .sc-walker { transition: none !important; }
@@ -986,8 +1021,12 @@ button.pet-strip { cursor: pointer; }
 }
 @media (max-width: 440px) {
   .tab { font-size: 9px; padding: 6px 0; letter-spacing: -.02em; }
+  .t-seg button { font-size: 13px; padding: 7px 6px; }
   .msg { max-width: 86%; }
   .tab .ico { font-size: 17px; }
+}
+@media (max-width: 380px) {
+  .tab { font-size: 8.5px; letter-spacing: -.04em; }
 }
 </style>
 </head>
@@ -1023,6 +1062,7 @@ button.pet-strip { cursor: pointer; }
     <button type="button" class="tab" data-action="tab" data-tab="prestasi"><span class="ico">🏆</span><span>Prestasi</span></button>
     <button type="button" class="tab" data-action="tab" data-tab="seru"><span class="ico">🎮</span><span>Seru</span></button>
     <button type="button" class="tab" data-action="tab" data-tab="pet" id="petTab"><span class="ico">🐾</span><span>Pet</span></button>
+    <button type="button" class="tab" data-action="tab" data-tab="teman" id="temanTab" hidden><span class="ico">💬</span><span>Teman</span></button>
     <button type="button" class="tab" data-action="tab" data-tab="profil"><span class="ico">👤</span><span>Profil</span></button>
   </nav>
   <main id="view" class="view"></main>
@@ -1043,7 +1083,7 @@ button.pet-strip { cursor: pointer; }
 /* =========================================================
    KONSTANTA & DATABASE
    ========================================================= */
-const APP_VERSION = '2.0';
+const APP_VERSION = '2.1';
 const UPDATE_BASE = 'https://sdel0ng.github.io/sehatku/';  // versi online resmi + version.json
 const UPDATE_CHECK_MS = 6 * 60 * 60 * 1000;               // cek otomatis tiap 6 jam selama aplikasi terbuka
 const VERSION_KEY = 'sehatku.appVersion';                 // versi terakhir yang dibuka di browser ini
@@ -1488,7 +1528,7 @@ const EQUIVALENTS = [
 ];
 
 /* ---------- Seru: boss mingguan, Tebak Kalori, Peta Nusantara, lelucon ---------- */
-const NEWS_VERSION = '2.0';        // pengumuman fitur baru tampil sekali per versi
+const NEWS_VERSION = '2.1';        // pengumuman fitur baru tampil sekali per versi
 const BOSS_EPOCH = '2024-01-01';   // hari Senin; boss berganti tiap minggu dihitung dari tanggal ini
 const TRIP_DAYS = 90;              // mode jaga berat: 90 hari mencatat = sampai Merauke
 
@@ -1886,6 +1926,8 @@ const USERNAME_RE = /^[a-z][a-z0-9_.]{2,19}$/;
 const PRESENCE_MS = 5 * 60 * 1000;            // kabar "online" diperbarui tiap 5 menit
 const ONLINE_MS = 7 * 60 * 1000;
 const CHAT_LIMIT = 80;                        // pesan terakhir yang dimuat
+const DIR_PAGE = 20;                          // pengguna per halaman di Ruang publik (batas aturan Firestore)
+const DIR_STALE_MS = 60 * 1000;               // daftar Ruang publik dimuat ulang setelah 1 menit
 const SOCIAL_KEY = 'sehatku.social.v1';       // tanda kunjungan & surat yang sudah dilihat (per perangkat)
 const PET_GIFTS = ['', '🍎', '🥕', '🍌', '🥦', '🍉', '🌽', '💧', '🌻', '💌'];
 const CHAT_STICKERS = ['👋', '💪', '🥦', '🔥', '👏', '😂', '🥰', '🏃', '💧', '🎉'];
@@ -2006,6 +2048,9 @@ const ui = {
   mascotTaps: 0,
   bubbleJoke: -1,
   petTip: 0,
+  temanSeg: 'chat',      // chat | publik
+  temanSegPicked: false,
+  chatWith: null,        // uid teman yang chat-nya sedang dibuka
 };
 
 const newDay = () => ({ foods: [], exercises: [], waterMl: 0, steps: null, sleepH: null });
@@ -4647,7 +4692,7 @@ function petTips(stats, pet) {
     push(`${v.pet.name} milik @${socialName(v.from)} datang berkunjung bawa pesan buatmu! 💌`, 'Lihat tamu', 'tab', 'data-tab="pet"');
   }
   if (returnedLetter()) push(`${pet.name} sudah pulang bawa balasan dari @${socialName(returnedLetter().to)}! 💌`, 'Baca', 'tab', 'data-tab="pet"');
-  for (const r of incomingRequests()) push(`@${socialName(r.from)} ingin berteman denganmu! 👋`, 'Lihat', 'tab', 'data-tab="pet"');
+  for (const r of incomingRequests()) push(`@${socialName(r.from)} ingin berteman denganmu! 👋`, 'Lihat', 'temanGo', 'data-seg="chat"');
   for (const fr of unreadFriendships()) push(`Ada pesan baru dari @${socialName(otherOf(fr))} 💬`, 'Buka chat', 'chatOpen', `data-uid="${esc(otherOf(fr))}"`);
   const waiting = chestsWaiting(stats.level.level);
   if (waiting) push(`Psst… ada ${waiting} peti hadiah belum dibuka! 🎁`, 'Buka peti', 'openChest');
@@ -5075,7 +5120,7 @@ function viewPet() {
     ${pet ? `<span class="pill">${myPets(level).length} pet · ${esc(pet.stage.name)} · Lv ${level}</span>` : ''}
   </div>
   ${pet ? `<div class="card" id="petHomeCard">${petHomeInner(stats, pet)}</div>` : adoptCardHtml(level)}
-  ${cloudEnabled() ? `<div id="socialArea" class="grid" data-sig="${esc(socialSig())}">${socialAreaHtml()}</div>` : ''}
+  ${cloudEnabled() ? `<div class="card" id="petSocial">${petSocialInner()}</div>` : ''}
   ${pet ? `<div class="grid two">${petsCardHtml(level)}${petGrowthHtml(stats, pet)}</div>${petCollectionHtml(level)}` : ''}`;
 }
 function renderPetHome() {
@@ -5206,7 +5251,7 @@ function buddyUpdate() {
   if (!buddy.el) return;
   const stats = getStats();
   const pet = activePet(stats.level.level);
-  const visible = buddyOn() && ui.tab !== 'pet' && !myPetAway() && !arcade.running;
+  const visible = buddyOn() && ui.tab !== 'pet' && !myPetAway() && !arcade.running && !chatOverlay();
   if (!visible) {
     if (!buddy.el.hidden) {
       buddy.el.hidden = true;
@@ -5791,6 +5836,7 @@ const VIEWS = {
   prestasi: viewAchievements,
   seru: viewFun,
   pet: viewPet,
+  teman: viewTeman,
   profil: viewProfile,
 };
 const TABS = Object.keys(VIEWS);
@@ -5804,13 +5850,16 @@ function render() {
   picker.value = ui.date;
   $('#nextDay').disabled = ui.date >= today;
   $('#todayBtn').hidden = ui.date === today;
+  $('#temanTab').hidden = !cloudEnabled();
   $$('#tabs [data-tab]').forEach(btn => {
     const active = btn.dataset.tab === ui.tab;
     btn.classList.toggle('active', active);
     if (active) btn.setAttribute('aria-current', 'page');
     else btn.removeAttribute('aria-current');
   });
+  const kept = ui.tab === 'teman' ? keepTemanInputs() : null;
   $('#view').innerHTML = VIEWS[ui.tab]();
+  if (kept) restoreTemanInputs(kept);
   const map = $('#view .journey-map');
   if (map && map.scrollWidth > map.clientWidth) {
     // Layar sempit: geser peta supaya posisi Bro Koli kelihatan
@@ -5822,16 +5871,19 @@ function render() {
   applyTheme();
   if ($('#arcadeCanvas')) arcadeAttach();
   // Siapkan layanan akun saat tab Profil dibuka (supaya pop-up login Google tidak diblokir)
-  if ((ui.tab === 'profil' || ui.tab === 'pet') && cloudEnabled() && !cloud.ready && !cloud.initPromise) cloudInit();
-  renderPetBadge();
+  if (['profil', 'pet', 'teman'].includes(ui.tab) && cloudEnabled() && !cloud.ready && !cloud.initPromise) cloudInit();
+  renderSocialBadges();
   buddyUpdate();
+  syncChatOverlay();
   if (ui.tab === 'pet') centerHouse();
+  if (ui.tab === 'teman') afterTemanRender();
 }
 
 function tabFromHash() {
-  const h = decodeURIComponent(location.hash.replace(/^#/, ''));
+  const h = decodeURIComponent(location.hash.replace(/^#/, '')).split('/')[0];
   return TABS.includes(h) ? h : 'beranda';
 }
+const chatHash = () => location.hash === '#teman/chat';
 
 function setTab(tab) {
   if (!TABS.includes(tab)) tab = 'beranda';
@@ -5840,6 +5892,10 @@ function setTab(tab) {
     ui.decorSel = null;
   }
   if (tab !== 'makanan') ui.pendingMeal = null;
+  if (tab !== 'teman' && (ui.chatWith || social.chat)) {
+    closeChatListener();
+    ui.chatWith = null;
+  }
   const changed = ui.tab !== tab;
   ui.tab = tab;
   render();
@@ -5855,10 +5911,6 @@ function setDate(k) {
 }
 
 function openModal(html, ctx = null) {
-  if (modalCtx && modalCtx.type === 'chat' && !(ctx && ctx.type === 'chat')) {
-    closeChatListener();
-    renderSocial();
-  }
   modalCtx = ctx;
   $('#modalCard').className = 'modal-card' + (ctx && ctx.cardClass ? ' ' + ctx.cardClass : '');
   $('#modalCard').innerHTML = html;
@@ -5882,10 +5934,6 @@ function closeModal() {
   $('#modalCard').innerHTML = '';
   $('#modalCard').className = 'modal-card';
   modalCtx = null;
-  if (ctx && ctx.type === 'chat') {
-    closeChatListener();
-    renderSocial();
-  }
   if (ctx && (ctx.type === 'gameIntro' || ctx.type === 'news')) {
     const g = state.game;
     if (!g.introSeen || g.news !== NEWS_VERSION) {
@@ -6035,22 +6083,23 @@ function openGameIntro() {
 function openNews() {
   const level = getStats().level.level;
   const pet = activePet(level);
+  const hasAccount = Boolean(syncMeta().uid);
   openModal(`
     <div class="welcome">
       <div class="pet-opt active" style="max-width:150px;margin:0 auto"><div class="po-art" style="width:120px;height:120px">${petSvg(pet ? pet.id : 'oyen', { stage: petStage(level).id, mood: 'bangga' })}</div></div>
-      <h2>SehatKu sekarang online! 🌐</h2>
-      <p>Buat akun gratis dengan email, lalu ajak temanmu bergabung.</p>
+      <h2>Halaman Teman baru! 💬</h2>
+      <p>Chat &amp; cari teman sekarang punya tab sendiri: <b>Teman</b>.</p>
       <ul class="intro-list">
-        <li>☁️ <b>Akun &amp; sinkron</b> — catatan aman di cloud &amp; sama di HP, laptop, dan aplikasi Android</li>
-        <li>🔎 <b>Username</b> — cari teman dan kirim permintaan pertemanan</li>
-        <li>💬 <b>Chat</b> dengan teman, lengkap dengan stiker</li>
-        <li>🐾 <b>Kirim pet berkunjung</b> ke rumah teman membawa pesan &amp; oleh-oleh</li>
-        <li>🏠 <b>Lihat rumah teman</b> — furnitur dan semua pet-nya jalan-jalan</li>
-        <li>🔒 Data kesehatan tetap privat — teman hanya melihat username, level, streak &amp; pet</li>
+        <li>🌏 <b>Ruang publik</b> — daftar semua pengguna SehatKu. Langsung ketuk <b>➕ Tambah</b>, tidak perlu cari nama dulu</li>
+        <li>💬 <b>Chat</b> di satu halaman — di HP chat terbuka layar penuh</li>
+        <li>🏠 Intip rumah &amp; pet siapa saja dari Ruang publik</li>
+        <li>🔔 Pesan baru muncul sebagai pop-up dengan tombol <b>Balas</b>, plus angka di tab Teman</li>
+        <li>🙈 Tidak mau tampil di Ruang publik? Matikan lewat ✏️ Ubah di tab Teman</li>
+        ${hasAccount ? '' : '<li>☁️ Belum punya akun? Daftar gratis dengan email — catatanmu juga ikut tersimpan di cloud</li>'}
       </ul>
       <div class="modal-actions" style="justify-content:center">
         <button type="button" class="btn" data-action="newsDone">Nanti saja</button>
-        <button type="button" class="btn primary" data-action="newsGo">Buat akun &amp; cari teman 🌐</button>
+        <button type="button" class="btn primary" data-action="newsGo">Buka Teman 💬</button>
       </div>
     </div>`, { type: 'news' });
 }
@@ -6589,7 +6638,7 @@ function firestoreSocial(getFb) {
     const d = read(s);
     return {
       uid: s.id, username: d.username, name: d.name || '', level: d.level || 1, streak: d.streak || 0, badges: d.badges || 0,
-      pet: d.pet || emptyPet, lastSeen: ms(d.lastSeen), updatedAt: ms(d.updatedAt),
+      pet: d.pet || emptyPet, home: d.home || null, listed: d.listed !== false, lastSeen: ms(d.lastSeen), updatedAt: ms(d.updatedAt),
     };
   };
   const friendshipOf = s => {
@@ -6656,6 +6705,14 @@ function firestoreSocial(getFb) {
     async search(prefix) {
       const q = F().query(F().collection(db(), 'profiles'), F().orderBy('username'), F().startAt(prefix), F().endAt(prefix + '\uf8ff'), F().limit(10));
       return (await F().getDocs(q)).docs.map(profileOf);
+    },
+    // Ruang publik: profil yang mau tampil, terakhir aktif paling atas (butuh indeks listed + lastSeen)
+    async directory(cursor) {
+      const parts = [F().where('listed', '==', true), F().orderBy('lastSeen', 'desc')];
+      if (cursor) parts.push(F().startAfter(cursor));
+      parts.push(F().limit(DIR_PAGE));
+      const snap = await F().getDocs(F().query(F().collection(db(), 'profiles'), ...parts));
+      return { list: snap.docs.map(profileOf), cursor: snap.docs.length ? snap.docs[snap.docs.length - 1] : cursor, done: snap.docs.length < DIR_PAGE };
     },
     watchFriendships: (uid, cb, onError) => F().onSnapshot(
       F().query(F().collection(db(), 'friendships'), F().where('members', 'array-contains', uid)),
@@ -6757,6 +6814,7 @@ function cloudBoot() {
   if (!CLOUD_CONFIG) return;
   cloud.api = firebaseAdapter(CLOUD_CONFIG);
   cloud.status = 'idle';
+  render();
   renderCloudUi();
   // Pernah masuk di perangkat ini → pulihkan sesi & sinkronkan otomatis
   if (syncMeta().uid) cloudInit();
@@ -7039,7 +7097,8 @@ function accountCardInner() {
 function renderCloudUi() {
   renderCloudChip();
   const area = $('#socialArea');
-  if (area && area.dataset.sig !== socialSig()) renderSocial();
+  if ((area && area.dataset.sig !== socialSig()) || $('#petSocial')) renderSocial();
+  else renderSocialBadges();
   const card = $('#accountCard');
   if (card) {
     card.hidden = !cloudEnabled();
@@ -7107,7 +7166,11 @@ const social = {
   publishTimer: null,
   presenceTimer: null,
   touchedAt: 0,
+  dir: newDirectory(),   // Ruang publik: semua pengguna yang mau tampil
 };
+function newDirectory() {
+  return { list: [], cursor: null, done: false, busy: false, error: '', loadedAt: 0, seq: 0 };
+}
 let searchTimer = null;
 const socialApi = () => (cloud.api && cloud.api.social) || null;
 const socialReady = () => social.status === 'ready';
@@ -7117,7 +7180,8 @@ const acceptedFriends = () => social.friendships.filter(f => f.status === 'accep
 const incomingRequests = () => (socialReady() ? social.friendships.filter(f => f.status === 'pending' && f.to === social.uid) : []);
 const outgoingRequests = () => social.friendships.filter(f => f.status === 'pending' && f.from === social.uid);
 const socialName = uid => (social.profiles[uid] ? social.profiles[uid].username : '…');
-const chatOpenWith = f => Boolean(social.chat && social.chat.pairId === f.id);
+// Chat dianggap sedang dibaca hanya kalau terbuka dan aplikasinya terlihat
+const chatOpenWith = f => Boolean(social.chat && social.chat.pairId === f.id && document.visibilityState !== 'hidden');
 const isUnread = f => f.status === 'accepted' && Boolean(f.lastMsg) && f.lastMsg.from !== social.uid && f.lastAt > (f.read[social.uid] || 0) && !chatOpenWith(f);
 const unreadFriendships = () => (socialReady() ? acceptedFriends().filter(isUnread) : []);
 const visitActive = v => Boolean(v) && v.status === 'visiting' && Date.now() - v.at < VISIT_HOURS * 3600000;
@@ -7274,17 +7338,20 @@ function socialStop() {
   Object.assign(social, {
     status: 'off', uid: null, me: null, error: '', friendships: [], profiles: {}, visitors: [], myVisit: null, blocks: [],
     unsubs: [], loaded: {}, fetching: {}, publishedSig: '', touchedAt: 0,
-    search: { q: '', results: null, busy: false, seq: 0, error: '' },
+    search: { q: '', results: null, busy: false, seq: 0, error: '' }, dir: newDirectory(),
   });
+  ui.chatWith = null;
+  ui.temanSegPicked = false;
 }
 
 // Notifikasi kecil saat ada kabar baru (bukan saat data pertama dimuat)
-function socialNotify(makeText) {
+const notifyGo = (label, attrs) => ({ label, attrs });
+function socialNotify(makeText, go = notifyGo('Lihat', 'data-action="temanGo" data-seg="chat"')) {
   setTimeout(() => {
     if (!socialReady()) return;
     const text = makeText();
-    if (buddySay(text, { ms: 6500, actions: '<button type="button" class="btn small primary" data-action="tab" data-tab="pet">Lihat</button>' })) buddyJoy();
-    else toast(text);
+    if (buddySay(text, { ms: 6500, actions: `<button type="button" class="btn small primary" ${go.attrs}>${esc(go.label)}</button>` })) buddyJoy();
+    else toast(text, 'ok', `<button type="button" class="toast-btn" ${go.attrs}>${esc(go.label)}</button>`);
   }, 350);
 }
 function onFriendships(uid, list) {
@@ -7293,14 +7360,23 @@ function onFriendships(uid, list) {
   const first = !social.loaded.friendships;
   social.friendships = list;
   social.loaded.friendships = true;
+  // Teman dihapus/diblokir saat chat-nya terbuka → tutup chat
+  if (ui.chatWith && !list.some(f => f.status === 'accepted' && f.members.includes(ui.chatWith))) {
+    closeChatListener();
+    ui.chatWith = null;
+    if (chatHash()) history.replaceState(null, '', '#teman');
+  }
   if (!first) {
     for (const f of list) {
       const old = before.find(x => x.id === f.id);
       const other = otherOf(f);
+      const chatGo = notifyGo('Balas', `data-action="chatOpen" data-uid="${esc(other)}"`);
       if (f.status === 'pending' && f.to === uid && !old) socialNotify(() => `👋 @${socialName(other)} ingin berteman denganmu!`);
-      if (f.status === 'accepted' && old && old.status === 'pending' && f.from === uid) socialNotify(() => `🎉 @${socialName(other)} menerima pertemananmu!`);
+      if (f.status === 'accepted' && old && old.status === 'pending' && f.from === uid) {
+        socialNotify(() => `🎉 @${socialName(other)} menerima pertemananmu!`, notifyGo('Chat', chatGo.attrs));
+      }
       if (f.status === 'accepted' && f.lastMsg && f.lastMsg.from !== uid && f.lastAt > ((old && old.lastAt) || 0) && !chatOpenWith(f)) {
-        socialNotify(() => `💬 @${socialName(other)}: ${f.lastMsg.text}`);
+        socialNotify(() => `💬 @${socialName(other)}: ${f.lastMsg.text}`, chatGo);
       }
     }
   }
@@ -7317,7 +7393,7 @@ function onVisitors(uid, list) {
   if (!first) {
     for (const v of list) {
       const old = before.find(x => x.from === v.from);
-      if (visitActive(v) && (!old || old.at !== v.at)) socialNotify(() => `🐾 ${v.pet.name} milik @${socialName(v.from)} datang berkunjung!`);
+      if (visitActive(v) && (!old || old.at !== v.at)) socialNotify(() => `🐾 ${v.pet.name} milik @${socialName(v.from)} datang berkunjung!`, notifyGo('Lihat', 'data-action="tab" data-tab="pet"'));
     }
   }
   if (ui.tab === 'pet') markVisitorsSeen();
@@ -7331,7 +7407,7 @@ function onMyVisit(uid, visit) {
   social.myVisit = visit;
   social.loaded.myVisit = true;
   if (!first && old && old.status === 'visiting' && visit && visit.status === 'home' && visit.at === old.at && (visit.reply || visit.replyGift)) {
-    socialNotify(() => `💌 ${visit.pet.name} pulang bawa balasan dari @${socialName(visit.to)}!`);
+    socialNotify(() => `💌 ${visit.pet.name} pulang bawa balasan dari @${socialName(visit.to)}!`, notifyGo('Baca', 'data-action="tab" data-tab="pet"'));
   }
   if (visit) fetchProfiles([visit.to]);
   renderSocial();
@@ -7365,9 +7441,10 @@ function publicFields() {
   return {
     name: social.me ? social.me.name : '', level: stats.level.level, streak: stats.curLogStreak,
     badges: stats.unlockedCount, pet: petPublic(stats.level.level), home: homePublic(stats.level.level),
+    listed: !social.me || social.me.listed !== false,
   };
 }
-const publishSig = f => [f.name, f.level, f.streak, f.badges, f.pet.species, f.pet.name, f.pet.stage, JSON.stringify(f.home || null)].join('|');
+const publishSig = f => [f.name, f.level, f.streak, f.badges, f.pet.species, f.pet.name, f.pet.stage, JSON.stringify(f.home || null), f.listed !== false].join('|');
 function publishProfile(force) {
   const api = socialApi();
   if (!socialReady() || !api || !social.me) return;
@@ -7395,10 +7472,12 @@ function socialTouch() {
 }
 
 // ---------- Tampilan ----------
-function renderPetBadge() {
-  const tab = $('#petTab');
+const BASE_TITLE = document.title;
+const chatBadgeCount = () => (socialReady() ? incomingRequests().length + unreadFriendships().length : 0);
+const petBadgeCount = () => (socialReady() ? activeVisitors().filter(v => !visitSeen(v)).length + (returnedLetter() ? 1 : 0) : 0);
+function setTabBadge(selector, n) {
+  const tab = $(selector);
   if (!tab) return;
-  const n = socialBadgeCount();
   let badge = tab.querySelector('.tab-badge');
   if (!n) {
     if (badge) badge.remove();
@@ -7411,25 +7490,43 @@ function renderPetBadge() {
   }
   badge.textContent = n > 9 ? '9+' : String(n);
 }
-const socialSig = () => [cloud.user ? cloud.user.uid : '', cloud.status === 'loading' ? 'l' : '', social.status, social.me ? social.me.username : ''].join('|');
+// Angka di tab Teman (chat & permintaan) dan tab Pet (tamu & surat); chat belum dibaca juga tampil di judul jendela
+function renderSocialBadges() {
+  setTabBadge('#temanTab', chatBadgeCount());
+  setTabBadge('#petTab', petBadgeCount());
+  const unread = socialReady() ? unreadFriendships().length : 0;
+  const title = (unread ? `(${unread}) ` : '') + BASE_TITLE;
+  if (document.title !== title) document.title = title;
+}
+const socialSig = () => [cloudEnabled() ? 'c' : '', cloud.user ? cloud.user.uid : '', cloud.status === 'loading' ? 'l' : '', social.status,
+  social.me ? social.me.username : '', ui.temanSeg, ui.chatWith || ''].join('|');
 function renderSocial() {
-  renderPetBadge();
+  renderSocialBadges();
   buddyUpdate();
-  if (ui.tab === 'pet') {
+  syncChatOverlay();
+  if (ui.tab === 'teman') {
+    temanDefaults();
     const area = $('#socialArea');
-    if (area) {
-      if (area.dataset.sig !== socialSig()) {
-        area.innerHTML = socialAreaHtml();
-        area.dataset.sig = socialSig();
-      } else {
-        const head = $('#socialHead');
-        const lists = $('#socialLists');
-        const results = $('#searchResults');
-        if (head) head.innerHTML = socialHeadInner();
-        if (lists) lists.innerHTML = socialListsInner();
-        if (results) results.innerHTML = searchResultsHtml();
+    if (area && area.dataset.sig !== socialSig()) {
+      const kept = keepTemanInputs();
+      area.innerHTML = socialAreaHtml();
+      area.dataset.sig = socialSig();
+      restoreTemanInputs(kept);
+      afterTemanRender();
+    } else if (area) {
+      const parts = [
+        ['#socialHead', socialHeadInner], ['#temanLists', temanListsInner], ['#searchResults', searchResultsHtml],
+        ['#dirList', dirListInner], ['#chatHeadInfo', chatHeadInfoHtml], ['#segChat', segChatInner],
+      ];
+      for (const [selector, html] of parts) {
+        const el = $(selector);
+        if (el) el.innerHTML = html();
       }
     }
+  }
+  if (ui.tab === 'pet') {
+    const card = $('#petSocial');
+    if (card) card.innerHTML = petSocialInner();
     renderPetHome();
   }
   if (ui.tab === 'beranda') {
@@ -7438,13 +7535,16 @@ function renderSocial() {
   }
 }
 function socialAreaHtml() {
+  if (!cloudEnabled()) {
+    return `${temanTitleHtml()}<div class="card"><h3>💬 Teman &amp; chat</h3><p class="small">Fitur teman butuh layanan akun SehatKu dan tidak tersedia di salinan ini.</p></div>`;
+  }
   const pet = activePet();
   if (!cloud.user) {
     const local = !updater.hosted() || Boolean(androidApp) || !CLOUD_GOOGLE;
-    return `
+    return `${temanTitleHtml()}
     <div class="card">
       <h3>🌐 Teman, chat &amp; kunjungan pet</h3>
-      <p class="small">Masuk akun untuk mencari teman lewat username, ngobrol, dan mengirim ${pet ? esc(pet.name) : 'pet'} main ke rumah mereka sambil membawa pesan.</p>
+      <p class="small">Masuk akun untuk melihat semua pengguna SehatKu di Ruang publik, menambah teman, ngobrol, dan mengirim ${pet ? esc(pet.name) : 'pet'} main ke rumah mereka sambil membawa pesan.</p>
       <div class="row wrap gap-s">
         <button type="button" class="btn small primary" data-action="cloudEmail">✉️ Masuk / daftar dengan email</button>
         ${local ? '' : '<button type="button" class="btn small" data-action="cloudGoogle">Masuk dengan Google</button>'}
@@ -7454,35 +7554,53 @@ function socialAreaHtml() {
     </div>`;
   }
   if (social.status === 'error') {
-    return `<div class="card"><h3>🌐 Teman</h3><p class="small warn-text">${esc(social.error)}</p><button type="button" class="btn small" data-action="socialRetry">🔄 Coba lagi</button></div>`;
+    return `${temanTitleHtml()}<div class="card"><h3>🌐 Teman</h3><p class="small warn-text">${esc(social.error)}</p><button type="button" class="btn small" data-action="socialRetry">🔄 Coba lagi</button></div>`;
   }
-  if (social.status === 'needUsername') return `<div class="card">${usernameFormHtml(false)}</div>`;
-  if (social.status !== 'ready') return '<div class="card"><p class="small muted">⏳ Memuat teman…</p></div>';
+  if (social.status === 'needUsername') return `${temanTitleHtml()}<div class="card">${usernameFormHtml(false)}</div>`;
+  if (social.status !== 'ready') return `${temanTitleHtml()}<div class="card"><p class="small muted">⏳ Memuat teman…</p></div>`;
+  const open = Boolean(ui.chatWith);
+  const seg = ui.temanSeg;
   return `
-    <div class="card" id="socialHead">${socialHeadInner()}</div>
-    <div class="card">
-      <div class="card-head"><h3>🔎 Cari teman</h3></div>
-      <div class="search-box">
-        <input class="input" id="friendSearch" data-input="socialSearch" placeholder="Ketik username, mis. budi" value="${esc(social.search.q)}" maxlength="21" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Cari username">
-        <div id="searchResults">${searchResultsHtml()}</div>
+    <div class="teman${open ? ' chat-open' : ''}" id="temanBox">
+      <div class="t-side">
+        ${temanTitleHtml()}
+        <div class="card" id="socialHead">${socialHeadInner()}</div>
+        <div class="seg t-seg" role="tablist" aria-label="Bagian halaman Teman">
+          <button type="button" role="tab" id="segChat" class="${seg === 'chat' ? 'active' : ''}" aria-selected="${seg === 'chat'}" data-action="temanSeg" data-seg="chat">${segChatInner()}</button>
+          <button type="button" role="tab" class="${seg === 'publik' ? 'active' : ''}" aria-selected="${seg === 'publik'}" data-action="temanSeg" data-seg="publik">🌏 Ruang publik</button>
+        </div>
+        ${seg === 'publik' ? publikPaneHtml() : `<div class="card" id="temanLists">${temanListsInner()}</div>`}
       </div>
-    </div>
-    <div class="card" id="socialLists">${socialListsInner()}</div>`;
+      <div class="card t-chat" id="chatPane">${open ? chatViewHtml(ui.chatWith) : chatEmptyHtml()}</div>
+    </div>`;
+}
+function segChatInner() {
+  const n = chatBadgeCount();
+  return `💬 Chat${n ? ` <span class="seg-count">${n > 9 ? '9+' : n}</span>` : ''}`;
+}
+// Pertama kali halaman Teman dibuka: belum punya teman → langsung tampilkan Ruang publik
+function temanDefaults() {
+  if (ui.temanSegPicked || !socialReady() || !social.loaded.friendships) return;
+  ui.temanSeg = social.friendships.length ? 'chat' : 'publik';
+  ui.temanSegPicked = true;
 }
 function usernameFormHtml(edit) {
   const me = social.me;
+  const listed = !me || me.listed !== false;
   return `
-    <h3>🏷️ ${edit ? 'Ubah username' : 'Buat username'}</h3>
+    <h3>🏷️ ${edit ? 'Ubah profil teman' : 'Buat username'}</h3>
     <p class="small">Username dipakai teman untuk menemukanmu: 3–20 karakter, huruf kecil, angka, titik atau garis bawah, diawali huruf.</p>
     <form class="form" data-form="username" novalidate>
       <label class="field">Username<input name="username" value="${esc(me ? me.username : suggestedUsername())}" maxlength="20" autocomplete="off" autocapitalize="none" spellcheck="false" required></label>
       <label class="field">Nama tampilan (opsional)<input name="name" value="${esc(me ? me.name : state.profile.name)}" maxlength="30" autocomplete="off"></label>
+      <label class="check"><input type="checkbox" name="listed" value="1" ${listed ? 'checked' : ''}> 🌏 Tampilkan aku di Ruang publik</label>
+      <p class="tiny muted">Ruang publik berisi daftar pengguna SehatKu supaya mudah berteman. Kalau dimatikan, kamu tidak muncul di daftar, tapi teman tetap bisa mencarimu lewat username.</p>
       <div class="modal-actions">
         ${edit ? '<button type="button" class="btn" data-action="closeModal">Batal</button>' : ''}
         <button class="btn primary">${edit ? 'Simpan' : 'Buat username 🚀'}</button>
       </div>
     </form>
-    <p class="tiny muted">🔒 Pengguna lain hanya bisa melihat username, nama tampilan, level, streak, jumlah lencana &amp; pet-mu. Catatan makan, berat &amp; data kesehatan tetap privat.</p>`;
+    <p class="tiny muted">🔒 Pengguna lain hanya bisa melihat username, nama tampilan, level, streak, jumlah lencana, pet &amp; rumah pet-mu. Catatan makan, berat &amp; data kesehatan tetap privat.</p>`;
 }
 function miniPetHtml(pet) {
   const sp = pet && speciesInfo(pet.species);
@@ -7497,7 +7615,7 @@ function socialHeadInner() {
     <div class="me-card">
       ${pet ? miniPetHtml({ species: pet.id, stage: pet.stage.id }) : miniPetHtml(null)}
       <div style="min-width:0"><b>@${esc(me.username)}</b>${me.name ? ` <span class="muted small">· ${esc(me.name)}</span>` : ''}
-        <div class="tiny muted">${stats.level.emoji} Lv ${stats.level.level} · 🔥 ${stats.curLogStreak} · ${acceptedFriends().length} teman</div></div>
+        <div class="tiny muted">${stats.level.emoji} Lv ${stats.level.level} · 🔥 ${stats.curLogStreak} · ${acceptedFriends().length} teman · ${me.listed === false ? '🙈 tidak tampil di Ruang publik' : '🌏 tampil di Ruang publik'}</div></div>
       <button type="button" class="btn small" data-action="usernameEdit">✏️ Ubah</button>
     </div>
     ${letter ? letterHtml(letter) : ''}
@@ -7513,11 +7631,11 @@ function letterHtml(v) {
       <div class="row wrap gap-s mt-s"><button type="button" class="btn small" data-action="letterDone">Oke! 💚</button><button type="button" class="btn small" data-action="chatOpen" data-uid="${esc(v.to)}">💬 Chat</button></div>
     </div>`;
 }
-function personRowHtml(uid, actions, extraClass = '', sub = '') {
+function personRowHtml(uid, actions, extraClass = '', sub = '', attrs = '') {
   const p = social.profiles[uid];
   const info = p ? `${levelTitle(p.level).emoji} Lv ${p.level} · ${presenceHtml(p)}` : 'Memuat…';
   return `
-    <div class="friend-row ${extraClass}">
+    <div class="friend-row ${extraClass}" ${attrs}>
       ${miniPetHtml(p && p.pet)}
       <div style="min-width:0"><div class="fr-name">@${esc(p ? p.username : '…')}${p && p.name ? ` <span class="muted small">· ${esc(p.name)}</span>` : ''}</div>
         <div class="fr-sub">${sub || info}</div></div>
@@ -7527,33 +7645,41 @@ function personRowHtml(uid, actions, extraClass = '', sub = '') {
 function friendRowHtml(f) {
   const uid = otherOf(f);
   const unread = isUnread(f);
+  const name = esc(socialName(uid));
   const preview = f.lastMsg ? esc(`${f.lastMsg.from === social.uid ? 'Kamu: ' : ''}${f.lastMsg.text}`) : '';
+  const cls = ['tap', unread ? 'unread' : '', ui.chatWith === uid ? 'active' : ''].join(' ');
   return personRowHtml(uid, `${unread ? '<span class="new-pill">baru</span>' : ''}
-    <button type="button" class="btn small" data-action="chatOpen" data-uid="${esc(uid)}" title="Chat" aria-label="Chat dengan @${esc(socialName(uid))}">💬</button>
-    <button type="button" class="btn small" data-action="friendHome" data-uid="${esc(uid)}" title="Kunjungi rumahnya" aria-label="Rumah @${esc(socialName(uid))}">🏠</button>`,
-  unread ? 'unread' : '', preview);
+    <button type="button" class="btn small" data-action="chatOpen" data-uid="${esc(uid)}" title="Chat" aria-label="Chat dengan @${name}">💬</button>
+    <button type="button" class="btn small" data-action="friendHome" data-uid="${esc(uid)}" title="Kunjungi rumahnya" aria-label="Rumah @${name}">🏠</button>`,
+  cls, preview, `data-action="chatOpen" data-uid="${esc(uid)}" role="button" tabindex="0" aria-label="Buka chat dengan @${name}"`);
+}
+// Baris pengguna di Ruang publik & hasil pencarian: ketuk untuk mengintip rumahnya
+function publicRowHtml(uid) {
+  return personRowHtml(uid, relationButtons(uid), 'tap', '',
+    `data-action="friendHome" data-uid="${esc(uid)}" role="button" tabindex="0" aria-label="Lihat rumah @${esc(socialName(uid))}"`);
 }
 function visitorRowHtml(v) {
   return personRowHtml(v.from, `<button type="button" class="btn small primary" data-action="visitReplyOpen" data-uid="${esc(v.from)}">💌 Baca</button>`, 'unread',
     `${esc(v.pet.name)} datang ${esc(agoText(v.at))}${giftOk(v.gift) ? ' · bawa ' + v.gift : ''}`);
 }
-function socialListsInner() {
+function temanListsInner() {
   const incoming = incomingRequests();
   const outgoing = outgoingRequests();
   const friends = acceptedFriends().slice().sort((a, b) => (b.lastAt || b.acceptedAt || 0) - (a.lastAt || a.acceptedAt || 0));
   const guests = activeVisitors();
   let html = '';
-  if (guests.length) {
-    html += `<div class="card-head"><h3>🏡 Tamu di rumahmu</h3><span class="pill">${guests.length}</span></div><div class="friend-list">${guests.map(visitorRowHtml).join('')}</div><div class="sep"></div>`;
-  }
   if (incoming.length) {
     html += `<div class="card-head"><h3>👋 Permintaan pertemanan</h3><span class="pill">${incoming.length}</span></div>
       <div class="friend-list">${incoming.map(f => personRowHtml(f.from, `<button type="button" class="btn small primary" data-action="friendAccept" data-id="${esc(f.id)}">Terima</button><button type="button" class="btn small" data-action="friendDecline" data-id="${esc(f.id)}">Tolak</button>`)).join('')}</div><div class="sep"></div>`;
   }
-  html += `<div class="card-head"><h3>🤝 Teman</h3><span class="pill">${friends.length}</span></div>`;
+  if (guests.length) {
+    html += `<div class="card-head"><h3>🏡 Tamu di rumahmu</h3><span class="pill">${guests.length}</span></div><div class="friend-list">${guests.map(visitorRowHtml).join('')}</div><div class="sep"></div>`;
+  }
+  html += `<div class="card-head"><h3>💬 Teman &amp; chat</h3><span class="pill">${friends.length}</span></div>`;
   html += friends.length
     ? `<div class="friend-list">${friends.map(friendRowHtml).join('')}</div>`
-    : '<div class="empty">Belum ada teman. Cari username temanmu di atas, lalu kirim permintaan pertemanan 🤝</div>';
+    : `<div class="empty">Belum ada teman. Buka Ruang publik untuk melihat semua pengguna SehatKu, lalu ketuk ➕ Tambah 🤝
+        <div class="mt-s"><button type="button" class="btn small primary" data-action="temanSeg" data-seg="publik">🌏 Buka Ruang publik</button></div></div>`;
   if (outgoing.length) {
     html += `<div class="sep"></div><div class="card-head"><h3>⏳ Menunggu jawaban</h3></div>
       <div class="friend-list">${outgoing.map(f => personRowHtml(f.to, `<button type="button" class="btn small" data-action="friendDecline" data-id="${esc(f.id)}">Batal</button>`)).join('')}</div>`;
@@ -7574,11 +7700,12 @@ function relationButtons(uid) {
 }
 function searchResultsHtml() {
   const s = social.search;
+  if (!s.q.trim()) return '';
   if (s.busy) return '<p class="tiny muted">Mencari…</p>';
   if (s.error) return `<p class="tiny warn-text">${esc(s.error)}</p>`;
-  if (!s.results) return '<p class="tiny muted">Minimal 2 huruf. Bagikan username-mu ke teman supaya mereka bisa menemukanmu.</p>';
+  if (!s.results) return '<p class="tiny muted">Minimal 2 huruf.</p>';
   if (!s.results.length) return '<p class="tiny muted">Username tidak ditemukan.</p>';
-  return `<div class="friend-list">${s.results.map(p => personRowHtml(p.uid, relationButtons(p.uid))).join('')}</div>`;
+  return `<div class="friend-list">${s.results.map(p => publicRowHtml(p.uid)).join('')}</div>`;
 }
 async function runSearch() {
   const api = socialApi();
@@ -7611,6 +7738,209 @@ async function runSearch() {
 function renderSearchResults() {
   const box = $('#searchResults');
   if (box) box.innerHTML = searchResultsHtml();
+}
+
+// ---------- Halaman Teman & Ruang publik ----------
+function viewTeman() {
+  temanDefaults();
+  return `<div id="socialArea" class="grid" data-sig="${esc(socialSig())}">${socialAreaHtml()}</div>`;
+}
+const temanTitleHtml = () => `
+  <div class="page-title">
+    <div><h1>Teman</h1><p>Cari teman di Ruang publik, ngobrol &amp; saling kirim pet 🐾</p></div>
+  </div>`;
+function publikPaneHtml() {
+  return `
+    <div class="card">
+      <div class="search-box">
+        <input class="input" id="friendSearch" type="search" data-input="socialSearch" placeholder="Cari username, mis. budi" value="${esc(social.search.q)}" maxlength="21" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Cari username">
+        <div id="searchResults">${searchResultsHtml()}</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="dir-head"><h3>🌏 Ruang publik</h3><button type="button" class="btn small" data-action="dirRefresh" title="Muat ulang" aria-label="Muat ulang daftar pengguna">🔄</button></div>
+      <p class="tiny muted">Semua pengguna SehatKu yang tampil di Ruang publik, yang terakhir aktif paling atas. Ketuk ➕ Tambah untuk berteman, atau ketuk namanya untuk mengintip rumahnya.</p>
+      <div id="dirList">${dirListInner()}</div>
+    </div>`;
+}
+function dirListInner() {
+  const d = social.dir;
+  const people = d.list.filter(p => p.uid !== social.uid && !social.blocks.includes(p.uid) && social.profiles[p.uid]);
+  let html = '';
+  if (people.length) html += `<div class="friend-list">${people.map(p => publicRowHtml(p.uid)).join('')}</div>`;
+  else if (d.busy || !d.loadedAt) html += d.error ? '' : '<p class="tiny muted">⏳ Memuat pengguna…</p>';
+  else if (!d.error) {
+    html += `<div class="empty">Belum ada pengguna lain di Ruang publik. Ajak temanmu daftar SehatKu, lalu bagikan username-mu: <b>@${esc(social.me ? social.me.username : '')}</b> 🌱</div>`;
+  }
+  if (d.error) html += `<p class="tiny warn-text mt-s">${esc(d.error)}</p>`;
+  if (people.length && !d.done) {
+    html += `<div class="mt-s"><button type="button" class="btn small" data-action="dirMore" ${d.busy ? 'disabled' : ''}>${d.busy ? '⏳ Memuat…' : 'Muat lagi'}</button></div>`;
+  }
+  return html;
+}
+function renderDirList() {
+  const box = $('#dirList');
+  if (box) box.innerHTML = dirListInner();
+}
+// Ruang publik: profil yang mau tampil, urut dari yang terakhir aktif, per halaman DIR_PAGE orang
+async function loadDirectory(reset = false) {
+  const api = socialApi();
+  const d = social.dir;
+  if (!api || !api.directory || !socialReady()) return;
+  if (d.busy && !reset) return;
+  if (!reset && d.done) return;
+  const uid = social.uid;
+  const seq = ++d.seq;
+  d.busy = true;
+  d.error = '';
+  renderDirList();
+  try {
+    const page = await api.directory(reset ? null : d.cursor);
+    if (social.uid !== uid || seq !== d.seq) return;
+    const now = Date.now();
+    page.list.forEach(p => {
+      if (p.uid !== social.uid) social.profiles[p.uid] = { ...p, fetchedAt: now };
+    });
+    const seen = new Set(reset ? [] : d.list.map(p => p.uid));
+    d.list = (reset ? [] : d.list).concat(page.list.filter(p => !seen.has(p.uid)));
+    d.cursor = page.cursor;
+    d.done = page.done;
+    d.loadedAt = now;
+  } catch (err) {
+    if (social.uid !== uid || seq !== d.seq) return;
+    d.error = socialErrorText(err, 'Daftar pengguna tidak bisa dimuat. Coba lagi sebentar.');
+    d.loadedAt = Date.now();
+  }
+  d.busy = false;
+  renderDirList();
+}
+// Kartu ringkas di tab Pet: teman & chat sekarang punya halaman sendiri
+function petSocialInner() {
+  const pet = activePet();
+  const petName = pet ? esc(pet.name) : 'pet-mu';
+  const go = '<button type="button" class="btn small primary" data-action="tab" data-tab="teman">Buka Teman →</button>';
+  if (!cloud.user || !socialReady()) {
+    const needName = Boolean(cloud.user) && social.status === 'needUsername';
+    return `
+      <div class="pet-social">
+        <div><h3>👥 Teman &amp; chat</h3><p class="small">${needName ? 'Buat username dulu di tab Teman supaya bisa berteman.' : `Masuk akun untuk berteman, ngobrol, dan mengirim ${petName} main ke rumah teman.`}</p></div>
+        ${go}
+      </div>`;
+  }
+  const letter = returnedLetter();
+  const unread = unreadFriendships().length;
+  const requests = incomingRequests().length;
+  const bits = [`${acceptedFriends().length} teman`];
+  if (unread) bits.push(`💬 ${unread} chat baru`);
+  if (requests) bits.push(`👋 ${requests} permintaan`);
+  return `
+    ${letter ? letterHtml(letter) : ''}
+    <div class="pet-social${letter ? ' mt' : ''}">
+      <div><h3>👥 Teman &amp; chat</h3><p class="small">${bits.join(' · ')}</p>
+        <p class="tiny muted">Kirim ${petName} main ke rumah teman lewat tombol 🐾 di chat.</p></div>
+      ${go}
+    </div>`;
+}
+
+// ---------- Chat (halaman Teman) ----------
+function chatEmptyHtml() {
+  return `<div class="chat-empty"><div class="ce-art">💬</div><b>Pilih teman untuk mulai ngobrol</b>
+    <p class="small muted">Belum ada teman? Buka 🌏 Ruang publik — semua pengguna SehatKu ada di sana.</p></div>`;
+}
+function chatHeadInfoHtml() {
+  const p = (ui.chatWith && social.profiles[ui.chatWith]) || {};
+  return `${miniPetHtml(p.pet)}<span><b>@${esc(p.username || '…')}</b><span class="tiny muted">${presenceHtml(p)}</span></span>`;
+}
+function chatViewHtml(uid) {
+  const name = esc(socialName(uid));
+  return `
+    <div class="chat-head">
+      <button type="button" class="x-btn chat-back" data-action="chatClose" aria-label="Kembali ke daftar chat">←</button>
+      <button type="button" class="chat-who" id="chatHeadInfo" data-action="friendHome" data-uid="${esc(uid)}" aria-label="Lihat rumah @${name}">${chatHeadInfoHtml()}</button>
+      <div class="ch-tools">
+        <button type="button" class="btn small" data-action="visitOpen" data-uid="${esc(uid)}" title="Kirim pet berkunjung" aria-label="Kirim pet berkunjung ke @${name}">🐾</button>
+        <button type="button" class="btn small" data-action="friendHome" data-uid="${esc(uid)}" title="Rumahnya" aria-label="Rumah @${name}">🏠</button>
+        <button type="button" class="x-btn chat-x" data-action="chatClose" aria-label="Tutup chat">×</button>
+      </div>
+    </div>
+    <div class="chat-list" id="chatList">${chatListInner()}</div>
+    <div class="chat-stickers">${CHAT_STICKERS.map(s => `<button type="button" data-action="chatSticker" data-s="${s}" aria-label="Kirim ${s}">${s}</button>`).join('')}</div>
+    <form class="chat-form" data-form="chatSend" data-uid="${esc(uid)}" novalidate>
+      <input name="text" maxlength="500" placeholder="Tulis pesan…" autocomplete="off" enterkeyhint="send" aria-label="Pesan untuk @${name}">
+      <button class="btn primary">Kirim</button>
+    </form>`;
+}
+function afterTemanRender() {
+  if (!socialReady()) return;
+  const d = social.dir;
+  if (ui.temanSeg === 'publik' && !d.busy && (!d.loadedAt || Date.now() - d.loadedAt > DIR_STALE_MS)) loadDirectory(true);
+  const list = $('#chatList');
+  if (list && social.chat) {
+    list.scrollTop = list.scrollHeight;
+    social.chat.scrolled = social.chat.loaded;
+  }
+  fitChatOverlay();
+}
+// HP: chat yang terbuka memenuhi layar (di atas menu bawah)
+const chatOverlay = () => ui.tab === 'teman' && Boolean(ui.chatWith) && socialReady() && window.matchMedia('(max-width: 820px)').matches;
+function syncChatOverlay() {
+  const on = chatOverlay();
+  if (document.body.classList.contains('chat-full') === on) return;
+  document.body.classList.toggle('chat-full', on);
+  buddyUpdate();
+}
+// Ikuti area layar yang terlihat, supaya kolom ketik tetap di atas keyboard HP
+function fitChatOverlay() {
+  const pane = $('#chatPane');
+  if (!pane) return;
+  const vv = window.visualViewport;
+  if (!chatOverlay() || !vv) {
+    pane.style.removeProperty('top');
+    pane.style.removeProperty('height');
+    return;
+  }
+  const list = $('#chatList');
+  const atBottom = list && list.scrollHeight - list.scrollTop - list.clientHeight < 40;
+  pane.style.top = `${Math.round(vv.offsetTop)}px`;
+  pane.style.height = `${Math.round(vv.height)}px`;
+  if (list && atBottom) list.scrollTop = list.scrollHeight;
+}
+// Tulisan yang sedang diketik tidak hilang saat halaman Teman digambar ulang
+function keepTemanInputs() {
+  const input = $('#chatPane input[name="text"]');
+  const search = $('#friendSearch');
+  const active = document.activeElement;
+  return {
+    chat: input ? input.value : '',
+    chatUid: input ? input.form.dataset.uid : '',
+    chatFocus: Boolean(input) && active === input,
+    searchFocus: Boolean(search) && active === search,
+  };
+}
+function restoreTemanInputs(kept) {
+  if (!kept) return;
+  const input = $('#chatPane input[name="text"]');
+  if (input && input.form.dataset.uid === kept.chatUid) {
+    if (kept.chat) input.value = kept.chat;
+    if (kept.chatFocus) input.focus();
+  }
+  const search = $('#friendSearch');
+  if (search && kept.searchFocus) {
+    search.focus();
+    search.setSelectionRange(search.value.length, search.value.length);
+  }
+}
+function closeChat(useHistory = true) {
+  if (useHistory && chatHash()) {
+    history.back();
+    setTimeout(() => {
+      if (ui.chatWith && !chatHash()) closeChat(false);
+    }, 300);
+    return;
+  }
+  closeChatListener();
+  ui.chatWith = null;
+  renderSocial();
 }
 
 // ---------- Rumah teman, chat & kunjungan ----------
@@ -7671,33 +8001,36 @@ function openChat(uid) {
   const f = friendshipWith(uid);
   if (!api || !socialReady()) return toast('Masuk akun dulu untuk chat');
   if (!f || f.status !== 'accepted') return toast('Kalian belum berteman');
-  const p = social.profiles[uid] || {};
-  closeChatListener();
-  openModal(`
-    <div class="chat-head">${miniPetHtml(p.pet)}<div style="min-width:0"><b>@${esc(p.username || '…')}</b><div class="tiny muted">${presenceHtml(p)}</div></div>
-      <button type="button" class="x-btn" data-action="closeModal" aria-label="Tutup">×</button></div>
-    <div class="chat-list" id="chatList"><p class="tiny muted" style="text-align:center">Memuat pesan…</p></div>
-    <div class="chat-stickers">${CHAT_STICKERS.map(s => `<button type="button" data-action="chatSticker" data-s="${s}" aria-label="Kirim ${s}">${s}</button>`).join('')}</div>
-    <form class="chat-form" data-form="chatSend" novalidate>
-      <input name="text" maxlength="500" placeholder="Tulis pesan…" autocomplete="off" enterkeyhint="send" aria-label="Pesan">
-      <button class="btn primary">Kirim</button>
-    </form>
-    <div class="chat-tools">
-      <button type="button" class="btn small" data-action="visitOpen" data-uid="${esc(uid)}">🐾 Kirim pet berkunjung</button>
-      <button type="button" class="btn small" data-action="friendHome" data-uid="${esc(uid)}">🏠 Rumahnya</button>
-    </div>`, { type: 'chat', uid, cardClass: 'chat-card', noFocus: Boolean(window.matchMedia && matchMedia('(pointer: coarse)').matches) });
-  const chat = { pairId: f.id, uid, messages: [], unsub: null, readAt: 0, scrolled: false };
-  social.chat = chat;
-  chat.unsub = api.watchMessages(f.id, messages => {
-    if (social.chat !== chat) return;
-    chat.messages = messages;
-    renderChatList();
-    markChatRead();
-  }, err => {
-    const list = $('#chatList');
-    if (list && social.chat === chat) list.innerHTML = `<p class="small warn-text">${esc(socialErrorText(err, 'Pesan tidak bisa dimuat.'))}</p>`;
-  });
-  renderSocial();
+  if (modalCtx) closeModal();
+  if (!social.chat || social.chat.pairId !== f.id) {
+    closeChatListener();
+    const chat = { pairId: f.id, uid, messages: [], unsub: null, readAt: 0, scrolled: false, loaded: false, error: '' };
+    social.chat = chat;
+    chat.unsub = api.watchMessages(f.id, messages => {
+      if (social.chat !== chat) return;
+      chat.messages = messages;
+      chat.loaded = true;
+      chat.error = '';
+      renderChatList();
+      markChatRead();
+    }, err => {
+      if (social.chat !== chat) return;
+      chat.loaded = true;
+      chat.error = socialErrorText(err, 'Pesan tidak bisa dimuat.');
+      renderChatList();
+    });
+  }
+  ui.chatWith = uid;
+  ui.temanSeg = 'chat';
+  ui.temanSegPicked = true;
+  fetchProfiles([uid], 60000);
+  if (ui.tab !== 'teman') setTab('teman');
+  else renderSocial();
+  // Tombol Kembali (HP/Android) menutup chat dulu sebelum pindah halaman
+  if (!chatHash()) location.hash = 'teman/chat';
+  markChatRead();
+  const input = $('#chatPane input[name="text"]');
+  if (input && !(window.matchMedia && matchMedia('(pointer: coarse)').matches)) input.focus();
 }
 const chatDayLabel = k => (k === todayKey() ? 'Hari ini' : k === addDays(todayKey(), -1) ? 'Kemarin' : longDate(k));
 function messageHtml(m) {
@@ -7715,15 +8048,11 @@ function messageHtml(m) {
   }
   return `<div class="msg ${side}">${esc(m.text)}${time}</div>`;
 }
-function renderChatList() {
-  const list = $('#chatList');
+function chatListInner() {
   const chat = social.chat;
-  if (!list || !chat) return;
-  const nearBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 90;
-  if (!chat.messages.length) {
-    list.innerHTML = `<div class="empty">Belum ada pesan. Sapa @${esc(socialName(chat.uid))} dulu! 👋</div>`;
-    return;
-  }
+  if (!chat || !chat.loaded) return '<p class="tiny muted" style="text-align:center">Memuat pesan…</p>';
+  if (chat.error) return `<p class="small warn-text">${esc(chat.error)}</p>`;
+  if (!chat.messages.length) return `<div class="empty">Belum ada pesan. Sapa @${esc(socialName(chat.uid))} dulu! 👋</div>`;
   let day = '';
   let html = '';
   for (const m of chat.messages) {
@@ -7734,16 +8063,23 @@ function renderChatList() {
     }
     html += messageHtml(m);
   }
-  list.innerHTML = html;
+  return html;
+}
+function renderChatList() {
+  const list = $('#chatList');
+  const chat = social.chat;
+  if (!list || !chat) return;
+  const nearBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 90;
+  list.innerHTML = chatListInner();
   if (nearBottom || !chat.scrolled) {
     list.scrollTop = list.scrollHeight;
-    chat.scrolled = true;
+    chat.scrolled = chat.loaded;
   }
 }
 function markChatRead() {
   const chat = social.chat;
   const api = socialApi();
-  if (!chat || !api) return;
+  if (!chat || !api || document.visibilityState === 'hidden') return;
   const f = social.friendships.find(x => x.id === chat.pairId);
   if (!f || !f.lastMsg || f.lastMsg.from === social.uid) return;
   if ((f.read[social.uid] || 0) >= f.lastAt || chat.readAt >= f.lastAt) return;
@@ -7784,7 +8120,7 @@ function openVisitReply(ownerUid) {
   const v = activeVisitors().find(x => x.from === ownerUid);
   if (!v) return toast('Tamu ini sudah pulang 🏡');
   markVisitorsSeen();
-  renderPetBadge();
+  renderSocialBadges();
   openModal(`
     ${modalHead(`💌 ${esc(v.pet.name)} dari rumah @${esc(socialName(v.from))}`, `Datang ${esc(agoText(v.at))} · pulang sendiri pukul ${esc(clockText(v.at + VISIT_HOURS * 3600000))}`)}
     <div class="pet-opt active" style="max-width:150px;margin:0 auto 10px"><div class="po-art" style="width:110px;height:110px">${petSvg(safeSpecies(v.pet.species), { stage: safeStage(v.pet.stage), mood: 'bangga' })}</div></div>
@@ -7935,7 +8271,9 @@ const actions = {
   newsDone: () => closeModal(),
   newsGo: () => {
     closeModal();
-    setTab('pet');
+    ui.temanSeg = 'publik';
+    ui.temanSegPicked = true;
+    setTab(cloudEnabled() ? 'teman' : 'pet');
     if (cloudEnabled() && !cloud.user) {
       cloudInit();
       openEmailAuth('signup');
@@ -8220,6 +8558,25 @@ const actions = {
     renderSocial();
   },
   chatOpen: el => openChat(el.dataset.uid),
+  chatClose: () => closeChat(),
+  temanSeg: el => {
+    ui.temanSeg = el.dataset.seg === 'publik' ? 'publik' : 'chat';
+    ui.temanSegPicked = true;
+    renderSocial();
+  },
+  temanGo: el => {
+    if (modalCtx) closeModal();
+    ui.temanSeg = el.dataset.seg === 'publik' ? 'publik' : 'chat';
+    ui.temanSegPicked = true;
+    if (ui.chatWith) {
+      closeChatListener();
+      ui.chatWith = null;
+    }
+    if (ui.tab !== 'teman') setTab('teman');
+    else renderSocial();
+  },
+  dirMore: () => loadDirectory(false),
+  dirRefresh: () => loadDirectory(true),
   chatSticker: el => sendChat(el.dataset.s, 'sticker'),
   friendHome: el => openFriendHome(el.dataset.uid),
   friendAdd: async el => {
@@ -8441,6 +8798,7 @@ const forms = {
     const fd = new FormData(form);
     const username = String(fd.get('username') || '').trim().toLowerCase().replace(/^@/, '');
     const name = cutText(fd.get('name'), 30);
+    const listed = form.querySelector('[name="listed"]') ? fd.get('listed') === '1' : true;
     if (!USERNAME_RE.test(username)) return toast('Username 3–20 karakter: huruf kecil, angka, titik atau _, diawali huruf.', 'error');
     const old = social.me ? social.me.username : '';
     const button = form.querySelector('.btn.primary');
@@ -8451,7 +8809,7 @@ const forms = {
         if (owner && owner !== social.uid) throw Object.assign(new Error('taken'), { code: 'social/taken' });
       }
       const stats = getStats();
-      const profile = { username, name, level: stats.level.level, streak: stats.curLogStreak, badges: stats.unlockedCount, pet: petPublic(stats.level.level), home: homePublic(stats.level.level) };
+      const profile = { username, name, level: stats.level.level, streak: stats.curLogStreak, badges: stats.unlockedCount, pet: petPublic(stats.level.level), home: homePublic(stats.level.level), listed };
       await api.saveProfile(social.uid, profile, old);
       social.me = { ...(social.me || {}), uid: social.uid, ...profile, lastSeen: Date.now() };
       social.profiles[social.uid] = { ...social.me, fetchedAt: Date.now() };
@@ -8459,7 +8817,7 @@ const forms = {
       if (modalCtx && modalCtx.type === 'username') closeModal();
       if (social.status !== 'ready') socialListen();
       renderSocial();
-      toast(old ? 'Username diperbarui ✓' : `Halo, @${username}! Sekarang kamu bisa cari teman 🎉`);
+      toast(old ? 'Profil diperbarui ✓' : `Halo, @${username}! Lihat siapa saja yang ada di Ruang publik 🎉`);
     } catch (err) {
       if (button) button.disabled = false;
       const taken = err.code === 'social/taken' || err.code === 'permission-denied';
@@ -8739,6 +9097,16 @@ document.addEventListener('keydown', e => {
 window.addEventListener('hashchange', () => {
   const tab = tabFromHash();
   if (tab !== ui.tab) setTab(tab);
+  else if (tab === 'teman' && ui.chatWith && !chatHash()) closeChat(false);
+  else if (tab === 'teman' && !ui.chatWith && chatHash()) history.replaceState(null, '', '#teman');
+});
+if (window.visualViewport) {
+  visualViewport.addEventListener('resize', fitChatOverlay);
+  visualViewport.addEventListener('scroll', fitChatOverlay);
+}
+window.addEventListener('resize', () => {
+  syncChatOverlay();
+  fitChatOverlay();
 });
 window.addEventListener('resize', () => {
   const c = window.innerWidth < 600;
@@ -8796,6 +9164,9 @@ document.addEventListener('visibilitychange', () => {
   if (Date.now() - updater.checkedAt > 60 * 60 * 1000) checkForUpdate(false);
   // Kembali ke aplikasi → ambil perubahan dari perangkat lain
   if (cloud.user && Date.now() - cloud.syncedAt > 30000) syncNow();
+  // Chat yang sedang terbuka baru dianggap dibaca saat aplikasi terlihat lagi
+  if (social.chat) markChatRead();
+  renderSocialBadges();
   if (socialReady() && Date.now() - social.touchedAt > 2 * 60 * 1000) socialTouch();
 });
 window.addEventListener('error', e => showSysBanner('Terjadi error: ' + (e.message || 'tidak diketahui')));
@@ -8838,6 +9209,7 @@ function init() {
     showSysBanner('⚠️ Penyimpanan browser tidak tersedia — data tidak tersimpan setelah halaman ditutup. Buka file ini dengan Microsoft Edge atau Google Chrome.');
   }
   ui.tab = tabFromHash();
+  if (chatHash()) history.replaceState(null, '', '#teman');
   render();
   if (firstRun) openWelcome();
   else if (!state.game.introSeen) openGameIntro();
@@ -8868,6 +9240,7 @@ window.SehatKu = {
   social: () => JSON.parse(JSON.stringify({
     status: social.status, me: social.me, friendships: social.friendships, visitors: social.visitors,
     myVisit: social.myVisit, blocks: social.blocks, badge: socialBadgeCount(),
+    chatWith: ui.chatWith, directory: social.dir.list.map(p => p.username),
   })),
   game: () => {
     const s = getStats();
