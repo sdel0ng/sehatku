@@ -2,7 +2,7 @@
 
 **SehatKu** is a lightweight calorie & health tracker that runs entirely in the browser — a single HTML file, nothing to install. It works fully offline without an account; a free, optional account adds cloud sync between devices, friends, chat and pet visits. The interface is in Bahasa Indonesia.
 
-Current version: **2.1** (see the [Changelog](#changelog)).
+Current version: **2.2** (see the [Changelog](#changelog)).
 
 **▶️ Try it online: https://sdel0ng.github.io/sehatku/** — works on phones too. Without an account your data stays in your own browser; it is only uploaded if you sign in.
 
@@ -10,8 +10,8 @@ Current version: **2.1** (see the [Changelog](#changelog)).
 
 ## Features
 
-- **Beranda (dashboard)** — remaining calories for the day, protein/carbs/fat vs. targets, water intake, BMI, steps & sleep and automatic tips. It also shows the mascot **Bro Koli 🥦** (tap him for a joke), today's missions, your level and streak, this week's boss HP and a "Tahukah kamu?" fun fact.
-- **Makanan (food log)** — 112 common Indonesian foods and drinks with typical portions and food emoji, search and categories, manual entries saved to "Makanan saya", "same as yesterday", editable portions and undo on delete.
+- **Beranda (dashboard)** — remaining calories for the day, protein/carbs/fat vs. targets, water intake, BMI, steps & sleep and automatic tips. It also shows the mascot **Bro Koli 🥦** (tap him for a joke), today's missions, your level and streak, this week's boss HP and a "Tahukah kamu?" fun fact. New players also get the 🎒 [Starter Pack](#starter-pack-v22) here.
+- **Makanan (food log)** — 332 foods and drinks with typical portions and food emoji: everyday Indonesian dishes plus street food (*kaki lima*), cafés & coffee, restaurants, desserts, food courts & fast food and Chinese food. Search and 15 categories, manual entries saved to "Makanan saya", "same as yesterday", editable portions and undo on delete.
 - **Aktivitas (exercise)** — 20 activities; calories from MET × body weight × duration; weekly active minutes vs. the WHO 150-minute guideline.
 - **Berat (weight)** — weight & waist log, trend chart, kg/week trend, estimated goal date, BMI per Kemenkes RI, WHO Asia-Pacific or WHO.
 - **Statistik** — 7/14/30-day averages, days on target, estimated deficit, macro split and top calorie sources.
@@ -69,8 +69,33 @@ Everything is calculated from what you already log; there is nothing extra to fi
 | Tangkap Sayur: every 50 points (max. 20 XP/day) | 1 |
 | Weigh-in (max. once per week) | 15 |
 | Each badge unlocked | 50 |
+| Starter Pack mission (new players, once each) | 50–150 |
+| All Starter Pack missions claimed (once) | 300 |
 
 \* The budget includes exercise credit. A day counts once breakfast, lunch and dinner are logged, or once the day is over.
+
+### Starter Pack (v2.2)
+
+New players get a 🎒 **Starter Pack** card at the top of Beranda: a checklist of first steps that each give extra XP once. When a step is done, tap **Klaim**. The first one, the welcome gift, is free and lifts you straight to Level 2, so your first treasure chest is ready right away.
+
+| Starter mission | XP |
+|---|---|
+| 🎁 Claim the welcome gift | 100 |
+| 👤 Complete your profile & targets | 100 |
+| 🍽️ Log one food | 100 |
+| 💧 Log one glass of water (one-tap button on the card) | 50 |
+| 🏃 Log one exercise | 100 |
+| ✅ Finish one daily mission | 100 |
+| 🐾 Adopt your first pet | 100 |
+| 🧰 Open one treasure chest | 100 |
+| 🎮 Play one game (Tangkap Sayur or Tebak Kalori) | 100 |
+| 🌐 Create an account & username\*\* | 150 |
+| 🤝 Add one friend\*\* | 150 |
+| **Bonus when every mission is claimed** | **300** |
+
+\*\* Only shown when the account features are available.
+
+That adds up to 1,150 XP (1,450 with an account), enough for about Level 5 on the first day on top of the normal daily XP. The card disappears once everything is claimed. Players already at Level 10 or higher who haven't started it don't see it. Claimed missions sync with your account and never count twice.
 
 ### Pet asisten (v1.6)
 
@@ -88,7 +113,7 @@ Everything is calculated from what you already log; there is nothing extra to fi
 ## How to use
 
 1. Open the [online version](https://sdel0ng.github.io/sehatku/), **or** download `SehatKu.html` (and `SehatKu.ico` if you want a desktop shortcut icon) and open it in Microsoft Edge or Google Chrome.
-2. Fill in your profile on first launch (the starting numbers are only examples).
+2. Fill in your profile on first launch (the starting numbers are only examples). After you save it, a 📖 **Panduan singkat** (quick guide) explains the app in six short steps. Reopen it any time from the Profil tab or the Starter Pack card.
 3. On a phone, use the browser's *Add to Home screen* to open it like an app.
 4. Optional: create a free account (💬 Teman tab or Profil) to sync between devices and add friends — see [Accounts, friends, chat & pet visits](#-accounts-friends-chat--pet-visits).
 
@@ -168,6 +193,7 @@ To look for updates, the app downloads the small public `version.json` from GitH
 
 ## Changelog
 
+- **2.2** — 🍜 **220 new foods and drinks** (332 in total) in six new categories: street food (*kaki lima*), cafés & coffee, restaurants, desserts, food courts & fast food and Chinese food; the category chips scroll sideways on phones. A few existing items moved into the new categories (e.g. kopi susu gula aren → Kafe & kopi, martabak manis → Jajanan kaki lima). 🎒 **Starter Pack** for new players: 11 first-step missions with extra XP plus a 300 XP bonus, about Level 5 on day one. 📖 **Panduan singkat**: a six-step quick guide that opens after the first profile save and from Profil any time. Existing records are unchanged.
 - **2.1** — 💬 New **Teman** tab: friends, requests and chats on one page (no longer in the Pet tab); chats open full screen on phones and side by side on wide screens, and the Back button closes them. 🌏 **Ruang publik** lists everyone on SehatKu, newest activity first, with one-tap **➕ Tambah** and a peek at their house; you can hide yourself from it. New messages pop up with a **Balas** button, and the unread count shows on the Teman tab and in the window title. Fixed: friends' houses now show their real furniture and all their pets.
 - **2.0** — 🌐 **SehatKu is online.** Free accounts with email & password: records sync between phone, laptop and the Android app (merge on first sign-in, nothing gets lost). Usernames, friend search and requests, 💬 chat with stickers, 🐾 pet visits with notes and gifts, and 🏠 friends' houses with their furniture and pets. Health data stays private; friends only see your public pet profile. Without an account everything keeps working offline as before.
 - **1.9** — 🏠 Bigger two-room pet house (swipe on phones, full width on laptops). 🚶 Pets walk around by themselves with emotes. 🐾 Adopt up to 8 pets — slots unlock with level — and pick one ⭐ assistant. The floating pet also takes short strolls. Friends will see all your pets walking in your house once accounts are on.

@@ -650,6 +650,30 @@ a.btn { text-decoration: none; }
 .update-steps { margin: 8px 0 12px; padding-left: 20px; display: grid; gap: 6px; }
 
 
+/* ---------- Starter Pack & panduan ---------- */
+.starter-card { border: 2px solid var(--primary); background: linear-gradient(180deg, var(--primary-soft), var(--card) 70%); }
+.sq-list { display: grid; gap: 8px; margin-top: 12px; }
+.sq { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; border-radius: 12px; background: var(--soft); }
+.sq.ready { background: var(--card); box-shadow: inset 0 0 0 2px var(--primary); }
+.sq.done { opacity: .55; }
+.sq-ico { width: 30px; font-size: 22px; text-align: center; }
+.sq-text { display: grid; min-width: 0; }
+.sq-text span { font-size: 12px; color: var(--muted); }
+.sq-check { padding: 0 8px; font-size: 18px; font-weight: 800; color: var(--primary); }
+.sq-xp { font-size: 12px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.guide { text-align: center; }
+.guide-art { font-size: 64px; line-height: 1.1; margin: 6px 0 2px; }
+.guide h2 { margin: 4px 0 6px; }
+.guide p { margin: 0 0 6px; }
+.guide-dots { display: flex; justify-content: center; gap: 6px; }
+.guide-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+.guide-dots span.on { width: 22px; border-radius: 99px; background: var(--primary); }
+@media (max-width: 640px) {
+  #foodChips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; margin-right: -4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  #foodChips::-webkit-scrollbar { display: none; }
+  #foodChips .chip { flex: none; }
+}
+
 /* ---------- Pet asisten, teman & chat ---------- */
 .tab { position: relative; }
 .tab-badge {
@@ -1083,7 +1107,7 @@ button.pet-strip { cursor: pointer; }
 /* =========================================================
    KONSTANTA & DATABASE
    ========================================================= */
-const APP_VERSION = '2.1';
+const APP_VERSION = '2.2';
 const UPDATE_BASE = 'https://sdel0ng.github.io/sehatku/';  // versi online resmi + version.json
 const UPDATE_CHECK_MS = 6 * 60 * 60 * 1000;               // cek otomatis tiap 6 jam selama aplikasi terbuka
 const VERSION_KEY = 'sehatku.appVersion';                 // versi terakhir yang dibuka di browser ini
@@ -1176,6 +1200,12 @@ const FOOD_CATEGORIES = [
   ['minuman', 'Minuman'],
   ['camilan', 'Camilan'],
   ['jadi', 'Makanan jadi'],
+  ['kakilima', 'Jajanan kaki lima'],
+  ['kafe', 'Kafe & kopi'],
+  ['resto', 'Restoran'],
+  ['dessert', 'Dessert & manis'],
+  ['foodcourt', 'Food court & cepat saji'],
+  ['chinese', 'Chinese food'],
   ['lain', 'Bumbu & lainnya'],
 ];
 
@@ -1250,7 +1280,7 @@ const FOOD_RAW = [
 
   ['Teh manis', '1 gelas (±250 ml)', 90, 0, 22.5, 0, 'minuman'],
   ['Teh tawar / kopi hitam tanpa gula', '1 gelas', 2, 0.1, 0.3, 0, 'minuman'],
-  ['Kopi susu gula aren', '1 gelas (±250 ml)', 215, 6, 30, 8, 'minuman'],
+  ['Kopi susu gula aren', '1 gelas (±250 ml)', 215, 6, 30, 8, 'kafe'],
   ['Kopi sachet 3-in-1', '1 sachet', 110, 1, 18, 4, 'minuman'],
   ['Susu sapi full cream', '1 gelas (200 ml)', 125, 6.5, 9.5, 7, 'minuman'],
   ['Susu rendah lemak', '1 gelas (200 ml)', 85, 7, 10, 2, 'minuman'],
@@ -1262,13 +1292,13 @@ const FOOD_RAW = [
   ['Es jeruk manis', '1 gelas', 120, 0.5, 29.5, 0.1, 'minuman'],
   ['Jus alpukat + susu kental manis', '1 gelas', 300, 4, 35, 16.5, 'minuman'],
   ['Minuman bersoda', '1 kaleng (330 ml)', 140, 0, 35, 0, 'minuman'],
-  ['Boba milk tea', '1 gelas (±500 ml)', 365, 4, 65, 10, 'minuman'],
+  ['Boba milk tea', '1 gelas (±500 ml)', 365, 4, 65, 10, 'kafe'],
 
   ['Pisang goreng', '1 buah', 145, 1.5, 22, 6, 'camilan'],
   ['Bakwan sayur', '1 buah', 140, 2.5, 14, 8, 'camilan'],
   ['Tahu isi goreng', '1 buah', 125, 4, 10, 8, 'camilan'],
   ['Risoles', '1 buah', 150, 4, 16, 8, 'camilan'],
-  ['Martabak manis', '1 potong', 230, 4, 30, 10, 'camilan'],
+  ['Martabak manis', '1 potong', 230, 4, 30, 10, 'kakilima'],
   ['Biskuit / cookies', '2 keping (±20 g)', 95, 1.3, 13, 4.3, 'camilan'],
   ['Keripik kentang', '1 bungkus kecil (±30 g)', 160, 2, 15, 10.5, 'camilan'],
   ['Kacang tanah sangrai', '1 genggam (±30 g)', 175, 7, 5, 14.5, 'camilan'],
@@ -1287,10 +1317,10 @@ const FOOD_RAW = [
   ['Nasi Padang (rendang, sayur, sambal)', '1 bungkus', 700, 25, 85, 29, 'jadi'],
   ['Ayam geprek + nasi', '1 porsi', 645, 30, 70, 27, 'jadi'],
   ['Nasi katsu ayam', '1 porsi (nasi ±150 g + katsu ±100 g)', 600, 26, 82, 19, 'jadi'],
-  ['Siomay + bumbu kacang', '1 porsi', 330, 15, 35, 14, 'jadi'],
-  ['Cheeseburger', '1 buah', 300, 15, 32, 13, 'jadi'],
-  ['Kentang goreng', '1 porsi sedang', 340, 4, 44, 16, 'jadi'],
-  ['Pizza', '1 potong', 270, 11, 33, 10, 'jadi'],
+  ['Siomay + bumbu kacang', '1 porsi', 330, 15, 35, 14, 'kakilima'],
+  ['Cheeseburger', '1 buah', 300, 15, 32, 13, 'foodcourt'],
+  ['Kentang goreng', '1 porsi sedang', 340, 4, 44, 16, 'foodcourt'],
+  ['Pizza', '1 potong', 270, 11, 33, 10, 'foodcourt'],
 
   ['Sambal', '1 sdm', 30, 0.3, 2, 2.3, 'lain'],
   ['Kecap manis', '1 sdm', 40, 0.6, 9.5, 0, 'lain'],
@@ -1301,6 +1331,234 @@ const FOOD_RAW = [
   ['Mentega / margarin', '1 sdm (±14 g)', 100, 0.1, 0, 11.3, 'lain'],
   ['Selai kacang', '1 sdm (±16 g)', 95, 3.6, 3.5, 7.5, 'lain'],
   ['Mayones', '1 sdm (±14 g)', 95, 0.1, 0.1, 10.5, 'lain'],
+
+  // ---- v2.2: makanan di luar rumah (nilai perkiraan per porsi umum) ----
+  // Jajanan kaki lima
+  ['Nasi goreng ayam (gerobak)', '1 piring (±300 g)', 580, 20, 75, 21, 'kakilima'],
+  ['Mie goreng tek-tek', '1 piring (±300 g)', 520, 15, 66, 22, 'kakilima'],
+  ['Mie rebus / mie godog', '1 piring', 430, 14, 60, 15, 'kakilima'],
+  ['Bakmi Jawa godog (kuah)', '1 piring', 500, 16, 64, 20, 'kakilima'],
+  ['Pecel lele (lele goreng + nasi + sambal)', '1 porsi', 640, 30, 72, 25, 'kakilima'],
+  ['Pecel ayam (ayam goreng + nasi + sambal)', '1 porsi', 690, 33, 72, 29, 'kakilima'],
+  ['Nasi kucing (angkringan)', '1 bungkus kecil', 180, 4, 32, 4, 'kakilima'],
+  ['Sate usus (angkringan)', '1 tusuk', 50, 3, 2, 3.5, 'kakilima'],
+  ['Sate telur puyuh', '1 tusuk (3 butir)', 70, 5, 1.5, 5, 'kakilima'],
+  ['Sate kambing', '5 tusuk', 220, 22, 4, 13, 'kakilima'],
+  ['Sate padang + kuah (tanpa ketupat)', '10 tusuk', 400, 30, 20, 22, 'kakilima'],
+  ['Sate taichan', '10 tusuk', 290, 34, 4, 15, 'kakilima'],
+  ['Sate maranggi', '10 tusuk', 420, 32, 14, 26, 'kakilima'],
+  ['Ketoprak', '1 porsi', 550, 18, 65, 24, 'kakilima'],
+  ['Batagor + bumbu kacang', '1 porsi', 450, 17, 40, 25, 'kakilima'],
+  ['Cilok + bumbu kacang', '10 butir', 300, 5, 48, 10, 'kakilima'],
+  ['Cireng + bumbu rujak', '5 buah', 280, 1.5, 40, 12.5, 'kakilima'],
+  ['Cimol', '1 porsi (±100 g)', 250, 1, 38, 10.5, 'kakilima'],
+  ['Seblak', '1 mangkuk', 450, 12, 55, 20, 'kakilima'],
+  ['Telur gulung', '3 tusuk', 210, 9, 6, 17, 'kakilima'],
+  ['Sosis bakar', '1 tusuk (2 sosis)', 170, 7, 9, 12, 'kakilima'],
+  ['Bakso bakar', '5 tusuk', 260, 12, 26, 12, 'kakilima'],
+  ['Kebab daging / ayam', '1 buah', 420, 20, 45, 18, 'kakilima'],
+  ['Roti bakar cokelat keju', '1 porsi (2 tangkup)', 450, 11, 55, 21, 'kakilima'],
+  ['Martabak telur', '1 potong', 220, 9, 15, 14, 'kakilima'],
+  ['Martabak manis cokelat keju', '1 potong', 290, 6, 34, 14.5, 'kakilima'],
+  ['Kerak telor', '1 buah', 400, 14, 42, 19, 'kakilima'],
+  ['Lontong sayur', '1 porsi', 480, 12, 60, 21, 'kakilima'],
+  ['Nasi kuning komplit', '1 porsi', 500, 15, 70, 18, 'kakilima'],
+  ['Nasi warteg (nasi + 2 lauk + sayur)', '1 porsi', 650, 22, 85, 24, 'kakilima'],
+  ['Gado-gado + lontong', '1 porsi', 450, 15, 50, 21, 'kakilima'],
+  ['Soto mie', '1 mangkuk', 400, 15, 45, 17, 'kakilima'],
+  ['Bakso Malang komplit', '1 mangkuk', 450, 22, 40, 22, 'kakilima'],
+  ['Mie ayam bakso', '1 mangkuk', 520, 25, 60, 20, 'kakilima'],
+  ['Pempek kapal selam + cuko', '1 buah besar', 400, 18, 55, 12, 'kakilima'],
+  ['Pempek lenjer / adaan + cuko', '2 buah kecil', 250, 10, 38, 6, 'kakilima'],
+  ['Tahu gejrot', '1 porsi', 200, 9, 14, 12, 'kakilima'],
+  ['Tahu tek', '1 porsi', 450, 18, 45, 22, 'kakilima'],
+  ['Lumpia basah', '1 buah', 180, 6, 22, 8, 'kakilima'],
+  ['Tempe mendoan', '1 buah', 130, 6, 12, 7, 'kakilima'],
+  ['Pastel', '1 buah', 180, 4, 20, 9.5, 'kakilima'],
+  ['Combro / misro', '1 buah', 160, 1.5, 22, 7.5, 'kakilima'],
+  ['Ubi / singkong goreng', '1 potong', 140, 1, 22, 5.5, 'kakilima'],
+  ['Molen', '1 buah (isi pisang)', 130, 2, 18, 5.5, 'kakilima'],
+  ['Gorengan campur (bakwan, tahu, tempe)', '3 buah', 360, 9, 32, 22, 'kakilima'],
+  ['Kue cubit', '5 buah', 160, 3, 22, 6.5, 'kakilima'],
+  ['Kue pukis', '2 buah', 180, 4, 26, 6.5, 'kakilima'],
+  ['Serabi kuah kinca', '1 buah', 170, 2.5, 28, 5.5, 'kakilima'],
+  ['Kue putu', '3 buah', 160, 2, 30, 3.5, 'kakilima'],
+  ['Lemper ayam', '1 buah', 160, 5, 25, 4, 'kakilima'],
+  ['Bubur kacang hijau', '1 mangkuk', 230, 7, 40, 5, 'kakilima'],
+  ['Es kelapa muda (pakai sirup)', '1 gelas', 200, 1.5, 32, 8, 'kakilima'],
+  ['Es teh manis jumbo', '1 gelas besar (±500 ml)', 180, 0, 45, 0, 'kakilima'],
+  // Kafe & kopi
+  ['Americano / long black', '1 cup (±350 ml)', 15, 1, 2.5, 0, 'kafe'],
+  ['Espresso', '1 shot (±30 ml)', 3, 0.1, 0.5, 0.1, 'kafe'],
+  ['Cappuccino', '1 cup (±240 ml)', 130, 7, 10, 7, 'kafe'],
+  ['Caffe latte', '1 cup (±350 ml)', 190, 10, 15, 10, 'kafe'],
+  ['Latte manis (vanila / hazelnut)', '1 cup (±350 ml)', 230, 9, 32, 7, 'kafe'],
+  ['Caramel macchiato', '1 cup (±350 ml)', 240, 10, 30, 9, 'kafe'],
+  ['Caffe mocha', '1 cup (±350 ml)', 250, 10, 32, 9, 'kafe'],
+  ['Matcha latte', '1 cup (±350 ml)', 240, 9, 34, 7.5, 'kafe'],
+  ['Cokelat panas / es cokelat', '1 cup (±350 ml)', 300, 10, 42, 10, 'kafe'],
+  ['Red velvet latte', '1 cup (±350 ml)', 280, 8, 42, 8.5, 'kafe'],
+  ['Frappe / frappuccino', '1 cup (±350 ml)', 380, 5, 60, 14, 'kafe'],
+  ['Thai tea', '1 gelas (±350 ml)', 260, 3, 45, 7.5, 'kafe'],
+  ['Teh tarik', '1 gelas', 180, 4, 28, 6, 'kafe'],
+  ['Lemon tea (manis)', '1 gelas', 120, 0, 30, 0, 'kafe'],
+  ['Smoothie buah (pisang/mangga + yogurt)', '1 cup (±350 ml)', 250, 7, 48, 3, 'kafe'],
+  ['Milkshake (cokelat/vanila/stroberi)', '1 cup (±350 ml)', 450, 10, 65, 16, 'kafe'],
+  ['Teh hijau / teh herbal tanpa gula', '1 cup', 2, 0, 0.5, 0, 'kafe'],
+  ['Butter croissant', '1 buah (±60 g)', 250, 5, 26, 14, 'kafe'],
+  ['Pain au chocolat (croissant cokelat)', '1 buah (±70 g)', 300, 5, 32, 17, 'kafe'],
+  ['Croffle (croissant waffle)', '1 buah', 280, 4, 30, 16, 'kafe'],
+  ['Roti cokelat / roti kopi (roti boy)', '1 buah (±80 g)', 280, 7, 42, 9, 'kafe'],
+  ['Muffin cokelat / blueberry', '1 buah (±110 g)', 420, 6, 52, 21, 'kafe'],
+  ['Banana bread', '1 potong (±60 g)', 200, 3, 30, 8, 'kafe'],
+  ['Sandwich tuna / ayam', '1 buah', 360, 18, 34, 17, 'kafe'],
+  ['Roti panggang alpukat & telur', '1 porsi', 380, 14, 30, 23, 'kafe'],
+  ['Spaghetti carbonara', '1 piring (±300 g)', 650, 24, 70, 30, 'kafe'],
+  ['Spaghetti bolognese', '1 piring (±300 g)', 550, 25, 72, 17, 'kafe'],
+  ['Aglio olio', '1 piring', 480, 12, 65, 19, 'kafe'],
+  ['Rice bowl ayam teriyaki', '1 bowl', 600, 28, 80, 18, 'kafe'],
+  ['Rice bowl ayam sambal matah', '1 bowl', 620, 28, 75, 23, 'kafe'],
+  ['Indomie goreng + telur (warkop)', '1 porsi', 480, 15, 54, 22, 'kafe'],
+  ['Pisang goreng keju cokelat', '1 porsi (2 buah)', 360, 5, 50, 16, 'kafe'],
+  ['Chicken wings', '6 potong', 480, 36, 8, 34, 'kafe'],
+  ['Nachos + saus keju', '1 porsi', 450, 9, 48, 25, 'kafe'],
+  // Restoran
+  ['Steak sirloin + kentang + sayur', '1 porsi (daging ±200 g)', 700, 50, 35, 38, 'resto'],
+  ['Steak ayam crispy + saus', '1 porsi', 750, 40, 55, 41, 'resto'],
+  ['Chicken cordon bleu + kentang', '1 porsi', 700, 38, 50, 38, 'resto'],
+  ['Fish and chips', '1 porsi', 750, 30, 70, 39, 'resto'],
+  ['Salmon panggang', '1 potong (±150 g)', 350, 34, 0, 23, 'resto'],
+  ['Sop buntut (tanpa nasi)', '1 mangkuk', 500, 40, 12, 32, 'resto'],
+  ['Sop iga / konro (tanpa nasi)', '1 mangkuk', 420, 32, 8, 29, 'resto'],
+  ['Iga bakar (tanpa nasi)', '1 porsi', 520, 32, 12, 38, 'resto'],
+  ['Iga penyet + nasi', '1 porsi', 750, 34, 70, 37, 'resto'],
+  ['Gurame asam manis', '1 porsi (±250 g)', 480, 35, 30, 24, 'resto'],
+  ['Gurame bakar', '1 ekor sedang', 380, 50, 8, 16, 'resto'],
+  ['Cumi goreng tepung', '1 porsi (±150 g)', 330, 20, 26, 16, 'resto'],
+  ['Udang saus padang', '1 porsi', 280, 25, 12, 14, 'resto'],
+  ['Kepiting saus padang', '1 porsi (±250 g)', 380, 30, 18, 20, 'resto'],
+  ['Bebek goreng', '1 potong (±150 g)', 450, 30, 4, 35, 'resto'],
+  ['Ayam bakar taliwang', '1 potong', 280, 25, 6, 17, 'resto'],
+  ['Soto betawi (tanpa nasi)', '1 mangkuk', 400, 21, 10, 31, 'resto'],
+  ['Gulai kambing (tanpa nasi)', '1 mangkuk', 360, 26, 8, 25, 'resto'],
+  ['Nasi timbel komplit', '1 porsi', 750, 30, 85, 32, 'resto'],
+  ['Nasi liwet komplit', '1 porsi', 650, 22, 80, 27, 'resto'],
+  ['Nasi briyani kambing', '1 piring', 650, 28, 75, 26, 'resto'],
+  ['Dendeng balado', '1 potong (±40 g)', 160, 14, 6, 9, 'resto'],
+  ['Gulai ayam', '1 potong', 250, 20, 5, 17, 'resto'],
+  ['Ayam pop', '1 potong', 200, 24, 2, 11, 'resto'],
+  ['Gulai daun singkong / nangka', '1 porsi', 130, 3, 9, 9.5, 'resto'],
+  ['Sup krim jagung / jamur', '1 mangkuk', 180, 4, 20, 9.5, 'resto'],
+  ['Tom yum seafood', '1 mangkuk', 200, 18, 10, 9, 'resto'],
+  ['Pad thai', '1 piring', 560, 20, 75, 20, 'resto'],
+  ['Sushi roll (california roll)', '8 potong', 300, 9, 50, 7, 'resto'],
+  ['Sashimi salmon', '5 potong (±75 g)', 155, 16, 0, 10, 'resto'],
+  ['Ramen kuah (tonkotsu)', '1 mangkuk', 650, 28, 70, 28, 'resto'],
+  ['Udon kuah', '1 mangkuk', 400, 15, 66, 7, 'resto'],
+  ['Beef teriyaki + nasi', '1 porsi', 650, 28, 82, 22, 'resto'],
+  ['Bibimbap', '1 mangkuk', 560, 22, 80, 16, 'resto'],
+  ['Ayam goreng Korea (Korean fried chicken)', '4 potong', 620, 36, 30, 39, 'resto'],
+  ['Tteokbokki', '1 porsi', 380, 7, 78, 4.5, 'resto'],
+  // Dessert & manis
+  ['Es krim vanila', '1 scoop (±65 g)', 140, 2.5, 16, 7.5, 'dessert'],
+  ['Es krim cone (soft serve)', '1 cone', 200, 4.5, 30, 7, 'dessert'],
+  ['Sundae cokelat', '1 cup', 330, 5, 53, 11, 'dessert'],
+  ['Es krim McFlurry / blizzard', '1 cup (±285 g)', 520, 12, 80, 17, 'dessert'],
+  ['Gelato', '2 scoop (±100 g)', 200, 3.5, 28, 8, 'dessert'],
+  ['Cheesecake', '1 potong (±100 g)', 320, 6, 26, 22, 'dessert'],
+  ['Brownies cokelat', '1 potong (±50 g)', 220, 3, 28, 11, 'dessert'],
+  ['Black forest / kue tart cokelat', '1 potong (±80 g)', 300, 4, 38, 15, 'dessert'],
+  ['Red velvet cake', '1 potong (±90 g)', 360, 4, 46, 18, 'dessert'],
+  ['Tiramisu', '1 potong (±100 g)', 290, 5, 28, 17, 'dessert'],
+  ['Puding cokelat / susu', '1 cup (±100 g)', 120, 3, 20, 3, 'dessert'],
+  ['Bolu / sponge cake', '1 potong (±40 g)', 140, 3, 22, 4.5, 'dessert'],
+  ['Lapis legit', '1 potong (±30 g)', 140, 2, 13, 9, 'dessert'],
+  ['Kue lumpur', '1 buah', 150, 3, 20, 6.5, 'dessert'],
+  ['Pie susu / egg tart', '1 buah', 220, 3, 28, 11, 'dessert'],
+  ['Donat glaze / isi cokelat', '1 buah', 270, 4, 33, 14, 'dessert'],
+  ['Waffle + es krim', '1 porsi', 450, 8, 55, 22, 'dessert'],
+  ['Pancake + madu/maple + mentega', '3 lembar', 520, 10, 85, 15, 'dessert'],
+  ['Crepes cokelat', '1 buah', 350, 6, 45, 16, 'dessert'],
+  ['Churros + saus cokelat', '4 batang', 400, 5, 48, 21, 'dessert'],
+  ['Macaron', '2 buah', 180, 2.5, 24, 8, 'dessert'],
+  ['Mochi isi', '1 buah', 110, 2, 24, 0.5, 'dessert'],
+  ['Bingsu (es serut Korea)', '1 porsi', 450, 9, 80, 11, 'dessert'],
+  ['Es teler', '1 mangkuk', 400, 4, 60, 16, 'dessert'],
+  ['Es campur', '1 mangkuk', 360, 4, 68, 8, 'dessert'],
+  ['Es cendol / dawet', '1 gelas', 285, 3, 48, 9, 'dessert'],
+  ['Es buah', '1 mangkuk', 230, 1.5, 52, 2, 'dessert'],
+  ['Es pisang ijo', '1 porsi', 320, 3, 55, 10, 'dessert'],
+  ['Kolak pisang', '1 mangkuk', 275, 2, 48, 8.5, 'dessert'],
+  ['Bubur sumsum', '1 mangkuk', 250, 3, 40, 9, 'dessert'],
+  ['Klepon', '5 buah', 250, 2, 45, 7, 'dessert'],
+  ['Ketan mangga (mango sticky rice)', '1 porsi', 450, 6, 80, 12, 'dessert'],
+  ['Cokelat hitam (dark 70%)', '2 kotak (±20 g)', 120, 1.5, 9, 8.5, 'dessert'],
+  // Food court & cepat saji
+  ['Paket ayam goreng tepung + nasi', '1 paket', 650, 30, 66, 29, 'foodcourt'],
+  ['Ayam goreng tepung (paha bawah)', '1 potong', 200, 15, 7, 12.5, 'foodcourt'],
+  ['Burger ayam crispy', '1 buah', 450, 20, 45, 21, 'foodcourt'],
+  ['Burger besar (Big Mac / Whopper)', '1 buah', 550, 25, 46, 29, 'foodcourt'],
+  ['Double cheeseburger', '1 buah', 450, 25, 33, 24, 'foodcourt'],
+  ['Burger ikan (fillet-o-fish)', '1 buah', 330, 15, 38, 13, 'foodcourt'],
+  ['Kentang goreng besar', '1 porsi besar', 490, 6, 63, 23, 'foodcourt'],
+  ['Chicken nugget (cepat saji)', '6 potong', 280, 15, 16, 17, 'foodcourt'],
+  ['Hot dog', '1 buah', 300, 11, 26, 17, 'foodcourt'],
+  ['Corn dog (sosis / mozarela)', '1 buah', 300, 9, 30, 16, 'foodcourt'],
+  ['Burrito / taco wrap', '1 buah', 550, 22, 60, 24, 'foodcourt'],
+  ['Spaghetti (cepat saji)', '1 porsi', 340, 12, 55, 8, 'foodcourt'],
+  ['Nasi + ayam teriyaki (gerai Jepang)', '1 porsi', 650, 30, 90, 16, 'foodcourt'],
+  ['Ekkado / egg roll goreng', '3 potong', 210, 7, 18, 12, 'foodcourt'],
+  ['Rice bowl ayam lada hitam', '1 bowl', 650, 28, 82, 22, 'foodcourt'],
+  ['Pizza (pinggiran sosis/keju)', '1 potong', 340, 14, 34, 16, 'foodcourt'],
+  ['Takoyaki', '6 butir', 300, 9, 35, 14, 'foodcourt'],
+  ['Kimbap', '1 gulung (8 potong)', 320, 9, 55, 7, 'foodcourt'],
+  ['Dimsum mentai', '3 buah', 210, 8, 15, 13, 'foodcourt'],
+  ['Sushi salmon mentai', '4 potong', 280, 10, 32, 12, 'foodcourt'],
+  ['Mashed potato + saus (cepat saji)', '1 cup', 120, 2, 16, 5.5, 'foodcourt'],
+  ['Coleslaw', '1 cup', 150, 1, 14, 10, 'foodcourt'],
+  ['Apple pie (cepat saji)', '1 buah (±70 g)', 250, 2, 30, 13, 'foodcourt'],
+  ['Minuman soda gelas besar', '1 gelas besar (±500 ml)', 210, 0, 53, 0, 'foodcourt'],
+  ['Es teh lemon (cepat saji)', '1 gelas sedang', 150, 0, 37, 0, 'foodcourt'],
+  // Chinese food (Tionghoa)
+  ['Kwetiau goreng', '1 piring (±300 g)', 630, 22, 80, 25, 'chinese'],
+  ['Kwetiau siram / kuah', '1 piring', 520, 22, 70, 17, 'chinese'],
+  ['Bihun goreng', '1 piring', 430, 11, 60, 17, 'chinese'],
+  ['Bakmi ayam pangsit', '1 mangkuk', 480, 26, 55, 18, 'chinese'],
+  ['Ifumie / mie siram seafood', '1 porsi', 620, 22, 70, 28, 'chinese'],
+  ['Mie goreng seafood (Chinese)', '1 piring', 600, 22, 72, 25, 'chinese'],
+  ['Nasi goreng hongkong / yangzhou', '1 piring', 580, 18, 78, 21, 'chinese'],
+  ['Nasi hainan (ayam hainan)', '1 porsi', 560, 28, 80, 14, 'chinese'],
+  ['Nasi campur Tionghoa (babi panggang, char siu)', '1 porsi', 750, 32, 80, 33, 'chinese'],
+  ['Babi kecap', '1 porsi (±150 g)', 450, 25, 15, 32, 'chinese'],
+  ['Char siu (babi panggang madu)', '100 g', 300, 24, 12, 17, 'chinese'],
+  ['Bebek panggang (peking duck)', '100 g', 340, 19, 0, 29, 'chinese'],
+  ['Pangsit goreng', '5 buah', 330, 10, 30, 19, 'chinese'],
+  ['Pangsit / wonton kuah', '5 buah', 180, 11, 20, 6, 'chinese'],
+  ['Siumai (siomay ayam udang)', '3 buah', 180, 11, 10, 10.5, 'chinese'],
+  ['Hakau (dimsum udang)', '3 buah', 150, 9, 20, 3.5, 'chinese'],
+  ['Xiao long bao', '3 buah', 200, 10, 22, 8, 'chinese'],
+  ['Cheong fun (dimsum gulung)', '1 porsi (3 gulung)', 250, 9, 38, 7, 'chinese'],
+  ['Ceker ayam (dimsum)', '1 porsi', 200, 15, 6, 13, 'chinese'],
+  ['Lo mai gai (nasi ketan ayam)', '1 buah', 350, 12, 50, 11, 'chinese'],
+  ['Bakpao ayam / daging', '1 buah', 220, 9, 32, 6, 'chinese'],
+  ['Bakpao kacang / cokelat', '1 buah', 210, 5, 38, 4, 'chinese'],
+  ['Lumpia goreng (spring roll)', '2 buah', 260, 6, 26, 15, 'chinese'],
+  ['Lumpia Semarang', '1 buah', 220, 7, 22, 11.5, 'chinese'],
+  ['Fuyunghai', '1 porsi', 380, 18, 15, 28, 'chinese'],
+  ['Ayam koloke / asam manis', '1 porsi (±150 g)', 420, 25, 30, 22, 'chinese'],
+  ['Ayam kungpao', '1 porsi', 400, 30, 15, 24, 'chinese'],
+  ['Ayam goreng mentega', '1 porsi', 450, 30, 12, 31, 'chinese'],
+  ['Sapi lada hitam', '1 porsi', 320, 26, 10, 20, 'chinese'],
+  ['Sapo tahu', '1 porsi', 300, 18, 12, 20, 'chinese'],
+  ['Mapo tofu', '1 porsi', 300, 17, 10, 21, 'chinese'],
+  ['Capcay seafood', '1 porsi', 240, 16, 15, 13, 'chinese'],
+  ['Udang mayones', '1 porsi', 400, 18, 18, 28, 'chinese'],
+  ['Sup asparagus kepiting', '1 mangkuk', 150, 9, 14, 6, 'chinese'],
+  ['Bubur ala Hongkong (congee)', '1 mangkuk', 280, 15, 40, 6, 'chinese'],
+  ['Cakwe', '1 buah', 160, 3, 20, 7.5, 'chinese'],
+  ['Bakpia', '2 buah', 220, 5, 36, 6, 'chinese'],
+  ['Kue bulan (mooncake)', '¼ buah (±45 g)', 190, 3, 26, 8.5, 'chinese'],
+  ['Teh oolong / teh Cina tanpa gula', '1 cangkir', 2, 0, 0.5, 0, 'chinese'],
 ];
 const FOOD_DB = FOOD_RAW.map((r, i) => ({
   id: 'db' + i,
@@ -1338,9 +1596,9 @@ const ACTIVITIES = [
 ];
 
 /* ---------- Gamifikasi: aturan, level, lencana, misi, maskot ---------- */
-const FRIED_RE = /goreng|gorengan|bakwan|risoles|keripik|kerupuk|martabak|donat|crispy|geprek|katsu|nugget|perkedel|tahu isi/i;
-const SUGARY_RE = /teh manis|es teh|es jeruk|bersoda|soda|boba|kopi susu|sachet|milo|jus alpukat|sirup|kedelai manis/i;
-const VEGGIE_RE = /sayur|salad|brokoli|kangkung|bayam|capcay|gado|pecel|urap|lalap/i;
+const FRIED_RE = /goreng|gorengan|bakwan|risoles|keripik|kerupuk|martabak|donat|crispy|geprek|katsu|nugget|perkedel|tahu isi|cakwe|mendoan|cireng|cimol|combro|misro|pastel|molen|churros|batagor|telur gulung|wings|koloke|cordon bleu|fish and chips|corn dog|ekkado|fuyunghai|udang mayones/i;
+const SUGARY_RE = /teh manis|es teh|es jeruk|bersoda|soda|boba|kopi susu|sachet|milo|jus alpukat|sirup|kedelai manis|latte manis|macchiato|mocha|matcha|cokelat panas|\bes cokelat|velvet latte|frapp|thai tea|teh tarik|lemon tea|milkshake|\bes kelapa|\bes teler|\bes campur|cendol|dawet|\bes buah|\bes pisang ijo/i;
+const VEGGIE_RE = /sayur|salad|brokoli|kangkung|bayam|capcay|gado|pecel(?! lele| ayam)|urap|lalap|bibimbap|daun singkong|ketoprak/i;
 const FRUIT_RE = /pisang(?! goreng)|apel|jeruk(?! manis)|pepaya|semangka|mangga|alpukat(?!\s*\+)|melon|jambu|anggur|salak|buah/i;
 
 const LEVELS = [
@@ -1436,6 +1694,106 @@ const MISSION_POOL = {
 const MISSION_FIXED = ['meals3', 'water'];
 const MISSION_RANDOM = ['protein', 'move', 'steps', 'veggie', 'fruit', 'nofried', 'nosugar', 'sleep', 'ontarget'];
 
+/* ---------- Starter Pack: misi pemula dengan hadiah XP besar (sekali saja) ---------- */
+const STARTER_BONUS = 300;        // bonus kalau semua misi Starter Pack sudah diklaim
+const STARTER_MAX_LEVEL = 10;     // pengguna lama di atas level ini tidak ditawari Starter Pack
+const anyDay = test => Object.values(state.days).some(test);
+const STARTER_QUESTS = [
+  { id: 'hadiah', emoji: '🎁', title: 'Ambil hadiah sambutan', hint: 'Gratis — langsung naik ke Level 2', xp: 100, done: () => true },
+  { id: 'profil', emoji: '👤', title: 'Lengkapi profil & target', hint: 'Tab Profil → isi data diri → Simpan', xp: 100, done: () => state.profile.confirmed, go: 'data-action="tab" data-tab="profil"' },
+  { id: 'makan', emoji: '🍽️', title: 'Catat 1 makanan', hint: 'Tab Makanan → cari → ketuk → Tambah', xp: 100, done: () => anyDay(d => d.foods.length > 0), go: 'data-action="tab" data-tab="makanan"' },
+  { id: 'air', emoji: '💧', title: 'Catat 1 gelas air', hint: 'Ketuk “+ 1 gelas” di kartu Air minum', xp: 50, done: () => anyDay(d => d.waterMl > 0), go: 'data-action="water" data-ml="250"', goLabel: '+ 1 gelas' },
+  { id: 'gerak', emoji: '🏃', title: 'Catat 1 olahraga', hint: 'Tab Aktivitas → pilih olahraga → Simpan', xp: 100, done: () => anyDay(d => d.exercises.length > 0), go: 'data-action="tab" data-tab="aktivitas"' },
+  { id: 'misi', emoji: '✅', title: 'Selesaikan 1 misi harian', hint: 'Lihat kartu “Misi hari ini” di Beranda', xp: 100, done: () => getStats().today.m.doneCount > 0 },
+  { id: 'pet', emoji: '🐾', title: 'Adopsi pet pertama', hint: 'Tab Pet → pilih hewan → beri nama', xp: 100, done: () => state.game.pet.pets.length > 0, go: 'data-action="tab" data-tab="pet"' },
+  { id: 'peti', emoji: '🧰', title: 'Buka 1 peti hadiah', hint: 'Peti didapat setiap naik level', xp: 100, done: () => state.game.rewards.opened > 0, go: 'data-action="openChest"', goLabel: 'Buka peti' },
+  { id: 'main', emoji: '🎮', title: 'Main 1 game', hint: 'Tangkap Sayur atau Tebak Kalori di tab Seru', xp: 100, done: () => state.game.arcade.played > 0 || state.game.quiz.played > 0, go: 'data-action="tab" data-tab="seru"' },
+  { id: 'akun', emoji: '🌐', title: 'Buat akun & username', hint: 'Tab Teman → daftar gratis dengan email', xp: 150, online: true, done: () => Boolean(cloud.user && social.me), go: 'data-action="tab" data-tab="teman"' },
+  { id: 'teman', emoji: '🤝', title: 'Tambah 1 teman', hint: 'Teman → Ruang publik → ➕ Tambah', xp: 150, online: true, done: () => socialReady() && social.friendships.length > 0, go: 'data-action="temanGo" data-seg="publik"' },
+];
+const STARTER_IDS = STARTER_QUESTS.map(q => q.id).concat('selesai');
+const starterQuests = () => STARTER_QUESTS.filter(q => !q.online || cloudEnabled());
+function starterXp(g = state.game) {
+  const claimed = g.starter.claimed;
+  return STARTER_QUESTS.reduce((sum, q) => sum + (claimed[q.id] ? q.xp : 0), 0) + (claimed.selesai ? STARTER_BONUS : 0);
+}
+function starterInfo() {
+  const claimed = state.game.starter.claimed;
+  const rows = starterQuests().map(q => ({ ...q, claimed: Boolean(claimed[q.id]), ready: !claimed[q.id] && Boolean(q.done()) }));
+  const started = Object.keys(claimed).length > 0;
+  const complete = Boolean(claimed.selesai);
+  return {
+    rows,
+    doneCount: rows.filter(r => r.claimed).length,
+    ready: rows.filter(r => r.ready),
+    complete,
+    visible: !complete && (started || getStats().level.level < STARTER_MAX_LEVEL),
+    totalXp: rows.reduce((sum, r) => sum + r.xp, 0) + STARTER_BONUS,
+  };
+}
+function starterCardHtml() {
+  const info = starterInfo();
+  if (!info.visible) return '';
+  const rank = r => (r.ready ? 0 : r.claimed ? 2 : 1);
+  const sorted = info.rows.slice().sort((a, b) => rank(a) - rank(b));
+  const shown = ui.starterAll ? sorted : sorted.filter(r => !r.claimed).slice(0, 4);
+  const earned = starterXp();
+  const row = r => `
+    <div class="sq${r.claimed ? ' done' : r.ready ? ' ready' : ''}">
+      <span class="sq-ico" aria-hidden="true">${r.emoji}</span>
+      <div class="sq-text"><b>${esc(r.title)}</b><span>${esc(r.hint)}</span></div>
+      ${r.claimed ? '<span class="sq-check" aria-label="Sudah diklaim">✓</span>'
+        : r.ready ? `<button type="button" class="btn small primary" data-action="starterClaim" data-id="${r.id}">Klaim +${r.xp} XP</button>`
+          : r.go ? `<button type="button" class="btn small" ${r.go}>${esc(r.goLabel || 'Mulai')}</button>`
+            : `<span class="sq-xp">+${r.xp} XP</span>`}
+    </div>`;
+  return `
+  <div class="card starter-card" id="starterCard">
+    <div class="card-head"><h3>🎒 Starter Pack</h3><span class="pill">${info.doneCount}/${info.rows.length} selesai</span></div>
+    <p class="small">Misi pemula supaya cepat naik level: tiap misi memberi XP ekstra, dan kalau semuanya selesai ada <b>bonus +${STARTER_BONUS} XP</b>. Setiap naik level dapat 🎁 peti hadiah!</p>
+    <div class="bar"><span style="width:${clamp(earned / info.totalXp * 100, 0, 100).toFixed(1)}%"></span></div>
+    <div class="tiny muted mt-s">${fmt(earned)} / ${fmt(info.totalXp)} XP terkumpul</div>
+    <div class="sq-list">${shown.map(row).join('')}</div>
+    <div class="row between wrap mt-s">
+      <button type="button" class="link-btn" data-action="starterAll">${ui.starterAll ? 'Ringkas daftar' : `Lihat semua misi (${info.rows.length})`}</button>
+      <button type="button" class="link-btn" data-action="guideOpen">📖 Panduan singkat</button>
+    </div>
+  </div>`;
+}
+
+/* ---------- Panduan singkat untuk pengguna baru ---------- */
+const GUIDE_STEPS = [
+  { emoji: '👤', title: 'Isi profil sekali saja', text: 'Masukkan usia, tinggi, berat &amp; berat target di tab <b>Profil</b>. SehatKu langsung menghitung jatah kalori harianmu.' },
+  { emoji: '🍽️', title: 'Catat makan &amp; minum', text: 'Di tab <b>Makanan</b>, ketik nama makanannya (mis. “nasi goreng”), ketuk, lalu pilih porsinya. Minum air cukup ketuk <b>+ 1 gelas</b> di Beranda.' },
+  { emoji: '🏃', title: 'Catat olahraga &amp; berat', text: 'Olahraga dicatat di tab <b>Aktivitas</b>. Timbang badan cukup seminggu sekali, lalu catat di tab <b>Berat</b>.' },
+  { emoji: '🏠', title: 'Cek Beranda setiap hari', text: 'Lihat <b>sisa kalori</b>, gizi, misi harian &amp; saran. Lingkaran hijau = masih aman, merah = sudah kelebihan.' },
+  { emoji: '🎒', title: 'Naik level lebih cepat', text: 'Setiap catatan memberi XP. Selesaikan misi <b>Starter Pack</b> di Beranda, buka peti hadiah, rawat pet di tab <b>Pet</b>, dan main game di tab <b>Seru</b>.' },
+  { emoji: '💬', title: 'Ajak teman (opsional)', text: 'Daftar gratis di tab <b>Teman</b> supaya catatan tersimpan di semua perangkat, lalu tambah teman dari <b>Ruang publik</b> &amp; ngobrol.', online: true },
+];
+const guideSteps = () => GUIDE_STEPS.filter(s => !s.online || cloudEnabled());
+function openGuide(step = 0) {
+  const steps = guideSteps();
+  const i = clamp(Math.floor(Number(step) || 0), 0, steps.length - 1);
+  const s = steps[i];
+  const last = i === steps.length - 1;
+  if (!state.game.guide) {
+    state.game.guide = true;
+    save();
+  }
+  openModal(`
+    <div class="guide">
+      <div class="guide-dots" aria-hidden="true">${steps.map((_, n) => `<span class="${n === i ? 'on' : ''}"></span>`).join('')}</div>
+      <div class="guide-art" aria-hidden="true">${s.emoji}</div>
+      <p class="tiny muted">Panduan singkat · ${i + 1} dari ${steps.length}</p>
+      <h2>${s.title}</h2>
+      <p>${s.text}</p>
+      <div class="modal-actions" style="justify-content:space-between">
+        ${i === 0 ? '<button type="button" class="btn" data-action="closeModal">Lewati</button>' : `<button type="button" class="btn" data-action="guideGo" data-step="${i - 1}">← Kembali</button>`}
+        ${last ? '<button type="button" class="btn primary" data-action="guideDone">Mulai! 🚀</button>' : `<button type="button" class="btn primary" data-action="guideGo" data-step="${i + 1}">Lanjut →</button>`}
+      </div>
+    </div>`, { type: 'guide', step: i, noFocus: true });
+}
+
 const XP_RULES = [
   ['Catat makanan (minimal 1)', 10],
   ['Catat sarapan, makan siang & makan malam', 10],
@@ -1452,6 +1810,7 @@ const XP_RULES = [
   ['Skor Tangkap Sayur (50 poin = 1 XP, maks. 20 XP/hari)', 1],
   ['Timbang badan (maks. 1x per minggu)', 15],
   ['Membuka lencana', BADGE_XP],
+  ['Misi Starter Pack (pengguna baru, sekali saja)', '50–150'],
 ];
 
 const FUN_FACTS = [
@@ -1528,7 +1887,7 @@ const EQUIVALENTS = [
 ];
 
 /* ---------- Seru: boss mingguan, Tebak Kalori, Peta Nusantara, lelucon ---------- */
-const NEWS_VERSION = '2.1';        // pengumuman fitur baru tampil sekali per versi
+const NEWS_VERSION = '2.2';        // pengumuman fitur baru tampil sekali per versi
 const BOSS_EPOCH = '2024-01-01';   // hari Senin; boss berganti tiap minggu dihitung dari tanggal ini
 const TRIP_DAYS = 90;              // mode jaga berat: 90 hari mencatat = sampai Merauke
 
@@ -1718,6 +2077,24 @@ const QUIZ_FAIL = ['Yah, meleset! 😅', 'Ups, kena jebakan kalori! 😆', 'Hamp
 
 // Emoji makanan: aturan pertama yang cocok dipakai, lalu emoji kategori
 const FOOD_EMOJI_RULES = [
+  // v2.2: menu di luar rumah — aturan spesifik dulu, makanan lama tetap memakai emoji yang sama
+  [/es krim|sundae|mcflurry|gelato|bingsu/i, '🍨'], [/es teler|es campur|es buah|cendol|dawet|pisang ijo/i, '🍧'], [/es kelapa/i, '🥥'],
+  [/warteg|nasi timbel|nasi liwet|nasi kuning|nasi campur|nasi hainan|briyani|rice bowl|bibimbap/i, '🍛'], [/teriyaki/i, '🍱'],
+  [/kwetiau|ifumie|bakmi|ramen|udon|pad thai/i, '🍜'], [/spaghetti|aglio/i, '🍝'], [/sushi|sashimi/i, '🍣'],
+  [/dimsum|siumai|hakau|pangsit|wonton|bakpao|xiao long|cheong fun|ekkado|ceker|pastel|batagor/i, '🥟'], [/lemper|lo mai gai|kimbap/i, '🍙'],
+  [/tom yum|sop |sup /i, '🍲'], [/babi|char siu/i, '🍖'], [/^sate/i, '🍢'], [/pecel lele/i, '🐟'], [/donat/i, '🍩'],
+  [/steak|iga|buntut|konro|kambing|dendeng/i, '🥩'],
+  [/bebek/i, '🦆'], [/kepiting/i, '🦀'], [/cumi/i, '🦑'], [/salmon|gurame|fish and chips/i, '🐟'],
+  [/croissant|croffle|pain au|molen/i, '🥐'], [/sandwich|roti panggang/i, '🥪'], [/^roti/i, '🍞'], [/martabak/i, '🥞'],
+  [/waffle/i, '🧇'], [/pancake|crepes|serabi/i, '🥞'],
+  [/macaron|bakpia|kue bulan|egg tart/i, '🥮'],
+  [/cheesecake|cake|brownies|tiramisu|bolu|lapis legit|black forest|kue lumpur|banana bread/i, '🍰'], [/muffin/i, '🧁'],
+  [/mochi|cilok|cimol|cireng|kue putu|kue cubit/i, '🍡'], [/puding/i, '🍮'], [/churros|cakwe/i, '🥖'],
+  [/apple pie/i, '🥧'], [/hot dog|corn dog/i, '🌭'], [/burrito|taco|kebab|lumpia/i, '🌯'], [/takoyaki/i, '🐙'], [/pempek/i, '🍥'],
+  [/tteokbokki|seblak/i, '🌶️'], [/bakso bakar/i, '🍢'], [/kerak telor|telur gulung|fuyunghai/i, '🍳'],
+  [/wings|chicken|kungpao|koloke/i, '🍗'], [/matcha|teh hijau|oolong/i, '🍵'],
+  [/latte|cappuccino|americano|espresso|macchiato|mocha|frappe/i, '☕'], [/thai tea|teh tarik|milkshake|smoothie|boba/i, '🧋'],
+  [/lemon tea|teh lemon/i, '🍋'], [/nachos/i, '🌮'], [/coleslaw|ketoprak/i, '🥗'], [/mashed potato/i, '🥔'], [/daun singkong|nangka/i, '🥬'],
   [/kentang goreng/i, '🍟'], [/pisang goreng/i, '🍌'], [/burger/i, '🍔'], [/pizza/i, '🍕'],
   [/nasi katsu/i, '🍱'], [/nasi padang|nasi goreng/i, '🍛'], [/katsu|geprek|ayam goreng|ayam bakar|nugget/i, '🍗'],
   [/soto|rawon/i, '🍲'], [/bubur|oat/i, '🥣'], [/mie|bakso|bihun/i, '🍜'], [/sate/i, '🍢'],
@@ -1732,7 +2109,10 @@ const FOOD_EMOJI_RULES = [
   [/martabak/i, '🥞'], [/donat/i, '🍩'], [/kue|klepon/i, '🍡'], [/biskuit|cookies/i, '🍪'], [/kacang|selai/i, '🥜'],
   [/kerupuk/i, '🍘'], [/sambal/i, '🌶️'], [/gula/i, '🍬'], [/madu/i, '🍯'], [/kecap|minyak|mentega|margarin|mayones/i, '🥄'],
 ];
-const CAT_EMOJI = { pokok: '🍚', hewani: '🍗', nabati: '🌱', sayur: '🥗', buah: '🍎', minuman: '🥤', camilan: '🍪', jadi: '🍱', lain: '🧂' };
+const CAT_EMOJI = {
+  pokok: '🍚', hewani: '🍗', nabati: '🌱', sayur: '🥗', buah: '🍎', minuman: '🥤', camilan: '🍪', jadi: '🍱', lain: '🧂',
+  kakilima: '🍢', kafe: '☕', resto: '🍽️', dessert: '🍰', foodcourt: '🍔', chinese: '🥡',
+};
 
 /* ---------- Hadiah level: peti, stiker, aksesori, tema + game Tangkap Sayur ---------- */
 const ARCADE_XP_CAP = 20;   // maksimal XP Tangkap Sayur per hari
@@ -2048,6 +2428,7 @@ const ui = {
   mascotTaps: 0,
   bubbleJoke: -1,
   petTip: 0,
+  starterAll: false,
   temanSeg: 'chat',      // chat | publik
   temanSegPicked: false,
   chatWith: null,        // uid teman yang chat-nya sedang dibuka
@@ -2063,6 +2444,7 @@ const newGame = (introSeen = true) => ({
   unlocked: {}, level: 1, perfect: {}, sound: false, introSeen,
   news: introSeen ? NEWS_VERSION : '', quiz: newQuiz(), bosses: {}, trip: { key: '', stop: 0 },
   rewards: newRewards(), arcade: newArcade(), pet: newPet(), home: newHome(),
+  starter: { claimed: {} }, guide: false,
 });
 
 // Nilai contoh untuk pengguna baru — diganti lewat tab Profil
@@ -2123,6 +2505,13 @@ function normalizeGame(g) {
       if (isDateKey(date) && done) game.perfect[date] = true;
     }
   }
+  // Starter Pack (v2.2): misi yang sudah diklaim → waktu klaim
+  if (g.starter && typeof g.starter === 'object' && g.starter.claimed && typeof g.starter.claimed === 'object') {
+    for (const [id, at] of Object.entries(g.starter.claimed)) {
+      if (STARTER_IDS.includes(id) && Number(at) > 0) game.starter.claimed[id] = Math.floor(Number(at));
+    }
+  }
+  game.guide = Boolean(g.guide);
   // Data v1.1 belum punya kolom di bawah ini → pakai nilai awal
   game.news = typeof g.news === 'string' ? g.news.slice(0, 12) : '';
   if (g.quiz && typeof g.quiz === 'object') {
@@ -2780,7 +3169,8 @@ function computeStats(today) {
   s.quizBest = state.game.quiz.best;
 
   s.unlockedCount = BADGES.filter(b => state.game.unlocked[b.id]).length;
-  s.xp = s.dayXp + weighWeeks * 15 + s.unlockedCount * BADGE_XP + s.bossWins * BOSS_XP + state.game.quiz.xp + state.game.arcade.xp;
+  s.xp = s.dayXp + weighWeeks * 15 + s.unlockedCount * BADGE_XP + s.bossWins * BOSS_XP + state.game.quiz.xp + state.game.arcade.xp
+    + starterXp();
   s.level = levelInfo(s.xp);
   return s;
 }
@@ -3308,6 +3698,7 @@ function viewHome() {
     <span class="pill">${modeLabel} · target ${fmt(t.kcal)} kkal</span>
   </div>
   ${p.confirmed ? '' : `<div class="banner"><span>⚠️ <b>Profil belum dikonfirmasi.</b> Cek data diri &amp; berat target supaya hitungan kalori akurat.</span><button type="button" class="btn small primary" data-action="tab" data-tab="profil">Lengkapi profil</button></div>`}
+  ${starterCardHtml()}
   ${mascotCardHtml(mascot, stats, missions, xpOfDay, isToday)}
   ${petStripHtml(stats)}
   <div class="grid two eq">
@@ -3399,7 +3790,7 @@ function foodResultsHtml() {
     }
     return `<div class="empty">Tidak ditemukan. <button type="button" class="link-btn" data-action="manualFood">Input manual</button></div>`;
   }
-  return list.slice(0, 200).map(f => `
+  return list.slice(0, 600).map(f => `
     <div class="food-item" role="button" tabindex="0" data-action="pickFood" data-id="${esc(f.id)}">
       <div class="f-row">
         <span class="f-emoji" aria-hidden="true">${foodEmoji(f)}</span>
@@ -3746,7 +4137,7 @@ function viewProfile() {
   const nFoods = allDays.reduce((s, d) => s + d.foods.length, 0);
   const adjLabel = t.mode === 'lose' ? 'Defisit' : t.mode === 'gain' ? 'Surplus' : 'Penyesuaian';
   return `
-  <div class="page-title"><div><h1>Profil &amp; target</h1><p>Data ini dipakai untuk menghitung kebutuhan kalori &amp; gizi harian.</p></div></div>
+  <div class="page-title"><div><h1>Profil &amp; target</h1><p>Data ini dipakai untuk menghitung kebutuhan kalori &amp; gizi harian.</p></div><button type="button" class="btn small" data-action="guideOpen">📖 Panduan singkat</button></div>
   <div class="grid two">
     <form class="card form" data-form="profile" novalidate>
       <h3>👤 Data diri</h3>
@@ -4694,6 +5085,10 @@ function petTips(stats, pet) {
   if (returnedLetter()) push(`${pet.name} sudah pulang bawa balasan dari @${socialName(returnedLetter().to)}! 💌`, 'Baca', 'tab', 'data-tab="pet"');
   for (const r of incomingRequests()) push(`@${socialName(r.from)} ingin berteman denganmu! 👋`, 'Lihat', 'temanGo', 'data-seg="chat"');
   for (const fr of unreadFriendships()) push(`Ada pesan baru dari @${socialName(otherOf(fr))} 💬`, 'Buka chat', 'chatOpen', `data-uid="${esc(otherOf(fr))}"`);
+  const starter = starterInfo();
+  if (starter.visible && starter.ready.length) {
+    push(`Ada ${starter.ready.length} hadiah Starter Pack siap diklaim (+${fmt(starter.ready.reduce((sum, r) => sum + r.xp, 0))} XP)! 🎒`, 'Klaim', 'tab', 'data-tab="beranda"');
+  }
   const waiting = chestsWaiting(stats.level.level);
   if (waiting) push(`Psst… ada ${waiting} peti hadiah belum dibuka! 🎁`, 'Buka peti', 'openChest');
   const freshFurniture = FURNITURE.filter(x => x.level > state.game.home.seen && x.level <= stats.level.level);
@@ -6083,23 +6478,20 @@ function openGameIntro() {
 function openNews() {
   const level = getStats().level.level;
   const pet = activePet(level);
-  const hasAccount = Boolean(syncMeta().uid);
+  const added = FOOD_DB.filter(f => ['kakilima', 'kafe', 'resto', 'dessert', 'foodcourt', 'chinese'].includes(f.cat)).length;
   openModal(`
     <div class="welcome">
       <div class="pet-opt active" style="max-width:150px;margin:0 auto"><div class="po-art" style="width:120px;height:120px">${petSvg(pet ? pet.id : 'oyen', { stage: petStage(level).id, mood: 'bangga' })}</div></div>
-      <h2>Halaman Teman baru! 💬</h2>
-      <p>Chat &amp; cari teman sekarang punya tab sendiri: <b>Teman</b>.</p>
+      <h2>Menu makanan makin lengkap! 🍜</h2>
+      <p>Sekarang ada <b>${FOOD_DB.length}</b> makanan &amp; minuman siap dicatat.</p>
       <ul class="intro-list">
-        <li>🌏 <b>Ruang publik</b> — daftar semua pengguna SehatKu. Langsung ketuk <b>➕ Tambah</b>, tidak perlu cari nama dulu</li>
-        <li>💬 <b>Chat</b> di satu halaman — di HP chat terbuka layar penuh</li>
-        <li>🏠 Intip rumah &amp; pet siapa saja dari Ruang publik</li>
-        <li>🔔 Pesan baru muncul sebagai pop-up dengan tombol <b>Balas</b>, plus angka di tab Teman</li>
-        <li>🙈 Tidak mau tampil di Ruang publik? Matikan lewat ✏️ Ubah di tab Teman</li>
-        ${hasAccount ? '' : '<li>☁️ Belum punya akun? Daftar gratis dengan email — catatanmu juga ikut tersimpan di cloud</li>'}
+        <li>🍢 <b>Kategori baru</b>: jajanan kaki lima, kafe &amp; kopi, restoran, dessert, food court &amp; Chinese food (±${fmt(Math.floor(added / 10) * 10)} menu)</li>
+        <li>🎒 <b>Starter Pack</b> untuk pengguna baru — misi pemula dengan bonus XP besar supaya cepat naik level</li>
+        <li>📖 <b>Panduan singkat</b> cara pakai SehatKu — buka kapan saja dari tab Profil</li>
       </ul>
       <div class="modal-actions" style="justify-content:center">
         <button type="button" class="btn" data-action="newsDone">Nanti saja</button>
-        <button type="button" class="btn primary" data-action="newsGo">Buka Teman 💬</button>
+        <button type="button" class="btn primary" data-action="newsGo">Lihat menu baru 🍜</button>
       </div>
     </div>`, { type: 'news' });
 }
@@ -6458,6 +6850,10 @@ function mergeGame(a, b) {
   }
   g.level = Math.max(a.level, b.level);
   g.introSeen = a.introSeen || b.introSeen;
+  g.guide = a.guide || b.guide;
+  for (const [id, at] of Object.entries(b.starter.claimed)) {
+    if (!g.starter.claimed[id] || at < g.starter.claimed[id]) g.starter.claimed[id] = at;
+  }
   if (compareVersions(b.news || '0', g.news || '0') > 0) g.news = b.news;
   const qa = a.quiz;
   const qb = b.quiz;
@@ -8271,13 +8667,9 @@ const actions = {
   newsDone: () => closeModal(),
   newsGo: () => {
     closeModal();
-    ui.temanSeg = 'publik';
-    ui.temanSegPicked = true;
-    setTab(cloudEnabled() ? 'teman' : 'pet');
-    if (cloudEnabled() && !cloud.user) {
-      cloudInit();
-      openEmailAuth('signup');
-    }
+    ui.foodCat = 'kakilima';
+    ui.foodQuery = '';
+    setTab('makanan');
   },
   mascotTap: el => {
     ui.mascotTaps += 1;
@@ -8556,6 +8948,36 @@ const actions = {
     const v = social.myVisit;
     if (v) setSocialSeen({ letter: v.returnedAt });
     renderSocial();
+  },
+  starterClaim: el => {
+    const info = starterInfo();
+    const row = info.rows.find(r => r.id === el.dataset.id);
+    if (!row || row.claimed) return;
+    if (!row.ready) return toast('Selesaikan misinya dulu, ya 💪', 'error');
+    const claimed = state.game.starter.claimed;
+    claimed[row.id] = Date.now();
+    const finished = starterQuests().every(q => claimed[q.id]);
+    if (finished) claimed.selesai = Date.now();
+    save();
+    render();
+    if (finished) {
+      confetti();
+      return toast(`🎒 Starter Pack selesai! +${row.xp} XP + bonus ${STARTER_BONUS} XP 🎉`);
+    }
+    return toast(`+${row.xp} XP 🎉 ${row.title}`);
+  },
+  starterAll: () => {
+    ui.starterAll = !ui.starterAll;
+    render();
+  },
+  guideOpen: () => openGuide(0),
+  guideGo: el => openGuide(el.dataset.step),
+  guideDone: () => {
+    closeModal();
+    if (starterInfo().visible) {
+      setTab('beranda');
+      toast('Ambil hadiah Starter Pack di Beranda 🎒');
+    }
   },
   chatOpen: el => openChat(el.dataset.uid),
   chatClose: () => closeChat(),
@@ -8980,6 +9402,7 @@ const forms = {
     if (!(weight >= 30 && weight <= 300)) return toast('Berat badan harus 30–300 kg', 'error');
     if (!(goal >= 30 && goal <= 300)) return toast('Berat target harus 30–300 kg', 'error');
     const p = state.profile;
+    const firstTime = !p.confirmed;
     p.name = String(fd.get('name') || '').trim().slice(0, 40);
     p.sex = fd.get('sex') === 'female' ? 'female' : 'male';
     p.age = age;
@@ -9001,6 +9424,10 @@ const forms = {
     if (Math.abs(r1(weight) - currentWeight()) >= 0.05) upsertWeight(todayKey(), weight, null);
     save();
     render();
+    if (firstTime && !state.game.guide) {
+      setTab('beranda');
+      openGuide(0);
+    }
     return toast('Profil tersimpan ✓ Target diperbarui');
   },
 };
