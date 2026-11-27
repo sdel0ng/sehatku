@@ -679,6 +679,57 @@ a.btn { text-decoration: none; }
   #foodChips .chip { flex: none; }
 }
 
+/* ---------- Mini chat (layar lebar) ---------- */
+body.chat-rail .shell {
+  max-width: min(1280px, calc(100vw - 236px));
+  margin-left: max(0px, min(calc((100vw - 1280px) / 2), calc(100vw - 1516px)));
+  margin-right: 0;
+}
+.mini-chat { position: fixed; z-index: 50; }
+.mini-chat.rail { top: 74px; right: 12px; bottom: 12px; width: 220px; }
+.mini-chat.button { right: 20px; bottom: 20px; }
+.mc-panel { display: flex; flex-direction: column; height: 100%; min-height: 0; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.mc-pop { position: absolute; right: 0; bottom: 66px; width: 280px; height: auto; max-height: min(480px, calc(100vh - 120px)); box-shadow: 0 18px 48px rgba(0, 0, 0, .2); }
+.mc-head { display: flex; align-items: center; gap: 8px; padding: 10px 8px 8px 14px; border-bottom: 1px solid var(--line); }
+.mc-tools { display: flex; gap: 2px; margin-left: auto; }
+.mc-tools .x-btn { width: 30px; height: 30px; font-size: 16px; }
+.mc-req { margin: 8px 8px 0; padding: 8px 10px; border: 0; border-radius: 10px; background: var(--primary-soft); color: inherit; font: inherit; font-size: 13px; font-weight: 700; text-align: left; cursor: pointer; }
+.mc-list { flex: 1; min-height: 0; overflow-y: auto; padding: 6px; display: grid; align-content: start; gap: 2px; }
+.mc-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; width: 100%; padding: 7px 8px; border: 0; border-radius: 12px; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.mc-row:hover, .mc-row:focus-visible { background: var(--soft); outline: none; }
+.mc-row.active { background: var(--primary-soft); }
+.mc-ava { position: relative; }
+.mc-ava .mini-pet { width: 38px; height: 38px; border-radius: 12px; }
+.mc-ava .mini-pet .pet-svg { width: 36px; height: 36px; }
+.mc-ava .mini-pet.egg { font-size: 20px; }
+.mc-online { position: absolute; right: -2px; bottom: -2px; width: 12px; height: 12px; border-radius: 50%; background: #22c55e; border: 2px solid var(--card); }
+.mc-text { display: grid; min-width: 0; }
+.mc-text b, .mc-text span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mc-text b { font-size: 13.5px; }
+.mc-text span { font-size: 12px; color: var(--muted); }
+.mc-row.unread .mc-text span { color: var(--text); font-weight: 700; }
+.mc-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--danger); }
+.mc-empty { padding: 10px 8px; }
+.mc-find { margin: 4px 12px 12px; align-self: flex-start; font-size: 13px; }
+.mc-fab { position: relative; width: 56px; height: 56px; border: 0; border-radius: 50%; background: var(--primary); color: #fff; font-size: 26px; cursor: pointer; box-shadow: 0 10px 28px rgba(0, 0, 0, .22); transition: transform .15s; }
+.mc-fab:hover { transform: scale(1.06); }
+.mc-fab .tab-badge { position: absolute; top: -4px; right: -4px; margin: 0; border: 2px solid var(--card); }
+.mini-win { position: fixed; z-index: 51; bottom: 12px; width: 360px; height: min(480px, calc(100vh - 100px)); display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 18px 48px rgba(0, 0, 0, .22); overflow: hidden; }
+.mini-win.rail { right: 244px; }
+.mini-win.button { right: 20px; bottom: 88px; }
+.mw-head { display: flex; align-items: center; gap: 4px; padding: 8px 8px 8px 12px; border-bottom: 1px solid var(--line); }
+.mw-head .chat-who { flex: 1; }
+.mw-head .mini-pet { width: 38px; height: 38px; border-radius: 12px; }
+.mw-head .mini-pet .pet-svg { width: 36px; height: 36px; }
+.mw-head .x-btn { width: 30px; height: 30px; font-size: 16px; }
+.mw-list { min-height: 0; padding: 10px 12px; }
+.mw-list .msg { max-width: 85%; }
+.mini-win .mw-stickers { gap: 3px; padding: 6px 10px 0; scrollbar-width: none; }
+.mini-win .mw-stickers::-webkit-scrollbar { display: none; }
+.mini-win .mw-stickers button { width: 31px; height: 31px; font-size: 17px; }
+.mini-win .chat-form input { height: 38px; font-size: 14px; }
+@media print { .mini-chat, .mini-win { display: none !important; } }
+
 /* ---------- Pasang aplikasi (Android / iPhone / PC) ---------- */
 .install-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
 .install-tile { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 14px 6px 10px; border: 1px solid var(--line); border-radius: 14px; background: var(--soft); color: inherit; text-align: center; text-decoration: none; cursor: pointer; transition: border-color .15s, transform .15s; }
@@ -1132,6 +1183,8 @@ button.pet-strip { cursor: pointer; }
   <main id="view" class="view"></main>
 </div>
 <div id="modal" class="modal" hidden><div class="modal-card" id="modalCard" role="dialog" aria-modal="true"></div></div>
+<aside id="miniChat" class="mini-chat" aria-label="Mini chat" hidden></aside>
+<section id="miniChatWin" class="mini-win" aria-label="Percakapan" hidden></section>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <div id="celebrate" class="celebrate" hidden></div>
 <div id="petBuddy" class="pet-buddy" hidden>
@@ -1147,7 +1200,7 @@ button.pet-strip { cursor: pointer; }
 /* =========================================================
    KONSTANTA & DATABASE
    ========================================================= */
-const APP_VERSION = '2.3';
+const APP_VERSION = '2.4';
 const UPDATE_BASE = 'https://sdel0ng.github.io/sehatku/';  // versi online resmi + version.json
 const UPDATE_CHECK_MS = 6 * 60 * 60 * 1000;               // cek otomatis tiap 6 jam selama aplikasi terbuka
 const VERSION_KEY = 'sehatku.appVersion';                 // versi terakhir yang dibuka di browser ini
@@ -2472,6 +2525,8 @@ const ui = {
   bubbleJoke: -1,
   petTip: 0,
   starterAll: false,
+  miniWith: null,     // mini chat: teman yang chat-nya terbuka di jendela kecil
+  miniOpen: false,    // mini chat: daftar teman melayang terbuka (mode tombol)
   temanSeg: 'chat',      // chat | publik
   temanSegPicked: false,
   chatWith: null,        // uid teman yang chat-nya sedang dibuka
@@ -6332,13 +6387,20 @@ function setTab(tab) {
     ui.decorSel = null;
   }
   if (tab !== 'makanan') ui.pendingMeal = null;
-  if (tab !== 'teman' && (ui.chatWith || social.chat)) {
+  if (tab !== 'teman' && (ui.chatWith || (social.chat && !ui.miniWith))) {
     closeChatListener();
     ui.chatWith = null;
   }
+  if (tab === 'teman' && ui.miniWith) {
+    // Halaman Teman sudah punya chat lengkap → mini chat ditutup (percakapan yang sama tetap jalan kalau dibuka di sana)
+    ui.miniWith = null;
+    if (!ui.chatWith) closeChatListener();
+  }
+  ui.miniOpen = false;
   const changed = ui.tab !== tab;
   ui.tab = tab;
   render();
+  renderMiniChat();
   if (location.hash.replace(/^#/, '') !== tab) location.hash = tab;
   if (changed) window.scrollTo(0, 0);
 }
@@ -7955,6 +8017,8 @@ function socialStop() {
     }
   });
   closeChatListener();
+  ui.miniWith = null;
+  ui.miniOpen = false;
   clearInterval(social.presenceTimer);
   clearTimeout(social.publishTimer);
   clearTimeout(searchTimer);
@@ -7965,6 +8029,7 @@ function socialStop() {
   });
   ui.chatWith = null;
   ui.temanSegPicked = false;
+  renderMiniChat();
 }
 
 // Notifikasi kecil saat ada kabar baru (bukan saat data pertama dimuat)
@@ -7989,11 +8054,15 @@ function onFriendships(uid, list) {
     ui.chatWith = null;
     if (chatHash()) history.replaceState(null, '', '#teman');
   }
+  if (ui.miniWith && !list.some(f => f.status === 'accepted' && f.members.includes(ui.miniWith))) {
+    ui.miniWith = null;
+    if (!ui.chatWith) closeChatListener();
+  }
   if (!first) {
     for (const f of list) {
       const old = before.find(x => x.id === f.id);
       const other = otherOf(f);
-      const chatGo = notifyGo('Balas', `data-action="chatOpen" data-uid="${esc(other)}"`);
+      const chatGo = notifyGo('Balas', `data-action="chatQuick" data-uid="${esc(other)}"`);
       if (f.status === 'pending' && f.to === uid && !old) socialNotify(() => `👋 @${socialName(other)} ingin berteman denganmu!`);
       if (f.status === 'accepted' && old && old.status === 'pending' && f.from === uid) {
         socialNotify(() => `🎉 @${socialName(other)} menerima pertemananmu!`, notifyGo('Chat', chatGo.attrs));
@@ -8125,6 +8194,7 @@ const socialSig = () => [cloudEnabled() ? 'c' : '', cloud.user ? cloud.user.uid 
   social.me ? social.me.username : '', ui.temanSeg, ui.chatWith || ''].join('|');
 function renderSocial() {
   renderSocialBadges();
+  renderMiniChat();
   buddyUpdate();
   syncChatOverlay();
   if (ui.tab === 'teman') {
@@ -8619,30 +8689,35 @@ function closeChatListener() {
   }
   social.chat = null;
 }
+// Satu percakapan aktif (dipakai halaman Teman maupun mini chat)
+function watchChat(f, uid) {
+  const api = socialApi();
+  if (social.chat && social.chat.pairId === f.id) return social.chat;
+  closeChatListener();
+  const chat = { pairId: f.id, uid, messages: [], unsub: null, readAt: 0, scrolled: false, loaded: false, error: '' };
+  social.chat = chat;
+  chat.unsub = api.watchMessages(f.id, messages => {
+    if (social.chat !== chat) return;
+    chat.messages = messages;
+    chat.loaded = true;
+    chat.error = '';
+    renderChatList();
+    markChatRead();
+  }, err => {
+    if (social.chat !== chat) return;
+    chat.loaded = true;
+    chat.error = socialErrorText(err, 'Pesan tidak bisa dimuat.');
+    renderChatList();
+  });
+  return chat;
+}
 function openChat(uid) {
   const api = socialApi();
   const f = friendshipWith(uid);
   if (!api || !socialReady()) return toast('Masuk akun dulu untuk chat');
   if (!f || f.status !== 'accepted') return toast('Kalian belum berteman');
   if (modalCtx) closeModal();
-  if (!social.chat || social.chat.pairId !== f.id) {
-    closeChatListener();
-    const chat = { pairId: f.id, uid, messages: [], unsub: null, readAt: 0, scrolled: false, loaded: false, error: '' };
-    social.chat = chat;
-    chat.unsub = api.watchMessages(f.id, messages => {
-      if (social.chat !== chat) return;
-      chat.messages = messages;
-      chat.loaded = true;
-      chat.error = '';
-      renderChatList();
-      markChatRead();
-    }, err => {
-      if (social.chat !== chat) return;
-      chat.loaded = true;
-      chat.error = socialErrorText(err, 'Pesan tidak bisa dimuat.');
-      renderChatList();
-    });
-  }
+  watchChat(f, uid);
   ui.chatWith = uid;
   ui.temanSeg = 'chat';
   ui.temanSegPicked = true;
@@ -8656,6 +8731,164 @@ function openChat(uid) {
   if (input && !(window.matchMedia && matchMedia('(pointer: coarse)').matches)) input.focus();
 }
 const chatDayLabel = k => (k === todayKey() ? 'Hari ini' : k === addDays(todayKey(), -1) ? 'Kemarin' : longDate(k));
+/* ---------- Mini chat di samping (layar lebar) ---------- */
+const MINI_CHAT_KEY = 'sehatku.miniChat';        // 'button' = dikecilkan jadi tombol bulat (per perangkat)
+function miniCollapsed() {
+  try {
+    return localStorage.getItem(MINI_CHAT_KEY) === 'button';
+  } catch (e) {
+    return false;
+  }
+}
+// off = tidak tampil · rail = kolom chat di kanan · button = tombol 💬 melayang di kanan bawah
+function miniMode() {
+  if (!socialReady() || ui.tab === 'teman') return 'off';
+  if (!mediaMatches('(min-width: 1024px)') || mediaMatches('(pointer: coarse)')) return 'off';
+  if (miniCollapsed() || !mediaMatches('(min-width: 1200px)')) return 'button';
+  return 'rail';
+}
+function miniRows() {
+  const seen = uid => (social.profiles[uid] && social.profiles[uid].lastSeen) || 0;
+  return acceptedFriends()
+    .map(f => ({ f, uid: otherOf(f), unread: isUnread(f) }))
+    .sort((a, b) => (b.unread - a.unread) || ((b.f.lastAt || 0) - (a.f.lastAt || 0)) || (seen(b.uid) - seen(a.uid)));
+}
+function miniRowHtml(r) {
+  const p = social.profiles[r.uid] || {};
+  const name = esc(socialName(r.uid));
+  const online = p.lastSeen && Date.now() - p.lastSeen < ONLINE_MS;
+  const last = r.f.lastMsg;
+  const preview = last
+    ? esc(cutText(`${last.from === social.uid ? 'Kamu: ' : ''}${last.text}`, 40))
+    : presenceHtml(p);
+  const cls = ['mc-row', r.unread ? 'unread' : '', ui.miniWith === r.uid ? 'active' : ''].filter(Boolean).join(' ');
+  return `<button type="button" class="${cls}" data-action="miniOpen" data-uid="${esc(r.uid)}" title="Chat dengan @${name}">
+    <span class="mc-ava">${miniPetHtml(p.pet)}${online ? '<span class="mc-online" aria-label="online"></span>' : ''}</span>
+    <span class="mc-text"><b>@${name}</b><span>${preview}</span></span>
+    ${r.unread ? '<span class="mc-dot" aria-label="pesan baru"></span>' : ''}
+  </button>`;
+}
+function miniPanelHtml(mode) {
+  const rows = miniRows();
+  const requests = incomingRequests().length;
+  const unread = rows.filter(r => r.unread).length;
+  const dockBtn = mode === 'rail'
+    ? '<button type="button" class="x-btn" data-action="miniCollapse" title="Kecilkan jadi tombol" aria-label="Kecilkan chat">»</button>'
+    : miniCollapsed() && mediaMatches('(min-width: 1200px)')
+      ? '<button type="button" class="x-btn" data-action="miniExpand" title="Tampilkan di samping" aria-label="Tampilkan chat di samping">«</button>'
+      : '';
+  return `
+    <div class="mc-head">
+      <b>💬 Chat</b>${unread ? `<span class="seg-count">${unread > 9 ? '9+' : unread}</span>` : ''}
+      <span class="mc-tools">
+        <button type="button" class="x-btn" data-action="temanGo" data-seg="chat" title="Buka halaman Teman" aria-label="Buka halaman Teman">⤢</button>
+        ${dockBtn}
+      </span>
+    </div>
+    ${requests ? `<button type="button" class="mc-req" data-action="temanGo" data-seg="chat">👋 ${requests} permintaan pertemanan</button>` : ''}
+    <div class="mc-list">${rows.length ? rows.map(miniRowHtml).join('') : '<p class="tiny muted mc-empty">Belum ada teman untuk diajak ngobrol.</p>'}</div>
+    <button type="button" class="link-btn mc-find" data-action="temanGo" data-seg="publik">🌏 Cari teman di Ruang publik</button>`;
+}
+function miniHeadHtml(uid) {
+  const p = social.profiles[uid] || {};
+  return `${miniPetHtml(p.pet)}<span><b>@${esc(p.username || '…')}</b><span class="tiny muted">${presenceHtml(p)}</span></span>`;
+}
+function miniWinHtml(uid) {
+  const name = esc(socialName(uid));
+  return `
+    <div class="mw-head">
+      <button type="button" class="chat-who" id="miniChatHead" data-action="friendHome" data-uid="${esc(uid)}" aria-label="Lihat rumah @${name}">${miniHeadHtml(uid)}</button>
+      <button type="button" class="x-btn" data-action="chatOpen" data-uid="${esc(uid)}" title="Buka di halaman Teman" aria-label="Buka chat di halaman Teman">⤢</button>
+      <button type="button" class="x-btn" data-action="miniClose" title="Tutup" aria-label="Tutup chat">×</button>
+    </div>
+    <div class="chat-list mw-list" id="miniChatList">${chatListInner()}</div>
+    <div class="chat-stickers mw-stickers">${CHAT_STICKERS.map(s => `<button type="button" data-action="chatSticker" data-s="${s}" aria-label="Kirim ${s}">${s}</button>`).join('')}</div>
+    <form class="chat-form" data-form="chatSend" data-uid="${esc(uid)}" novalidate>
+      <input name="text" maxlength="500" placeholder="Tulis pesan…" autocomplete="off" enterkeyhint="send" aria-label="Pesan untuk @${name}">
+      <button class="btn primary">Kirim</button>
+    </form>`;
+}
+function renderMiniChat() {
+  const box = $('#miniChat');
+  const win = $('#miniChatWin');
+  if (!box || !win) return;
+  const mode = miniMode();
+  document.body.classList.toggle('chat-rail', mode === 'rail');
+  if (mode === 'off') {
+    box.hidden = true;
+    box.innerHTML = '';
+    box.dataset.html = '';
+    win.hidden = true;
+    win.innerHTML = '';
+    win.dataset.uid = '';
+    ui.miniOpen = false;
+    if (ui.miniWith) closeMiniChat();
+    return;
+  }
+  box.hidden = false;
+  box.className = `mini-chat ${mode}${ui.miniOpen ? ' open' : ''}${ui.miniWith ? ' has-win' : ''}`;
+  let html;
+  if (mode === 'rail') {
+    html = `<div class="mc-panel">${miniPanelHtml(mode)}</div>`;
+  } else {
+    const n = chatBadgeCount();
+    html = `<button type="button" class="mc-fab" data-action="miniToggle" aria-expanded="${ui.miniOpen}" title="Chat" aria-label="Chat${n ? ` — ${n} baru` : ''}">💬${n ? `<span class="tab-badge">${n > 9 ? '9+' : n}</span>` : ''}</button>
+      ${ui.miniOpen ? `<div class="mc-panel mc-pop">${miniPanelHtml(mode)}</div>` : ''}`;
+  }
+  if (box.dataset.html !== html) {
+    const list = box.querySelector('.mc-list');
+    const scroll = list ? list.scrollTop : 0;
+    box.innerHTML = html;
+    box.dataset.html = html;
+    const fresh = box.querySelector('.mc-list');
+    if (fresh) fresh.scrollTop = scroll;
+  }
+  if (!ui.miniWith) {
+    win.hidden = true;
+    win.innerHTML = '';
+    win.dataset.uid = '';
+    return;
+  }
+  win.className = `mini-win ${mode}`;
+  if (win.dataset.uid !== ui.miniWith) {
+    win.innerHTML = miniWinHtml(ui.miniWith);
+    win.dataset.uid = ui.miniWith;
+    win.hidden = false;
+    const list = $('#miniChatList');
+    if (list) list.scrollTop = list.scrollHeight;
+  } else {
+    win.hidden = false;
+    const head = $('#miniChatHead');
+    if (head) head.innerHTML = miniHeadHtml(ui.miniWith);
+  }
+}
+function openMiniChat(uid) {
+  const f = friendshipWith(uid);
+  if (!socialApi() || !socialReady()) return toast('Masuk akun dulu untuk chat');
+  if (!f || f.status !== 'accepted') return toast('Kalian belum berteman');
+  if (miniMode() === 'off') return openChat(uid);
+  if (modalCtx) closeModal();
+  watchChat(f, uid);
+  ui.miniWith = uid;
+  ui.miniOpen = false;
+  fetchProfiles([uid], 60000);
+  renderMiniChat();
+  renderChatList();
+  renderSocialBadges();
+  markChatRead();
+  const input = $('#miniChatWin input[name="text"]');
+  if (input) input.focus();
+}
+function closeMiniChat() {
+  if (!ui.miniWith) return;
+  ui.miniWith = null;
+  if (!ui.chatWith) closeChatListener();
+  renderMiniChat();
+  renderSocialBadges();
+}
+// "Balas" di notifikasi: buka mini chat kalau tersedia, selain itu halaman Teman
+const quickChat = uid => (miniMode() === 'off' ? openChat(uid) : openMiniChat(uid));
+
 function messageHtml(m) {
   const mine = m.from === social.uid;
   const side = mine ? 'mine' : 'theirs';
@@ -8689,15 +8922,15 @@ function chatListInner() {
   return html;
 }
 function renderChatList() {
-  const list = $('#chatList');
   const chat = social.chat;
-  if (!list || !chat) return;
-  const nearBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 90;
-  list.innerHTML = chatListInner();
-  if (nearBottom || !chat.scrolled) {
-    list.scrollTop = list.scrollHeight;
-    chat.scrolled = chat.loaded;
+  if (!chat) return;
+  const lists = [$('#chatList'), $('#miniChatList')].filter(Boolean);
+  for (const list of lists) {
+    const nearBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 90;
+    list.innerHTML = chatListInner();
+    if (nearBottom || !chat.scrolled) list.scrollTop = list.scrollHeight;
   }
+  if (lists.length) chat.scrolled = chat.loaded;
 }
 function markChatRead() {
   const chat = social.chat;
@@ -9245,6 +9478,32 @@ const actions = {
   },
   chatOpen: el => openChat(el.dataset.uid),
   chatClose: () => closeChat(),
+  chatQuick: el => quickChat(el.dataset.uid),
+  miniOpen: el => openMiniChat(el.dataset.uid),
+  miniClose: () => closeMiniChat(),
+  miniToggle: () => {
+    ui.miniOpen = !ui.miniOpen;
+    renderMiniChat();
+  },
+  miniCollapse: () => {
+    try {
+      localStorage.setItem(MINI_CHAT_KEY, 'button');
+    } catch (e) {
+      /* tetap dikecilkan untuk sesi ini saja */
+    }
+    ui.miniOpen = false;
+    renderMiniChat();
+    toast('Chat dikecilkan — ketuk 💬 di kanan bawah untuk membukanya');
+  },
+  miniExpand: () => {
+    try {
+      localStorage.removeItem(MINI_CHAT_KEY);
+    } catch (e) {
+      /* abaikan */
+    }
+    ui.miniOpen = false;
+    renderMiniChat();
+  },
   temanSeg: el => {
     ui.temanSeg = el.dataset.seg === 'publik' ? 'publik' : 'chat';
     ui.temanSegPicked = true;
@@ -9784,6 +10043,22 @@ document.addEventListener('keydown', e => {
     return;
   }
   if (e.key === 'Enter' && t.matches('input[data-change]')) t.blur();
+});
+window.addEventListener('resize', () => renderMiniChat());
+// Klik di luar daftar chat melayang → tutup daftarnya
+document.addEventListener('click', e => {
+  if (ui.miniOpen && !e.target.closest('#miniChat')) {
+    ui.miniOpen = false;
+    renderMiniChat();
+  }
+}, true);
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape' || !$('#modal').hidden) return;
+  if (ui.miniWith && e.target.closest && e.target.closest('#miniChatWin')) closeMiniChat();
+  else if (ui.miniOpen) {
+    ui.miniOpen = false;
+    renderMiniChat();
+  }
 });
 window.addEventListener('hashchange', () => {
   if (location.hash === '#pasang') {
