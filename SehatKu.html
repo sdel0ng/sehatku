@@ -679,6 +679,42 @@ a.btn { text-decoration: none; }
   #foodChips .chip { flex: none; }
 }
 
+/* ---------- Tampilan ringkas: sub-menu, Beranda ---------- */
+.subnav { display: flex; gap: 6px; margin: 0 0 16px; padding: 4px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); width: fit-content; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.subnav::-webkit-scrollbar { display: none; }
+.subnav .sub { display: inline-flex; align-items: center; gap: 6px; flex: none; padding: 8px 16px; border: 0; border-radius: 10px; background: transparent; color: var(--muted); font-weight: 700; cursor: pointer; white-space: nowrap; }
+.subnav .sub:hover { color: var(--text); background: var(--soft); }
+.subnav .sub.active { background: var(--primary); color: #fff; }
+.hero-card .cal-wrap { align-items: center; }
+.hero-side { display: grid; gap: 10px; min-width: 0; }
+.macro-mini { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.mm-top { display: flex; justify-content: space-between; gap: 4px; font-size: 12px; margin-bottom: 4px; white-space: nowrap; }
+.mm-top b { font-size: 12px; }
+.mm-top .muted { font-weight: 400; }
+.hero-card .fun-line { margin: 0; }
+.quick-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+.quick { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 4px; border: 1px solid var(--line); border-radius: 14px; background: var(--soft); color: inherit; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: border-color .15s, transform .15s; }
+.quick span { font-size: 22px; line-height: 1.1; }
+.quick:hover { border-color: var(--primary); transform: translateY(-1px); }
+.home-more { margin-top: 4px; }
+.home-more > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 14px 18px; border: 1px dashed var(--line); border-radius: var(--radius); background: var(--card); cursor: pointer; list-style: none; font-weight: 700; color: var(--primary); }
+.home-more > summary::-webkit-details-marker { display: none; }
+.home-more > summary:hover { border-color: var(--primary); }
+.home-more[open] > summary { margin-bottom: 16px; }
+.home-more-body { display: grid; gap: 16px; }
+.home-more-body > .grid { margin: 0; }
+@media (max-width: 820px) {
+  .tab { font-size: 11px; padding: 6px 2px; }
+  .tab .ico { font-size: 20px; }
+  .subnav { width: 100%; }
+  .subnav .sub { flex: 1; justify-content: center; padding: 8px 10px; }
+  .macro-mini { gap: 8px; }
+}
+@media (max-width: 420px) {
+  .quick { font-size: 11.5px; }
+  .mm-top { flex-direction: column; gap: 0; }
+}
+
 /* ---------- Mini chat (layar lebar) ---------- */
 body.chat-rail .shell {
   max-width: min(1280px, calc(100vw - 236px));
@@ -1169,16 +1205,12 @@ button.pet-strip { cursor: pointer; }
 <div id="updateBanner" class="update-banner" role="status" hidden></div>
 <div class="shell">
   <nav class="tabs" id="tabs" aria-label="Menu utama">
-    <button type="button" class="tab" data-action="tab" data-tab="beranda"><span class="ico">🏠</span><span>Beranda</span></button>
-    <button type="button" class="tab" data-action="tab" data-tab="makanan"><span class="ico">🍽️</span><span>Makanan</span></button>
-    <button type="button" class="tab" data-action="tab" data-tab="aktivitas"><span class="ico">🏃</span><span>Aktivitas</span></button>
-    <button type="button" class="tab" data-action="tab" data-tab="berat"><span class="ico">⚖️</span><span>Berat</span></button>
-    <button type="button" class="tab" data-action="tab" data-tab="statistik"><span class="ico">📊</span><span>Statistik</span></button>
-    <button type="button" class="tab" data-action="tab" data-tab="prestasi"><span class="ico">🏆</span><span>Prestasi</span></button>
-    <button type="button" class="tab" data-action="tab" data-tab="seru"><span class="ico">🎮</span><span>Seru</span></button>
-    <button type="button" class="tab" data-action="tab" data-tab="pet" id="petTab"><span class="ico">🐾</span><span>Pet</span></button>
-    <button type="button" class="tab" data-action="tab" data-tab="teman" id="temanTab" hidden><span class="ico">💬</span><span>Teman</span></button>
-    <button type="button" class="tab" data-action="tab" data-tab="profil"><span class="ico">👤</span><span>Profil</span></button>
+    <button type="button" class="tab" data-action="tab" data-group="beranda" data-tab="beranda"><span class="ico">🏠</span><span>Beranda</span></button>
+    <button type="button" class="tab" data-action="tab" data-group="catat" data-tab="makanan"><span class="ico">📝</span><span>Catat</span></button>
+    <button type="button" class="tab" data-action="tab" data-group="progres" data-tab="statistik"><span class="ico">📈</span><span>Progres</span></button>
+    <button type="button" class="tab" data-action="tab" data-group="seru" data-tab="seru" id="petTab"><span class="ico">🎮</span><span>Seru</span></button>
+    <button type="button" class="tab" data-action="tab" data-group="teman" data-tab="teman" id="temanTab" hidden><span class="ico">💬</span><span>Teman</span></button>
+    <button type="button" class="tab" data-action="tab" data-group="profil" data-tab="profil"><span class="ico">👤</span><span>Profil</span></button>
   </nav>
   <main id="view" class="view"></main>
 </div>
@@ -1200,7 +1232,7 @@ button.pet-strip { cursor: pointer; }
 /* =========================================================
    KONSTANTA & DATABASE
    ========================================================= */
-const APP_VERSION = '2.4';
+const APP_VERSION = '2.5';
 const UPDATE_BASE = 'https://sdel0ng.github.io/sehatku/';  // versi online resmi + version.json
 const UPDATE_CHECK_MS = 6 * 60 * 60 * 1000;               // cek otomatis tiap 6 jam selama aplikasi terbuka
 const VERSION_KEY = 'sehatku.appVersion';                 // versi terakhir yang dibuka di browser ini
@@ -1796,13 +1828,13 @@ const anyDay = test => Object.values(state.days).some(test);
 const STARTER_QUESTS = [
   { id: 'hadiah', emoji: '🎁', title: 'Ambil hadiah sambutan', hint: 'Gratis — langsung naik ke Level 2', xp: 100, done: () => true },
   { id: 'profil', emoji: '👤', title: 'Lengkapi profil & target', hint: 'Tab Profil → isi data diri → Simpan', xp: 100, done: () => state.profile.confirmed, go: 'data-action="tab" data-tab="profil"' },
-  { id: 'makan', emoji: '🍽️', title: 'Catat 1 makanan', hint: 'Tab Makanan → cari → ketuk → Tambah', xp: 100, done: () => anyDay(d => d.foods.length > 0), go: 'data-action="tab" data-tab="makanan"' },
-  { id: 'air', emoji: '💧', title: 'Catat 1 gelas air', hint: 'Ketuk “+ 1 gelas” di kartu Air minum', xp: 50, done: () => anyDay(d => d.waterMl > 0), go: 'data-action="water" data-ml="250"', goLabel: '+ 1 gelas' },
-  { id: 'gerak', emoji: '🏃', title: 'Catat 1 olahraga', hint: 'Tab Aktivitas → pilih olahraga → Simpan', xp: 100, done: () => anyDay(d => d.exercises.length > 0), go: 'data-action="tab" data-tab="aktivitas"' },
+  { id: 'makan', emoji: '🍽️', title: 'Catat 1 makanan', hint: 'Catat → Makanan → cari → ketuk → Tambah', xp: 100, done: () => anyDay(d => d.foods.length > 0), go: 'data-action="tab" data-tab="makanan"' },
+  { id: 'air', emoji: '💧', title: 'Catat 1 gelas air', hint: 'Ketuk “+1 gelas air” di Beranda', xp: 50, done: () => anyDay(d => d.waterMl > 0), go: 'data-action="water" data-ml="250"', goLabel: '+ 1 gelas' },
+  { id: 'gerak', emoji: '🏃', title: 'Catat 1 olahraga', hint: 'Catat → Olahraga → pilih olahraga → Simpan', xp: 100, done: () => anyDay(d => d.exercises.length > 0), go: 'data-action="tab" data-tab="aktivitas"' },
   { id: 'misi', emoji: '✅', title: 'Selesaikan 1 misi harian', hint: 'Lihat kartu “Misi hari ini” di Beranda', xp: 100, done: () => getStats().today.m.doneCount > 0 },
-  { id: 'pet', emoji: '🐾', title: 'Adopsi pet pertama', hint: 'Tab Pet → pilih hewan → beri nama', xp: 100, done: () => state.game.pet.pets.length > 0, go: 'data-action="tab" data-tab="pet"' },
+  { id: 'pet', emoji: '🐾', title: 'Adopsi pet pertama', hint: 'Seru → Pet → pilih hewan → beri nama', xp: 100, done: () => state.game.pet.pets.length > 0, go: 'data-action="tab" data-tab="pet"' },
   { id: 'peti', emoji: '🧰', title: 'Buka 1 peti hadiah', hint: 'Peti didapat setiap naik level', xp: 100, done: () => state.game.rewards.opened > 0, go: 'data-action="openChest"', goLabel: 'Buka peti' },
-  { id: 'main', emoji: '🎮', title: 'Main 1 game', hint: 'Tangkap Sayur atau Tebak Kalori di tab Seru', xp: 100, done: () => state.game.arcade.played > 0 || state.game.quiz.played > 0, go: 'data-action="tab" data-tab="seru"' },
+  { id: 'main', emoji: '🎮', title: 'Main 1 game', hint: 'Tangkap Sayur atau Tebak Kalori di menu Seru', xp: 100, done: () => state.game.arcade.played > 0 || state.game.quiz.played > 0, go: 'data-action="tab" data-tab="seru"' },
   { id: 'akun', emoji: '🌐', title: 'Buat akun & username', hint: 'Tab Teman → daftar gratis dengan email', xp: 150, online: true, done: () => Boolean(cloud.user && social.me), go: 'data-action="tab" data-tab="teman"' },
   { id: 'teman', emoji: '🤝', title: 'Tambah 1 teman', hint: 'Teman → Ruang publik → ➕ Tambah', xp: 150, online: true, done: () => socialReady() && social.friendships.length > 0, go: 'data-action="temanGo" data-seg="publik"' },
 ];
@@ -1859,11 +1891,11 @@ function starterCardHtml() {
 /* ---------- Panduan singkat untuk pengguna baru ---------- */
 const GUIDE_STEPS = [
   { emoji: '👤', title: 'Isi profil sekali saja', text: 'Masukkan usia, tinggi, berat &amp; berat target di tab <b>Profil</b>. SehatKu langsung menghitung jatah kalori harianmu.' },
-  { emoji: '🍽️', title: 'Catat makan &amp; minum', text: 'Di tab <b>Makanan</b>, ketik nama makanannya (mis. “nasi goreng”), ketuk, lalu pilih porsinya. Minum air cukup ketuk <b>+ 1 gelas</b> di Beranda.' },
-  { emoji: '🏃', title: 'Catat olahraga &amp; berat', text: 'Olahraga dicatat di tab <b>Aktivitas</b>. Timbang badan cukup seminggu sekali, lalu catat di tab <b>Berat</b>.' },
-  { emoji: '🏠', title: 'Cek Beranda setiap hari', text: 'Lihat <b>sisa kalori</b>, gizi, misi harian &amp; saran. Lingkaran hijau = masih aman, merah = sudah kelebihan.' },
+  { emoji: '🍽️', title: 'Catat makan &amp; minum', text: 'Buka <b>📝 Catat → Makanan</b>, ketik nama makanannya (mis. “nasi goreng”), ketuk, lalu pilih porsinya. Minum air cukup ketuk <b>+1 gelas air</b> di Beranda.' },
+  { emoji: '🏃', title: 'Catat olahraga &amp; berat', text: 'Olahraga dicatat di <b>📝 Catat → Olahraga</b>. Timbang badan cukup seminggu sekali, lalu catat di <b>📝 Catat → Berat</b>.' },
+  { emoji: '🏠', title: 'Cek Beranda setiap hari', text: 'Lihat <b>sisa kalori</b> &amp; gizi, lalu pakai tombol cepat di bawahnya. Lingkaran hijau = masih aman, merah = sudah kelebihan. Misi &amp; saran ada di <b>Lihat lebih lengkap</b>.' },
   { emoji: '📲', title: 'Pasang di HP &amp; PC', text: 'Buka <b>Profil → 📲 Pasang aplikasi</b> untuk memasang SehatKu di Android, iPhone/iPad, atau PC. Ikonnya muncul di layar utama/desktop dan tetap jalan tanpa internet.' },
-  { emoji: '🎒', title: 'Naik level lebih cepat', text: 'Setiap catatan memberi XP. Selesaikan misi <b>Starter Pack</b> di Beranda, buka peti hadiah, rawat pet di tab <b>Pet</b>, dan main game di tab <b>Seru</b>.' },
+  { emoji: '🎒', title: 'Naik level lebih cepat', text: 'Setiap catatan memberi XP. Selesaikan misi <b>Starter Pack</b> di Beranda, buka peti hadiah di <b>📈 Progres</b>, rawat pet &amp; main game di <b>🎮 Seru</b>.' },
   { emoji: '💬', title: 'Ajak teman (opsional)', text: 'Daftar gratis di tab <b>Teman</b> supaya catatan tersimpan di semua perangkat, lalu tambah teman dari <b>Ruang publik</b> &amp; ngobrol.', online: true },
 ];
 const guideSteps = () => GUIDE_STEPS.filter(s => !s.online || cloudEnabled());
@@ -1983,7 +2015,7 @@ const EQUIVALENTS = [
 ];
 
 /* ---------- Seru: boss mingguan, Tebak Kalori, Peta Nusantara, lelucon ---------- */
-const NEWS_VERSION = '2.3';        // pengumuman fitur baru tampil sekali per versi
+const NEWS_VERSION = '2.5';        // pengumuman fitur baru tampil sekali per versi
 const BOSS_EPOCH = '2024-01-01';   // hari Senin; boss berganti tiap minggu dihitung dari tanggal ini
 const TRIP_DAYS = 90;              // mode jaga berat: 90 hari mencatat = sampai Merauke
 
@@ -2525,6 +2557,7 @@ const ui = {
   bubbleJoke: -1,
   petTip: 0,
   starterAll: false,
+  navLast: {},       // halaman terakhir per kelompok menu (Catat, Progres, Seru)
   miniWith: null,     // mini chat: teman yang chat-nya terbuka di jendela kecil
   miniOpen: false,    // mini chat: daftar teman melayang terbuka (mode tombol)
   temanSeg: 'chat',      // chat | publik
@@ -3370,8 +3403,8 @@ function mascotCardHtml(mascot, stats, missions, xpOfDay, isToday) {
       <button type="button" class="link-plain" data-action="tab" data-tab="prestasi">${lvl.emoji} Lv ${lvl.level} · ${esc(lvl.title)}</button>
       <div class="xp-bar"><span style="width:${clamp(lvl.cur / lvl.need * 100, 0, 100)}%"></span></div>
       <div class="row between tiny"><span class="muted">${fmt(lvl.cur)} / ${fmt(lvl.need)} XP</span><span class="muted">${isToday ? 'Hari ini' : 'Tanggal ini'} +${fmt(xpOfDay)} XP</span></div>
-      <div class="row between small"><span class="streak ${cold ? 'cold' : ''}"><span class="flame">🔥</span>${stats.curLogStreak} hari streak</span><span>🎯 Misi ${missions.doneCount}/${missions.list.length}</span></div>
-      <button type="button" class="boss-mini" data-action="tab" data-tab="seru" title="Boss minggu ini: ${esc(week.boss.name)} — buka tab Seru">
+      <div class="row between small"><span class="streak ${cold ? 'cold' : ''}"><span class="flame">🔥</span>${stats.curLogStreak} hari streak</span><button type="button" class="link-plain" data-action="homeMissions" title="Lihat misi hari ini">🎯 Misi ${missions.doneCount}/${missions.list.length}</button></div>
+      <button type="button" class="boss-mini" data-action="tab" data-tab="seru" title="Boss minggu ini: ${esc(week.boss.name)} — buka menu Seru">
         <span>${week.boss.emoji}</span>
         <span class="hp-bar"><span style="width:${clamp(hpLeft / week.boss.hp * 100, 0, 100)}%"></span></span>
         <span>${week.wonOn ? 'K.O. 🏆' : `${fmt(hpLeft)} HP`}</span>
@@ -3725,6 +3758,14 @@ function weightChart(ws, goal) {
 /* =========================================================
    TAMPILAN (VIEWS)
    ========================================================= */
+const HOME_MORE_KEY = 'sehatku.homeMore';       // bagian "Lihat lebih lengkap" di Beranda terbuka (per perangkat)
+function homeMoreOpen() {
+  try {
+    return localStorage.getItem(HOME_MORE_KEY) === '1';
+  } catch (e) {
+    return false;
+  }
+}
 function viewHome() {
   const k = ui.date;
   const p = state.profile;
@@ -3766,12 +3807,6 @@ function viewHome() {
     ? `🚶 Kelebihan ${fmt(-remaining)} kkal ≈ ${fmt(walkMinutes(-remaining, k))} menit jalan cepat.`
     : `🍽️ Sisa jatah ≈ ${equivalentText(remaining, k)}.`;
 
-  const macro = (label, val, target, color) => `
-    <div class="metric">
-      <div class="top"><span><i class="dot" style="background:${color}"></i>${label}</span><span><b>${fmt(val)}</b> / ${fmt(target)} g</span></div>
-      <div class="bar"><span style="width:${clamp(target ? val / target * 100 : 0, 0, 100)}%;background:${color}"></span></div>
-    </div>`;
-
   const day = getDay(k);
   const mealRows = MEALS.map(m => {
     const items = day.foods.filter(f => f.meal === m.id);
@@ -3790,6 +3825,13 @@ function viewHome() {
     .map(([type, icon, msg]) => `<div class="insight ${type}"><span class="i">${icon}</span><span>${msg}</span></div>`)
     .join('');
 
+  const macroMini = (label, val, target, color) => `
+    <div class="mm">
+      <div class="mm-top"><span><i class="dot" style="background:${color}"></i>${label}</span><b>${fmt(val)}<span class="muted">/${fmt(target)} g</span></b></div>
+      <div class="bar thin"><span style="width:${clamp(target ? val / target * 100 : 0, 0, 100)}%;background:${color}"></span></div>
+    </div>`;
+  const moreOpen = homeMoreOpen();
+
   return `
   <div class="page-title">
     <div><h1>${hello}! 👋</h1><p>${esc(longDate(k))}${k === today ? ' · hari ini' : ''}</p></div>
@@ -3798,36 +3840,35 @@ function viewHome() {
   ${p.confirmed ? '' : `<div class="banner"><span>⚠️ <b>Profil belum dikonfirmasi.</b> Cek data diri &amp; berat target supaya hitungan kalori akurat.</span><button type="button" class="btn small primary" data-action="tab" data-tab="profil">Lengkapi profil</button></div>`}
   <div id="installNudgeSlot">${installNudgeHtml()}</div>
   ${starterCardHtml()}
-  ${mascotCardHtml(mascot, stats, missions, xpOfDay, isToday)}
-  ${petStripHtml(stats)}
-  <div class="grid two eq">
-    <div class="card">
-      <div class="card-head"><h3>🔥 Kalori</h3><button type="button" class="link-btn" data-action="tab" data-tab="makanan">+ Catat makanan</button></div>
-      <div class="cal-wrap">
-        <div class="ring-box">${ring(frac, ringColor)}
-          <div class="ring-center"><div class="big ${over ? 'text-danger' : ''}">${fmt(Math.abs(remaining))}</div><div class="lbl">${over ? 'kkal berlebih' : 'kkal tersisa'}</div></div>
+  <div class="card hero-card">
+    <div class="cal-wrap">
+      <div class="ring-box">${ring(frac, ringColor)}
+        <div class="ring-center"><div class="big ${over ? 'text-danger' : ''}">${fmt(Math.abs(remaining))}</div><div class="lbl">${over ? 'kkal berlebih' : 'kkal tersisa'}</div></div>
+      </div>
+      <div class="hero-side">
+        <div class="stats3">
+          <div class="stat"><div class="l">Target</div><div class="v">${fmt(t.kcal)}</div></div>
+          <div class="stat"><div class="l">Makanan</div><div class="v">${fmt(tot.kcal)}</div></div>
+          <div class="stat"><div class="l">Olahraga</div><div class="v">+${fmt(bonus)}</div></div>
         </div>
-        <div>
-          <div class="stats3">
-            <div class="stat"><div class="l">Target</div><div class="v">${fmt(t.kcal)}</div></div>
-            <div class="stat"><div class="l">Makanan</div><div class="v">${fmt(tot.kcal)}</div></div>
-            <div class="stat"><div class="l">Olahraga</div><div class="v">+${fmt(bonus)}</div></div>
-          </div>
-          <p class="tiny muted">${creditNote}</p>
-          <p class="small fun-line">${funLine}</p>
+        <div class="macro-mini">
+          ${macroMini('Protein', tot.protein, t.protein, 'var(--protein)')}
+          ${macroMini('Karbo', tot.carbs, t.carbs, 'var(--carbs)')}
+          ${macroMini('Lemak', tot.fat, t.fat, 'var(--fat)')}
         </div>
+        <p class="small fun-line">${funLine}</p>
       </div>
     </div>
-    <div class="card">
-      <div class="card-head"><h3>🥗 Makronutrien</h3><span class="muted small">target harian</span></div>
-      ${macro('Protein', tot.protein, t.protein, 'var(--protein)')}
-      ${macro('Karbohidrat', tot.carbs, t.carbs, 'var(--carbs)')}
-      ${macro('Lemak', tot.fat, t.fat, 'var(--fat)')}
+    <div class="quick-row">
+      <button type="button" class="quick" data-action="tab" data-tab="makanan"><span aria-hidden="true">🍽️</span>Catat makan</button>
+      <button type="button" class="quick" data-action="water" data-ml="250"><span aria-hidden="true">💧</span>+1 gelas air</button>
+      <button type="button" class="quick" data-action="tab" data-tab="aktivitas"><span aria-hidden="true">🏃</span>Olahraga</button>
+      <button type="button" class="quick" data-action="tab" data-tab="berat"><span aria-hidden="true">⚖️</span>Berat</button>
     </div>
   </div>
-  <div class="grid three eq">
+  <div class="grid two eq">
     <div class="card">
-      <div class="card-head"><h3>🍽️ Makanan</h3><button type="button" class="link-btn" data-action="tab" data-tab="makanan">Detail</button></div>
+      <div class="card-head"><h3>🍽️ Makan hari ini</h3><button type="button" class="link-btn" data-action="tab" data-tab="makanan">Detail</button></div>
       ${mealRows}
     </div>
     <div class="card">
@@ -3838,44 +3879,51 @@ function viewHome() {
         <button type="button" class="btn small primary" data-action="water" data-ml="250">+ 1 gelas (250 ml)</button>
       </div>
     </div>
-    <div class="card">
-      <div class="card-head"><h3>⚖️ Berat &amp; BMI</h3><button type="button" class="link-btn" data-action="tab" data-tab="berat">Catat berat</button></div>
-      <div class="row between wrap"><div class="big-num">${fmtMax(w, 1)} <small>kg</small></div><span class="tag" style="background:${cat.color}">BMI ${fmtMax(bmi, 1)} · ${esc(cat.label)}</span></div>
-      ${bmiGauge(bmi)}
-      <div class="metric mt">
-        <div class="top small"><span>Menuju ${fmtMax(goal, 1)} kg</span><span>${fmtSigned(w - sw, 1)} kg dari awal</span></div>
-        <div class="bar thin"><span style="width:${goalPct}%"></span></div>
-      </div>
-    </div>
   </div>
-  <div class="grid two eq">
-    <div class="card">
-      <div class="card-head"><h3>🏃 Aktivitas &amp; tidur</h3><button type="button" class="link-btn" data-action="tab" data-tab="aktivitas">+ Olahraga</button></div>
-      <div class="form-grid">
-        <label class="field">Langkah hari ini<input inputmode="numeric" data-change="steps" value="${tot.steps != null ? tot.steps : ''}" placeholder="0" autocomplete="off"></label>
-        <label class="field">Tidur semalam (jam)<input inputmode="decimal" data-change="sleep" value="${tot.sleepH != null ? fmtInput(tot.sleepH) : ''}" placeholder="mis. 7,5" autocomplete="off"></label>
+  ${mascotCardHtml(mascot, stats, missions, xpOfDay, isToday)}
+  <details class="home-more" id="homeMore"${moreOpen ? ' open' : ''}>
+    <summary><span class="hm-title">${moreOpen ? '➖ Sembunyikan detail' : '➕ Lihat lebih lengkap'}</span><span class="tiny muted">misi harian, pet, berat &amp; BMI, langkah &amp; tidur, saran</span></summary>
+    <div class="home-more-body">
+      ${petStripHtml(stats)}
+      <div class="grid two eq">
+        <div id="homeMissions">${missionsCardHtml(missions, isToday)}</div>
+        <div class="card">
+          <div class="card-head"><h3>⚖️ Berat &amp; BMI</h3><button type="button" class="link-btn" data-action="tab" data-tab="berat">Catat berat</button></div>
+          <div class="row between wrap"><div class="big-num">${fmtMax(w, 1)} <small>kg</small></div><span class="tag" style="background:${cat.color}">BMI ${fmtMax(bmi, 1)} · ${esc(cat.label)}</span></div>
+          ${bmiGauge(bmi)}
+          <div class="metric mt">
+            <div class="top small"><span>Menuju ${fmtMax(goal, 1)} kg</span><span>${fmtSigned(w - sw, 1)} kg dari awal</span></div>
+            <div class="bar thin"><span style="width:${goalPct}%"></span></div>
+          </div>
+        </div>
       </div>
-      <div class="metric mt">
-        <div class="top small"><span>Langkah</span><span id="stepsText">${fmt(tot.steps || 0)} / ${fmt(p.stepsTarget)}</span></div>
-        <div class="bar thin"><span id="stepsBar" style="width:${stepsPct}%"></span></div>
+      <div class="grid two eq">
+        <div class="card">
+          <div class="card-head"><h3>🏃 Langkah &amp; tidur</h3><button type="button" class="link-btn" data-action="tab" data-tab="aktivitas">+ Olahraga</button></div>
+          <div class="form-grid">
+            <label class="field">Langkah hari ini<input inputmode="numeric" data-change="steps" value="${tot.steps != null ? tot.steps : ''}" placeholder="0" autocomplete="off"></label>
+            <label class="field">Tidur semalam (jam)<input inputmode="decimal" data-change="sleep" value="${tot.sleepH != null ? fmtInput(tot.sleepH) : ''}" placeholder="mis. 7,5" autocomplete="off"></label>
+          </div>
+          <div class="metric mt">
+            <div class="top small"><span>Langkah</span><span id="stepsText">${fmt(tot.steps || 0)} / ${fmt(p.stepsTarget)}</span></div>
+            <div class="bar thin"><span id="stepsBar" style="width:${stepsPct}%"></span></div>
+          </div>
+          <div class="metric"><div class="top small"><span>Olahraga hari ini</span><span>${fmt(tot.exMin)} menit · ${fmt(tot.burned)} kkal</span></div></div>
+          <div class="metric">
+            <div class="top small"><span>Menit aktif 7 hari (WHO ≥ 150)</span><span>${fmt(active)} / 150</span></div>
+            <div class="bar thin"><span style="width:${clamp(active / 150 * 100, 0, 100)}%;background:var(--info)"></span></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>💡 Catatan &amp; saran</h3>
+          <p class="tiny muted">${creditNote}</p>
+          <div class="insights">${tips}</div>
+        </div>
       </div>
-      <div class="metric"><div class="top small"><span>Olahraga hari ini</span><span>${fmt(tot.exMin)} menit · ${fmt(tot.burned)} kkal</span></div></div>
-      <div class="metric">
-        <div class="top small"><span>Menit aktif 7 hari (WHO ≥ 150)</span><span>${fmt(active)} / 150</span></div>
-        <div class="bar thin"><span style="width:${clamp(active / 150 * 100, 0, 100)}%;background:var(--info)"></span></div>
-      </div>
+      ${factCardHtml(k)}
     </div>
-    ${missionsCardHtml(missions, isToday)}
-  </div>
-  <div class="grid two eq">
-    <div class="card">
-      <h3>💡 Catatan &amp; saran</h3>
-      <div class="insights">${tips}</div>
-    </div>
-    ${factCardHtml(k)}
-  </div>`;
+  </details>`;
 }
-
 function foodChipsHtml() {
   const cats = [['semua', 'Semua'], ['saya', '⭐ Makanan saya']].concat(FOOD_CATEGORIES);
   return cats.map(([id, label]) => `<button type="button" class="chip ${ui.foodCat === id ? 'active' : ''}" data-action="foodCat" data-cat="${id}">${esc(label)}</button>`).join('');
@@ -5776,7 +5824,7 @@ function buddyUpdate() {
 function buddyTarget() {
   const size = buddy.el.offsetWidth || 60;
   const tabs = $('#tabs');
-  const btn = tabs && tabs.querySelector(`[data-tab="${ui.tab}"]`);
+  const btn = tabs && tabs.querySelector(`[data-group="${groupOf(ui.tab).id}"]`);
   if (!btn) return { x: innerWidth - size - 16, y: innerHeight - size - 16, side: false };
   const r = btn.getBoundingClientRect();
   if (getComputedStyle(tabs).position === 'fixed') {
@@ -6334,6 +6382,28 @@ const VIEWS = {
   profil: viewProfile,
 };
 const TABS = Object.keys(VIEWS);
+// Menu utama dibuat ringkas: beberapa halaman dikelompokkan, isinya dipilih lewat sub-menu di atas halaman
+const NAV_GROUPS = [
+  { id: 'beranda', label: 'Beranda', views: ['beranda'] },
+  { id: 'catat', label: 'Catat', views: ['makanan', 'aktivitas', 'berat'] },
+  { id: 'progres', label: 'Progres', views: ['statistik', 'prestasi'] },
+  { id: 'seru', label: 'Seru', views: ['seru', 'pet'] },
+  { id: 'teman', label: 'Teman', views: ['teman'] },
+  { id: 'profil', label: 'Profil', views: ['profil'] },
+];
+const SUB_LABELS = {
+  makanan: '🍽️ Makanan', aktivitas: '🏃 Olahraga', berat: '⚖️ Berat',
+  statistik: '📊 Statistik', prestasi: '🏆 Prestasi', seru: '🎮 Game', pet: '🐾 Pet',
+};
+const groupOf = tab => NAV_GROUPS.find(g => g.views.includes(tab)) || NAV_GROUPS[0];
+function subnavHtml() {
+  const g = groupOf(ui.tab);
+  if (g.views.length < 2) return '';
+  const petCount = petBadgeCount();
+  return `<div class="subnav" id="subnav" role="tablist" aria-label="${esc(g.label)}">${g.views.map(v => `
+    <button type="button" role="tab" class="sub${v === ui.tab ? ' active' : ''}" aria-selected="${v === ui.tab}" data-action="tab" data-tab="${v}">${SUB_LABELS[v]}${v === 'pet' && petCount ? `<span class="seg-count">${petCount > 9 ? '9+' : petCount}</span>` : ''}</button>`).join('')}
+  </div>`;
+}
 
 function render() {
   const today = todayKey();
@@ -6345,14 +6415,18 @@ function render() {
   $('#nextDay').disabled = ui.date >= today;
   $('#todayBtn').hidden = ui.date === today;
   $('#temanTab').hidden = !cloudEnabled();
-  $$('#tabs [data-tab]').forEach(btn => {
-    const active = btn.dataset.tab === ui.tab;
+  const group = groupOf(ui.tab);
+  ui.navLast[group.id] = ui.tab;
+  $$('#tabs [data-group]').forEach(btn => {
+    const g = NAV_GROUPS.find(x => x.id === btn.dataset.group);
+    const active = g === group;
+    btn.dataset.tab = ui.navLast[g.id] || g.views[0];     // menu membuka halaman terakhir di kelompok itu
     btn.classList.toggle('active', active);
     if (active) btn.setAttribute('aria-current', 'page');
     else btn.removeAttribute('aria-current');
   });
   const kept = ui.tab === 'teman' ? keepTemanInputs() : null;
-  $('#view').innerHTML = VIEWS[ui.tab]();
+  $('#view').innerHTML = subnavHtml() + VIEWS[ui.tab]();
   if (kept) restoreTemanInputs(kept);
   const map = $('#view .journey-map');
   if (map && map.scrollWidth > map.clientWidth) {
@@ -6571,7 +6645,7 @@ function openGameIntro() {
         <li>🎯 <b>Misi harian</b> baru tiap hari — beres semua dapat bonus XP</li>
         <li>🔥 <b>Streak</b> — catat makanan tiap hari supaya apinya tidak padam</li>
         <li>🏅 <b>${BADGES.length} lencana</b> untuk dikoleksi, dari “Ikan Paus” sampai “Otot Kawat Tulang Besi”</li>
-        <li>🎮 <b>Tab Seru</b> — boss mingguan, kuis Tebak Kalori &amp; Peta Nusantara</li>
+        <li>🎮 <b>Menu Seru</b> — boss mingguan, kuis Tebak Kalori &amp; Peta Nusantara</li>
         <li>🎁 <b>Hadiah tiap naik level</b> — peti stiker, aksesori Bro Koli &amp; tema warna</li>
         <li>🎉 Konfeti setiap naik level atau buka lencana baru</li>
       </ul>
@@ -6585,21 +6659,21 @@ function openGameIntro() {
 function openNews() {
   const level = getStats().level.level;
   const pet = activePet(level);
-  const missedMenu = compareVersions(state.game.news || '0', '2.2') < 0;   // belum sempat lihat kabar 2.2
+  const missedInstall = compareVersions(state.game.news || '0', '2.3') < 0;   // belum lihat kabar 2.3
   openModal(`
     <div class="welcome">
       <div class="pet-opt active" style="max-width:150px;margin:0 auto"><div class="po-art" style="width:120px;height:120px">${petSvg(pet ? pet.id : 'oyen', { stage: petStage(level).id, mood: 'bangga' })}</div></div>
-      <h2>Pasang SehatKu di HP &amp; PC! 📲</h2>
-      <p>SehatKu sekarang bisa dipasang seperti aplikasi biasa — ikon sendiri, jendela sendiri, dan tetap jalan tanpa internet.</p>
+      <h2>Tampilan baru, lebih simpel ✨</h2>
+      <p>Menunya sekarang cuma ${cloudEnabled() ? 6 : 5} — semua fitur lama tetap ada, hanya dikelompokkan:</p>
       <ul class="intro-list">
-        <li>💻 <b>PC / laptop</b> (Windows, Mac, Linux): instal langsung dari Edge atau Chrome</li>
-        <li>🍎 <b>iPhone / iPad</b>: Tambah ke Layar Utama lewat Safari</li>
-        <li>🤖 <b>Android</b>: unduh aplikasinya (APK) seperti biasa</li>
-        ${missedMenu ? `<li>🍜 Juga baru: <b>${FOOD_DB.length} makanan &amp; minuman</b> (kaki lima, kafe, restoran, dessert, food court, Chinese food), 🎒 Starter Pack &amp; 📖 Panduan singkat</li>` : ''}
+        <li>📝 <b>Catat</b>: Makanan · Olahraga · Berat</li>
+        <li>📈 <b>Progres</b>: Statistik · Prestasi</li>
+        <li>🎮 <b>Seru</b>: Game · Pet</li>
+        <li>🏠 <b>Beranda</b> lebih ringkas, dengan tombol cepat. Misi, saran &amp; detail lain ada di <b>➕ Lihat lebih lengkap</b></li>
+        ${missedInstall ? '<li>📲 Juga baru: pasang SehatKu di PC &amp; iPhone lewat <b>Profil → Pasang aplikasi</b></li>' : ''}
       </ul>
       <div class="modal-actions" style="justify-content:center">
-        <button type="button" class="btn" data-action="newsDone">Nanti saja</button>
-        <button type="button" class="btn primary" data-action="newsGo">Pasang sekarang 📲</button>
+        <button type="button" class="btn primary" data-action="newsGo">Oke, siap! 👍</button>
       </div>
     </div>`, { type: 'news' });
 }
@@ -8186,6 +8260,20 @@ function setTabBadge(selector, n) {
 function renderSocialBadges() {
   setTabBadge('#temanTab', chatBadgeCount());
   setTabBadge('#petTab', petBadgeCount());
+  const petSub = $('#subnav [data-tab="pet"]');
+  if (petSub) {
+    const n = petBadgeCount();
+    let count = petSub.querySelector('.seg-count');
+    if (!n && count) count.remove();
+    if (n) {
+      if (!count) {
+        count = document.createElement('span');
+        count.className = 'seg-count';
+        petSub.appendChild(count);
+      }
+      count.textContent = n > 9 ? '9+' : String(n);
+    }
+  }
   const unread = socialReady() ? unreadFriendships().length : 0;
   const title = (unread ? `(${unread}) ` : '') + BASE_TITLE;
   if (document.title !== title) document.title = title;
@@ -9125,9 +9213,16 @@ const actions = {
     setTab('prestasi');
   },
   newsDone: () => closeModal(),
+  homeMissions: () => {
+    const more = $('#homeMore');
+    if (!more) return setTab('beranda');
+    more.open = true;
+    const target = $('#homeMissions') || more;
+    target.scrollIntoView({ block: 'start', behavior: mediaMatches('(prefers-reduced-motion: reduce)') ? 'auto' : 'smooth' });
+  },
   newsGo: () => {
     closeModal();
-    focusInstallCard();
+    setTab('beranda');
   },
   installAndroid: () => openAndroidInstall(),
   installIos: () => openIosInstall(),
@@ -9424,7 +9519,7 @@ const actions = {
     state.game.pet.updatedAt = Date.now();
     save();
     render();
-    toast('Pet tidak melayang lagi. Nyalakan kembali di tab Pet 🐾');
+    toast('Pet tidak melayang lagi. Nyalakan kembali di Seru → Pet 🐾');
   },
   buddyToggle: () => {
     const p = state.game.pet;
@@ -10045,6 +10140,18 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && t.matches('input[data-change]')) t.blur();
 });
 window.addEventListener('resize', () => renderMiniChat());
+// "Lihat lebih lengkap" di Beranda: ingat terbuka/tertutup di perangkat ini
+document.addEventListener('toggle', e => {
+  const more = e.target;
+  if (!more || more.id !== 'homeMore') return;
+  try {
+    localStorage.setItem(HOME_MORE_KEY, more.open ? '1' : '0');
+  } catch (err) {
+    /* abaikan */
+  }
+  const title = more.querySelector('.hm-title');
+  if (title) title.textContent = more.open ? '➖ Sembunyikan detail' : '➕ Lihat lebih lengkap';
+}, true);
 // Klik di luar daftar chat melayang → tutup daftarnya
 document.addEventListener('click', e => {
   if (ui.miniOpen && !e.target.closest('#miniChat')) {

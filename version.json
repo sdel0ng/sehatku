@@ -1,10 +1,10 @@
 {
-  "version": "2.4",
+  "version": "2.5",
   "date": "2026-11-27",
   "apk": 1,
   "notes": [
-    "💬 Mini chat di samping halaman (PC/laptop): lihat teman & pesan baru tanpa pindah tab",
-    "🗨️ Klik teman → jendela chat kecil yang tetap terbuka saat kamu pindah halaman",
-    "» Bisa dikecilkan jadi tombol 💬 di kanan bawah"
+    "✨ Tampilan lebih simpel: menu tinggal 6 — Beranda, Catat, Progres, Seru, Teman, Profil",
+    "📝 Makanan, Olahraga & Berat kini di menu Catat; Statistik & Prestasi di Progres; Game & Pet di Seru",
+    "🏠 Beranda lebih ringkas dengan tombol cepat — detail lain di “Lihat lebih lengkap”"
   ]
 }

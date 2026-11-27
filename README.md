@@ -2,7 +2,7 @@
 
 **SehatKu** is a lightweight calorie & health tracker that runs entirely in the browser — a single HTML file, nothing to install. It works fully offline without an account; a free, optional account adds cloud sync between devices, friends, chat and pet visits. The interface is in Bahasa Indonesia.
 
-Current version: **2.4** (see the [Changelog](#changelog)).
+Current version: **2.5** (see the [Changelog](#changelog)).
 
 **▶️ Try it online: https://sdel0ng.github.io/sehatku/** — works on phones too. Without an account your data stays in your own browser; it is only uploaded if you sign in.
 
@@ -12,15 +12,18 @@ Current version: **2.4** (see the [Changelog](#changelog)).
 
 ## Features
 
-- **Beranda (dashboard)** — remaining calories for the day, protein/carbs/fat vs. targets, water intake, BMI, steps & sleep and automatic tips. It also shows the mascot **Bro Koli 🥦** (tap him for a joke), today's missions, your level and streak, this week's boss HP and a "Tahukah kamu?" fun fact. New players also get the 🎒 [Starter Pack](#starter-pack-v22) here.
-- **Makanan (food log)** — 332 foods and drinks with typical portions and food emoji: everyday Indonesian dishes plus street food (*kaki lima*), cafés & coffee, restaurants, desserts, food courts & fast food and Chinese food. Search and 15 categories, manual entries saved to "Makanan saya", "same as yesterday", editable portions and undo on delete.
-- **Aktivitas (exercise)** — 20 activities; calories from MET × body weight × duration; weekly active minutes vs. the WHO 150-minute guideline.
-- **Berat (weight)** — weight & waist log, trend chart, kg/week trend, estimated goal date, BMI per Kemenkes RI, WHO Asia-Pacific or WHO.
-- **Statistik** — 7/14/30-day averages, days on target, estimated deficit, macro split and top calorie sources.
-- **Prestasi (achievements)** — level & XP, 🎁 level rewards (treasure chests, a 36-sticker album, outfits for Bro Koli and colour themes), streaks, daily missions, a 12-week calendar heatmap and 30 badges with progress.
-- **Seru (fun)** — the Tangkap Sayur arcade game, weekly boss battle, the Tebak Kalori quiz, the Peta Nusantara journey map, Bro Koli's joke corner and "Statistik Kocak" (see below).
-- **Teman (friends)** — with a free account: 🌏 **Ruang publik** (everyone on SehatKu, add friends with one tap), chat, pet visits and friends' houses (see [below](#-accounts-friends-chat--pet-visits)).
-- **Profil** — personal data and targets, ☁️ account & sync, JSON backup/restore, CSV export for Excel and 📲 **Pasang aplikasi**, with install buttons for Android, iPhone/iPad and PC.
+The menu has six entries; pages that belong together share one entry and are picked with the small buttons at the top of the page: 🏠 **Beranda** · 📝 **Catat** (Makanan · Olahraga · Berat) · 📈 **Progres** (Statistik · Prestasi) · 🎮 **Seru** (Game · Pet) · 💬 **Teman** · 👤 **Profil**. A group button returns to the page you used last; links such as `#berat` still open the page directly.
+
+- **🏠 Beranda (dashboard)** — kept short: remaining calories with protein/carbs/fat, four quick buttons (🍽️ log food, 💧 +1 glass of water, 🏃 exercise, ⚖️ weight), today's meals, water and the mascot **Bro Koli 🥦** with your level, streak, missions and this week's boss. Everything else — daily missions, the pet assistant, weight & BMI, steps & sleep, tips and the "Tahukah kamu?" fact — is under **➕ Lihat lebih lengkap** (closed by default; the app remembers if you keep it open). New players also get the 🎒 [Starter Pack](#starter-pack-v22) here.
+- **📝 Catat → Makanan (food log)** — 332 foods and drinks with typical portions and food emoji: everyday Indonesian dishes plus street food (*kaki lima*), cafés & coffee, restaurants, desserts, food courts & fast food and Chinese food. Search and 15 categories, manual entries saved to "Makanan saya", "same as yesterday", editable portions and undo on delete.
+- **📝 Catat → Olahraga (exercise)** — 20 activities; calories from MET × body weight × duration; weekly active minutes vs. the WHO 150-minute guideline.
+- **📝 Catat → Berat (weight)** — weight & waist log, trend chart, kg/week trend, estimated goal date, BMI per Kemenkes RI, WHO Asia-Pacific or WHO.
+- **📈 Progres → Statistik** — 7/14/30-day averages, days on target, estimated deficit, macro split and top calorie sources.
+- **📈 Progres → Prestasi (achievements)** — level & XP, 🎁 level rewards (treasure chests, a 36-sticker album, outfits for Bro Koli and colour themes), streaks, daily missions, a 12-week calendar heatmap and 30 badges with progress.
+- **🎮 Seru → Game** — the Tangkap Sayur arcade game, weekly boss battle, the Tebak Kalori quiz, the Peta Nusantara journey map, Bro Koli's joke corner and "Statistik Kocak" (see below).
+- **🎮 Seru → Pet** — your pets and their house (see [Pet asisten](#pet-asisten-v16)).
+- **💬 Teman (friends)** — with a free account: 🌏 **Ruang publik** (everyone on SehatKu, add friends with one tap), chat, pet visits and friends' houses (see [below](#-accounts-friends-chat--pet-visits)).
+- **👤 Profil** — personal data and targets, ☁️ account & sync, JSON backup/restore, CSV export for Excel and 📲 **Pasang aplikasi**, with install buttons for Android, iPhone/iPad and PC.
 
 ## Gamification
 
@@ -101,7 +104,7 @@ That adds up to 1,150 XP (1,450 with an account), enough for about Level 5 on th
 
 ### Pet asisten (v1.6)
 
-- **Adopt a pet** in the new 🐾 **Pet** tab. It lives on the dashboard as your assistant: it reminds you to log meals and drink water (with a one-tap **+1 gelas**), protects your streak, points to unfinished missions, unopened chests and the weekly boss, and suggests a walk when you go over budget.
+- **Adopt a pet** under 🎮 **Seru → 🐾 Pet**. It lives on the dashboard as your assistant: it reminds you to log meals and drink water (with a one-tap **+1 gelas**), protects your streak, points to unfinished missions, unopened chests and the weekly boss, and suggests a walk when you go over budget.
 - **Grows with your level:** Bayi (Lv 1) → Remaja (Lv 4) → Dewasa (Lv 10, with a scarf) → Legenda (Lv 20, with a crown).
 - **15 pets, more choices as you level up:** Kucing Oyen, Kelinci and Anak Ayam at the start, then Anak Anjing (Lv 2), Hamster (4), Panda (6), Kodok (8), Penguin (10), Rubah (12), Kukang (14), Kura-kura (17), Komodo (20), Harimau Sumatra (25), Naga Antaboga (30) and Garuda Emas (40). New pets and growth stages appear on the level-reward track. Switch pets any time; each keeps its own name.
 - **🫧 Floats with you:** the pet floats over the app and follows you to whichever tab you open — it hops over to sit on the active tab (bottom bar on phones, beside the menu on wide screens), its eyes follow your finger or mouse, and it reacts when you log food, water, exercise or weight and when you level up. Tap it for a tip, drag it aside if it's in the way, or switch floating off in the Pet tab. It goes home when you open the Pet tab and disappears while you play Tangkap Sayur.
@@ -209,6 +212,7 @@ The online version and installed apps keep a copy of the app files (not your dat
 
 ## Changelog
 
+- **2.5** — ✨ **Simpler layout.** The menu went from ten entries to six: 🏠 Beranda, 📝 Catat (Makanan · Olahraga · Berat), 📈 Progres (Statistik · Prestasi), 🎮 Seru (Game · Pet), 💬 Teman and 👤 Profil, with small sub-menu buttons at the top of grouped pages. On phones the bottom bar now has readable labels instead of ten squeezed icons. Beranda is about half as long: calories, quick buttons, meals, water and Bro Koli stay on top, and the rest moved into **➕ Lihat lebih lengkap**. Nothing was removed; a one-time message explains where everything went.
 - **2.4** — 💬 **Mini chat** for PCs and laptops: a Chat column beside every page shows your friends, unread messages and who is online. Clicking a friend opens a small chat window that stays open while you move between tabs. It can be shrunk to a round 💬 button, and **Balas** on a new-message pop-up now opens it right where you are.
 - **2.3** — 📲 **Install SehatKu anywhere:** a new **Pasang aplikasi** card in Profil has buttons for 🤖 Android (APK), 🍎 iPhone / iPad (Add to Home Screen, with step-by-step help) and 💻 PC / laptop (one-click install in Edge/Chrome on Windows, Mac, Linux and Chromebook). Installed apps get their own icon and window and open offline. On another device, each button shows a QR code to scan. The online version shows a small dismissible install banner on Beranda, and the quick guide gets an install step. The Android-only card is replaced.
 - **2.2** — 🍜 **220 new foods and drinks** (332 in total) in six new categories: street food (*kaki lima*), cafés & coffee, restaurants, desserts, food courts & fast food and Chinese food; the category chips scroll sideways on phones. A few existing items moved into the new categories (e.g. kopi susu gula aren → Kafe & kopi, martabak manis → Jajanan kaki lima). 🎒 **Starter Pack** for new players: 11 first-step missions with extra XP plus a 300 XP bonus, about Level 5 on day one. 📖 **Panduan singkat**: a six-step quick guide that opens after the first profile save and from Profil any time. Existing records are unchanged.
